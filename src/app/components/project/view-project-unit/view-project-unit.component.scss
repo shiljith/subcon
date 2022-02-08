@@ -1,0 +1,66 @@
+.project-unit-view {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+
+  .project-card {
+    &-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .project-name {
+        &.mb-1 {
+          margin-bottom: 1rem;
+        }
+        font-size: 16px;
+        font-weight: 500;
+        color: #8b8b8b;
+        .project-no {
+          font-size: 12px;
+          color: #b3b3b3;
+        }
+      }
+    }
+    &-body {
+      .description {
+        color: #4a4a4a;
+        text-align: justify;
+        text-indent: 0.75rem;
+        padding: 0.5rem 0;
+        border-top: 1px solid #dfdfdf;
+        margin-top: 0.5rem;
+      }
+      .bt-1 {
+        border-top: 1px solid #dfdfdf;
+        padding-top: 0.5rem;
+      }
+      .contractor {
+        margin-top: 0.75rem;
+        border-top: 1px solid #dfdfdf;
+        padding-top: 0.5rem;
+        color: #818181;
+      }
+
+      .wip-control {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+  }
+}
+
+.clear-edit {
+  margin-left: 0.5rem;
+}
+.wip-table {
+  height: calc(100vh - 330px);
+  overflow-y: scroll;
+}
+
+:host ::ng-deep {
+  .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
+}

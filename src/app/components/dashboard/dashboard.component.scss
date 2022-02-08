@@ -1,0 +1,114 @@
+.dashboard {
+  width: 90%;
+  margin: auto;
+  margin-bottom: 1rem;
+}
+.row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  grid-gap: 1rem;
+  margin-top: 1rem;
+
+  .col {
+    .tile {
+      background-color: #fff;
+      border-radius: 4px;
+      padding: 1rem;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      transition: 0.3s;
+      min-height: 130px;
+      align-items: center;
+      justify-content: center;
+      display: flex;
+      flex-direction: column;
+
+      &:hover {
+        background-color: #dddddd;
+        color: #fff;
+        box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+      }
+      .title {
+        font-size: 18px;
+        text-align: center;
+        font-weight: 500;
+        text-transform: capitalize;
+        color: #8b8b8b;
+      }
+      .count {
+        text-align: center;
+        font-size: 30px;
+        margin-top: 0.5rem;
+        padding: 1rem;
+        color: #484848;
+      }
+    }
+  }
+}
+
+.man-hour {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  .estimated,
+  .actual {
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 1rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    min-height: 150px;
+    // align-items: center;
+    // justify-content: center;
+    // display: flex;
+    // flex-direction: column;
+    text-align: center;
+
+    .title {
+      font-size: 18px;
+    }
+    .mh-body {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      padding: 1rem;
+
+      .count {
+        font-size: 20px;
+        font-weight: 500;
+        padding: 0.5rem;
+      }
+      .name {
+        font-size: 18px;
+        padding: 0.5rem;
+      }
+    }
+    .total {
+      font-size: 20px;
+      border: 1px solid #8b8b8b;
+      padding: 0.5rem 0;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+  }
+}
+
+.graph-wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  padding: 1rem 0;
+
+  .graph-container {
+    background-color: #fff;
+    padding: 1rem 2rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  }
+  .title {
+    font-size: 18px;
+    text-align: center;
+    padding: 1rem 0;
+  }
+}

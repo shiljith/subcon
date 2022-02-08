@@ -1,0 +1,27 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button>
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>SubCon</span>
+  <span class="header-spacer"></span>
+  <button mat-button routerLink="/dashboard">
+    <mat-icon>dashboard</mat-icon> Dashboard
+  </button>
+  <button mat-button routerLink="/project">
+    <mat-icon>dns</mat-icon> Projects
+  </button>
+  <button mat-button routerLink="/reports">
+    <mat-icon>assessment</mat-icon> Reports
+  </button>
+  <button mat-button routerLink="/user-management" *ngIf="isAdminAccess">
+    <mat-icon>supervisor_account</mat-icon> User Management
+  </button>
+  <button mat-button [matMenuTriggerFor]="menu">
+    <mat-icon>person</mat-icon> {{user.username | titlecase}}
+  </button>
+  <mat-menu #menu="matMenu">
+    <button (click)="logout()" mat-menu-item>
+      <mat-icon>power_settings_new</mat-icon>Logout
+    </button>
+  </mat-menu>
+</mat-toolbar>

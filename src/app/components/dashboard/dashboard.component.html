@@ -1,0 +1,101 @@
+<div class="app-wrapper">
+  <div class="app-header">
+    <app-header></app-header>
+  </div>
+  <div class="app-body">
+    <div class="dashboard">
+      <div class="row">
+        <div class="col">
+          <div class="tile twv">
+            <div class="title">Total work value</div>
+            <div class="count">{{tileValues?.totalWorkValue | currency:'AED'}}</div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="tile twv">
+            <div class="title">Total Billed as on Date</div>
+            <div class="count">{{tileValues?.totalBilledAsOnDate | currency:'AED'}}</div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="tile twv">
+            <div class="title">Balance work value</div>
+            <div class="count">{{tileValues?.balanceWorkValue | currency:'AED'}}</div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="tile twv">
+            <div class="title">Total Escalator Count</div>
+            <div class="count">{{tileValues?.totalEscalatorCount}}</div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="tile twv">
+            <div class="title">Total Travellator Count</div>
+            <div class="count">{{tileValues?.totalTravellatorCount}}</div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="tile twv">
+            <div class="title">Total Elivator Count</div>
+            <div class="count">{{tileValues?.totalElivatorCount}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="graph-wrapper">
+        <div class="graph-container">
+          <div class="title">Month wise work value</div>
+          <div class="graph" *ngIf="lineChartData">
+            <canvas baseChart type="bar" [data]="lineChartData">
+            </canvas>
+          </div>
+        </div>
+        <div class="graph-container">
+          <div class="title">Project status</div>
+          <div class="graph">
+            <canvas baseChart type="pie" [data]="pieChartData">
+            </canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="man-hour">
+        <div class="estimated">
+          <div class="title">Estimated Man Hour</div>
+          <div class="mh-body">
+            <div class="mh-col">
+              <div class="count">{{manHour?.estimated?.technician}}</div>
+              <div class="name">Technician</div>
+            </div>
+            <div>
+              <div class="count">{{manHour?.estimated?.helper}}</div>
+              <div class="name">Helper</div>
+            </div>
+          </div>
+          <div class="total">{{ manHour?.estimated?.technician + manHour?.estimated?.helper}}</div>
+        </div>
+
+        <div class="actual">
+          <div class="title">Actual Man Hour</div>
+          <div class="mh-body">
+            <div class="mh-col">
+              <div class="count">{{manHour?.actual?.technician}}</div>
+              <div class="name">Technician</div>
+            </div>
+            <div>
+              <div class="count">{{manHour?.actual?.helper}}</div>
+              <div class="name">Helper</div>
+            </div>
+          </div>
+          <div class="total">{{manHour?.actual?.technician + manHour?.actual?.helper}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

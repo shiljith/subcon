@@ -1,0 +1,35 @@
+###
+DELETE http://localhost:8000/api/database/drop
+
+### insert Role
+POST http://localhost:8000/api/database/insert
+Content-Type: application/json
+
+{
+  "tableName": "roles",
+  "columns": "(name)",
+  "values": "('Admin'), ('Project Engineer')"
+}
+
+### insert user
+POST http://localhost:8000/api/database/insert
+Content-Type: application/json
+
+{
+  "tableName": "users",
+  "columns": "(fullName, username, password, role)",
+  "values": "('Admin', 'admin', 'admin', 1)"
+}
+
+### insert Unit
+POST http://localhost:8000/api/database/insert
+Content-Type: application/json
+
+{
+  "tableName": "units",
+  "columns": "(name)",
+  "values": "('Escalator'), ('Elevator'), ('Travelator')"
+}
+
+###
+GET http://localhost:8000/api/project-unit/1

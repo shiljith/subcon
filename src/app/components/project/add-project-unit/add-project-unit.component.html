@@ -1,0 +1,109 @@
+<form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+  <div class="modal-header">
+    <h2 mat-dialog-title>Add New Project Unit</h2>
+    <button mat-icon-button mat-dialog-close>
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content>
+    <div class="form-group">
+      <mat-form-field appearance="outline" class="col-4">
+        <mat-label>Project Unit</mat-label>
+        <mat-select formControlName="unitId">
+          <mat-option [value]="unit.id" *ngFor="let unit of projectUnits">{{unit.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-4">
+        <mat-label>Unit Number</mat-label>
+        <input matInput formControlName="unitNumber" placeholder="Enter unit number">
+        <mat-error>Please enter unit number</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-4">
+        <mat-label>Model Name</mat-label>
+        <input matInput formControlName="modelName" placeholder="Enter model name">
+        <mat-error>Please enter model name</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-group">
+      <mat-form-field appearance="outline" class="col-6">
+        <mat-label>Enter project start & end date</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input formControlName="startDate" matStartDate placeholder="Start date">
+          <input formControlName="endDate" matEndDate placeholder="End date">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+        <mat-error>Please enter a valid start date or end date</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="col-3">
+        <mat-label>Number of Days</mat-label>
+        <input type="number" matInput formControlName="days" placeholder="Enter Number of Days">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="col-3">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option value="1">In Progress</mat-option>
+          <mat-option value="2">On Hold</mat-option>
+          <mat-option value="3">Completed</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="form-group">
+      <mat-form-field appearance="outline" class="col-4">
+        <mat-label>Estimated Amount</mat-label>
+        <input type="number" matInput formControlName="estimatedAmount" placeholder="Enter Estimated Amount">
+        <mat-error>Please enter total amount</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-4">
+        <mat-label>Estimated Cost</mat-label>
+        <input type="number" matInput formControlName="estimatedCost" placeholder="Enter estimated cost">
+        <mat-error>Please enter estimated cost</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-4">
+        <mat-label>Estimated Profit</mat-label>
+        <input type="number" formControlName="estimatedProfit" matInput placeholder="Enter estimated profit">
+        <mat-error>Please enter estimated profit</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-group">
+      <mat-form-field appearance="outline" class="col-3">
+        <mat-label>Budget Technical Man Hour</mat-label>
+        <input matInput formControlName="budgetTMH" placeholder="Enter budget technical man hour">
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-3">
+        <mat-label>Budget Helper Man Hour</mat-label>
+        <input matInput formControlName="budgetHMH" placeholder="Enter budget helper man hour">
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-3">
+        <mat-label>Actual Technical Man Hour</mat-label>
+        <input matInput formControlName="actualTMH" placeholder="Enter actual technical man hour">
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-3">
+        <mat-label>Actual Helper Man Hour</mat-label>
+        <input matInput formControlName="actualHMH" placeholder="Enter actual helper man hour">
+      </mat-form-field>
+    </div>
+
+    <div class="form-group">
+      <mat-form-field appearance="outline" class="col-12">
+        <mat-label>Description</mat-label>
+        <textarea matInput formControlName="description" placeholder="Enter Project Number"></textarea>
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button type="submit" mat-raised-button color="primary" [disabled]="projectForm.invalid"
+      *ngIf="!data.isEdit">Create</button>
+    <button type="submit" mat-raised-button color="accent" [disabled]="projectForm.invalid"
+      *ngIf="data.isEdit">Update</button>
+  </mat-dialog-actions>
+
+</form>
