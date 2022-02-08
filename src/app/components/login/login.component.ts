@@ -35,6 +35,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.loginForm.value).subscribe(
       (res: boolean) => {
         if (res) {
+          console.log(res);
           this.router.navigate(['/dashboard']);
         }
       },

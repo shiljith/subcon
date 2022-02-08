@@ -1,9 +1,9 @@
 export interface User {
   id: number;
-  name: string;
+  fullName: string;
   username: string;
   role: number;
-  password: string;
-  createdAt: string;
-  updatedAt: string;
+  password?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }

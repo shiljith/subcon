@@ -75,8 +75,8 @@ export class ViewProjectUnitComponent implements OnInit {
     const data = {
       ...this.wipForm.value,
       projectUnitId: this.projectUnit.id,
-      createdBy: this.authService.getUser().id,
-      updatedBy: this.authService.getUser().id,
+      createdBy: this.authService.getUser()?.id,
+      updatedBy: this.authService.getUser()?.id,
     };
     this.wipService.add(data).subscribe((res) => {
       console.log(res);
@@ -108,7 +108,7 @@ export class ViewProjectUnitComponent implements OnInit {
   onEditProgress() {
     const data = {
       ...this.wipForm.value,
-      updatedBy: this.authService.getUser().id,
+      updatedBy: this.authService.getUser()?.id,
     };
     this.wipService
       .update(data, Number(this.selectedWipId))

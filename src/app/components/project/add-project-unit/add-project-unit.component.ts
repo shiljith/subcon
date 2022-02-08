@@ -106,7 +106,7 @@ export class AddProjectUnitComponent implements OnInit {
           }
         });
     } else {
-      project.createdBy = this.authService.getUser().id;
+      project.createdBy = this.authService.getUser().id.toString();
       project.projectId = this.projectId;
       console.log(project);
       this.projectUnitService.add(project).subscribe((res) => {

@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -37,6 +37,7 @@ import { AddProjectUnitComponent } from './components/project/add-project-unit/a
 import { ViewProjectUnitComponent } from './components/project/view-project-unit/view-project-unit.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { NgChartsModule } from 'ng2-charts';
+import { TokenInterceptorService } from './interceptors/token.interceptor';
 
 @NgModule({
   declarations: [
@@ -80,7 +81,13 @@ import { NgChartsModule } from 'ng2-charts';
     MatSidenavModule,
     NgChartsModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptorService,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

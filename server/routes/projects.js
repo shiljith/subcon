@@ -1,9 +1,10 @@
 const express = require("express");
 const db = require("../config/db.config");
+const auth = require("../middleware/auth");
 
 const router = express.Router();
 
-router.post("/", (req, res, next) => {
+router.post("/", auth, (req, res, next) => {
   db.run(
     `
       INSERT INTO projects 
@@ -42,7 +43,7 @@ router.get("/", (req, res) => {
   );
 });
 
-router.post("/filter", (req, res) => {
+router.post("/filter", auth, (req, res) => {
   console.log(req.body);
   const searchTerm = req.body.search;
   const status = Number(req.body.status);

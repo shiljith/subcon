@@ -11,9 +11,6 @@ const projectUnitRouter = require("./server/routes/project_units");
 const dbRoute = require("./server/routes/database");
 
 const app = express();
-const corsOptions = {
-  origin: "http://localhost:4200",
-};
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -40,16 +37,6 @@ const port = process.env.PORT || 8080;
 
 app.listen(port, () => {
   console.log("Listening on port " + port);
-});
-
-// 404 Handler
-app.use((req, res, next) => {
-  next(createError(404));
-});
-
-// Base Route
-app.get("/", (req, res) => {
-  res.send("invaild endpoint");
 });
 
 app.get("*", (req, res) => {

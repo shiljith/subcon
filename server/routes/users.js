@@ -1,5 +1,7 @@
 const express = require("express");
 const db = require("../config/db.config");
+const jwt = require("jsonwebtoken");
+const config = require("../config/config");
 
 const router = express.Router();
 
@@ -75,11 +77,24 @@ router.post("/login", (req, res, next) => {
     `SELECT * FROM users WHERE username='${req.body.username}' AND password='${req.body.password}' LIMIT 1`,
     (error, result) => {
       if (error) {
-        console.log(error);
+        return res
+          .status(404)
+          .json({ success: false, data: null, error: error.message });
       }
-      console.log(result);
+      if (result) {
+        console.log("USER", config.TOKEN_SECRET);
+        const token = jwt.sign(
+          {
+            id: result.id,
+            fullName: result.fullName,
+            username: result.username,
+            role: result.role,
+          },
+          config.TOKEN_SECRET
+        );
 
-      return res.send({ success: true, data: result });
+        return res.send({ success: true, data: { token } });
+      }
     }
   );
 });

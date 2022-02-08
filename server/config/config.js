@@ -1,0 +1,2 @@
+const TOKEN_SECRET = "123456";
+module.exports.TOKEN_SECRET = TOKEN_SECRET;
