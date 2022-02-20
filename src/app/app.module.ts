@@ -38,6 +38,8 @@ import { ViewProjectUnitComponent } from './components/project/view-project-unit
 import { ReportsComponent } from './components/reports/reports.component';
 import { NgChartsModule } from 'ng2-charts';
 import { TokenInterceptorService } from './interceptors/token.interceptor';
+import { MatTabsModule } from '@angular/material/tabs';
+import { SettingsComponent } from './components/settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +56,7 @@ import { TokenInterceptorService } from './interceptors/token.interceptor';
     AddProjectUnitComponent,
     ViewProjectUnitComponent,
     ReportsComponent,
+    SettingsComponent,
   ],
   imports: [
     BrowserModule,
@@ -80,6 +83,7 @@ import { TokenInterceptorService } from './interceptors/token.interceptor';
     MatProgressBarModule,
     MatSidenavModule,
     NgChartsModule,
+    MatTabsModule,
   ],
   providers: [
     {

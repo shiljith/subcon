@@ -11,6 +11,46 @@ export class DashboardService {
 
   constructor(private http: HttpClient) {}
 
+  getProjectCount() {
+    return this.http.get(`${this.baseUrl}/project-count`).pipe(
+      map((res: any) => {
+        if (res && res.success) {
+          return res.data.projectCount;
+        }
+      })
+    );
+  }
+
+  getTotlaWorkValue() {
+    return this.http.get(`${this.baseUrl}/total-work-value`).pipe(
+      map((res: any) => {
+        if (res && res.success) {
+          return res.data.totalWorkValue;
+        }
+      })
+    );
+  }
+
+  getTotalBilled() {
+    return this.http.get(`${this.baseUrl}/total-billed`).pipe(
+      map((res: any) => {
+        if (res && res.success) {
+          return res.data.totalBilled;
+        }
+      })
+    );
+  }
+
+  getBalanceWorkValue() {
+    return this.http.get(`${this.baseUrl}/balance-work-value`).pipe(
+      map((res: any) => {
+        if (res && res.success) {
+          return res.data;
+        }
+      })
+    );
+  }
+
   getTileValues() {
     return this.http.get(`${this.baseUrl}/tile-values`).pipe(
       map((res: any) => {

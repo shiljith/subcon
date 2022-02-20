@@ -15,12 +15,12 @@ export interface ProjectUnit {
   id: number;
   unitId: number | string;
   unitNumber: string;
-  unitName: string;
+  modelName: string;
   projectId: number;
   startDate: string;
   endDate: string;
   days: string;
-  estimatedExpense: number;
+  estimatedCost: number;
   estimatedProfit: number;
   estimatedAmount: number;
   status: string;

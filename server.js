@@ -1,5 +1,4 @@
 const express = require("express");
-const createError = require("http-errors");
 const path = require("path");
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -8,8 +7,9 @@ const dashboardRouter = require("./server/routes/dashboard");
 const userRouter = require("./server/routes/users");
 const wipRouter = require("./server/routes/wips");
 const projectUnitRouter = require("./server/routes/project_units");
+const accountRouter = require("./server/routes/accounts");
 const dbRoute = require("./server/routes/database");
-
+const { requestLogger, responseLogger } = require("./server/middleware/logger");
 const app = express();
 
 app.use(cors());
@@ -24,6 +24,7 @@ app.use(cors());
 // Static directory path
 app.use(express.static(path.join(__dirname, "dist/subcon")));
 
+app.use(requestLogger);
 // API routes
 app.use("/api/project", projectRouter);
 app.use("/api/user", userRouter);
@@ -31,6 +32,7 @@ app.use("/api/wip", wipRouter);
 app.use("/api/project-unit", projectUnitRouter);
 app.use("/api/database", dbRoute);
 app.use("/api/dashboard", dashboardRouter);
+app.use("/api/account", accountRouter);
 
 // PORT
 const port = process.env.PORT || 8080;

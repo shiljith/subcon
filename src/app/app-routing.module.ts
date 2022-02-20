@@ -6,6 +6,7 @@ import { ProjectComponent } from './components/project/project.component';
 import { ViewProjectUnitComponent } from './components/project/view-project-unit/view-project-unit.component';
 import { ViewProjectComponent } from './components/project/view-project/view-project.component';
 import { ReportsComponent } from './components/reports/reports.component';
+import { SettingsComponent } from './components/settings/settings.component';
 import { UserManagementComponent } from './components/user-management/user-management.component';
 import { AdminGuard } from './guards/admin.guard';
 import { AuthGuard } from './guards/auth.guard';
@@ -48,6 +49,11 @@ const routes: Routes = [
   {
     path: 'user-management',
     component: UserManagementComponent,
+    canActivate: [AuthGuard, AdminGuard],
+  },
+  {
+    path: 'settings',
+    component: SettingsComponent,
     canActivate: [AuthGuard, AdminGuard],
   },
 ];

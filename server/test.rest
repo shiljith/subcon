@@ -1,35 +1,47 @@
 ###
-DELETE http://localhost:8000/api/database/drop
+DELETE http://localhost:8080/api/database/drop
+
+### Create all tables
+POST http://localhost:8080/api/database/create
+Content-Type: application/json
+
+{}
+### insert Account
+POST http://localhost:8080/api/database/insert
+Content-Type: application/json
+
+{
+  "tableName": "accounts",
+  "columns": "(name, logo, description, paymentStatus, paymentDate, paymentValidDate)",
+  "values": "('Cognizant', 'assets/images/accounts/cognizant.jpg', 'Cognizant is a multi national company', 1, '12-02-2022', '12-03-2022')"
+}
 
 ### insert Role
-POST http://localhost:8000/api/database/insert
+POST http://localhost:8080/api/database/insert
 Content-Type: application/json
 
 {
   "tableName": "roles",
-  "columns": "(name)",
-  "values": "('Admin'), ('Project Engineer')"
+  "columns": "(name, accountId)",
+  "values": "('Admin', 1), ('Project Engineer', 1)"
 }
 
 ### insert user
-POST http://localhost:8000/api/database/insert
+POST http://localhost:8080/api/database/insert
 Content-Type: application/json
 
 {
   "tableName": "users",
-  "columns": "(fullName, username, password, role)",
-  "values": "('Admin', 'admin', 'admin', 1)"
+  "columns": "(accountId, firstName, lastName, username, password, role)",
+  "values": "(1, 'Shiljith', 'Mp', 'shiljith07@gmail.com', '123', 1)"
 }
 
 ### insert Unit
-POST http://localhost:8000/api/database/insert
+POST http://localhost:8080/api/database/insert
 Content-Type: application/json
 
 {
   "tableName": "units",
-  "columns": "(name)",
-  "values": "('Escalator'), ('Elevator'), ('Travelator')"
+  "columns": "(accountId, name)",
+  "values": "(1, 'Escalator'), (1, 'Elevator'), (1, 'Travelator')"
 }
-
-###
-GET http://localhost:8000/api/project-unit/1

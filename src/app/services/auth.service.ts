@@ -50,4 +50,14 @@ export class AuthService {
   getAuthToken() {
     return localStorage.getItem('token');
   }
+
+  getAccountName() {
+    return this.http.get(`${this.baseUrl}/account`).pipe(
+      map((res: any) => {
+        if (res && res.success) {
+          return res.data;
+        }
+      })
+    );
+  }
 }

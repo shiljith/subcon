@@ -2,7 +2,7 @@
   <button mat-icon-button>
     <mat-icon>menu</mat-icon>
   </button>
-  <span>SubCon</span>
+  <span>{{accountName | uppercase}}</span>
   <span class="header-spacer"></span>
   <button mat-button routerLink="/dashboard">
     <mat-icon>dashboard</mat-icon> Dashboard
@@ -17,9 +17,12 @@
     <mat-icon>supervisor_account</mat-icon> User Management
   </button>
   <button mat-button [matMenuTriggerFor]="menu">
-    <mat-icon>person</mat-icon> {{user?.username | titlecase}}
+    <mat-icon>person</mat-icon> {{ user?.firstName + ' ' +user?.lastName | titlecase}}
   </button>
   <mat-menu #menu="matMenu">
+    <button routerLink="/settings" mat-menu-item>
+      <mat-icon>settings</mat-icon>Settings
+    </button>
     <button (click)="logout()" mat-menu-item>
       <mat-icon>power_settings_new</mat-icon>Logout
     </button>

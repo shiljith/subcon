@@ -7,8 +7,8 @@ router.post("/", (req, res, next) => {
   console.log(req.body);
   db.run(
     `INSERT INTO project_unit_wip
-    (percentage, amount, projectUnitId, createdBy,updatedBy)
-    VALUES (?, ?, ?, ?, ?)`,
+    (percentage, amount, comments, projectUnitId, createdBy,updatedBy)
+    VALUES (?, ?, ?, ?, ?, ?)`,
     Object.values(req.body),
     (error) => {
       if (error) {
@@ -25,7 +25,7 @@ router.post("/", (req, res, next) => {
 router.get("/:unitId", (req, res) => {
   db.all(
     `
-    SELECT w.*, uu.username as updatedBy
+    SELECT w.*, uu.firstName || ' ' || uu.lastName as updatedBy
     FROM project_unit_wip as w 
     LEFT JOIN users as uu ON w.updatedBy = uu.id
     WHERE projectUnitId=${req.params.unitId}
@@ -46,7 +46,7 @@ router.get("/:unitId", (req, res) => {
 router.patch("/:id", (req, res) => {
   console.log(req.body);
   db.run(
-    `UPDATE project_unit_wip SET percentage = ?, amount = ?, updatedBy = ? WHERE id=${req.params.id}`,
+    `UPDATE project_unit_wip SET percentage = ?, amount = ?, comments = ?, updatedBy = ? WHERE id=${req.params.id}`,
     Object.values(req.body),
     (error, result) => {
       if (error) {

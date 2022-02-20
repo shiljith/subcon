@@ -9,11 +9,9 @@ verifyToken = (req, res, next) => {
       .send({ status: false, message: "Token is required for authentication" });
   }
   const token = authorization.split(" ")[1];
-  console.log("Headers", token);
   jwt.verify(token, config.TOKEN_SECRET, (err, payload) => {
     if (err)
       return res.status(401).send({ status: false, message: "Invalid Token" });
-    console.log("Payload", payload);
     req.payload = payload;
   });
   return next();

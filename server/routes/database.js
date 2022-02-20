@@ -4,6 +4,7 @@ const db = require("../config/db.config");
 const router = express.Router();
 
 const tables = [
+  "accounts",
   "roles",
   "units",
   "users",
@@ -34,5 +35,143 @@ router.post("/insert", (req, res) => {
     console.log(`Data inserted successfully.`);
   });
 });
+
+router.post("/create", (req, res) => {
+  db.serialize(() => {
+    createAccountsTable();
+    createRolesTable();
+    createUsersTable();
+    createUnitsTable();
+    createProjectsTable();
+    createProjectUnitsTable();
+    createProjectUnitWorkInProgressTable();
+  });
+});
+
+function createAccountsTable() {
+  const tableName = "accounts";
+  const sql = `CREATE TABLE IF NOT EXISTS ${tableName} (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    logo TEXT,
+    description TEXT,
+    paymentStatus INTEGER,
+    paymentDate TEXT,
+    paymentValidDate TEXT,
+    createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TEXT DEFAULT CURRENT_TIMESTAMP
+    )`;
+  createTable(tableName, sql);
+}
+
+function createRolesTable() {
+  const tableName = "roles";
+  const sql = `CREATE TABLE IF NOT EXISTS ${tableName} (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    accountId INTEGER,
+    name TEXT
+    )`;
+  createTable(tableName, sql);
+}
+
+function createUnitsTable() {
+  const tableName = "units";
+  const sql = `CREATE TABLE IF NOT EXISTS ${tableName} (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    accountId INTEGER,
+    name TEXT
+    )`;
+  createTable(tableName, sql);
+}
+
+function createUsersTable() {
+  const tableName = "users";
+  const sql = `CREATE TABLE IF NOT EXISTS ${tableName} (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    accountId INTEGER,
+    firstName TEXT,
+    lastName TEXT,
+    username TEXT,
+    password TEXT,
+    role INTEGER,
+    createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TEXT DEFAULT CURRENT_TIMESTAMP
+    )`;
+  createTable(tableName, sql);
+}
+
+function createProjectsTable() {
+  const tableName = "projects";
+  const sql = `CREATE TABLE IF NOT EXISTS ${tableName} (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    accountId INTEGER,
+    poNumber TEXT,
+    name TEXT,
+    status INTERGER,
+	  description TEXT,
+    contractor TEXT,
+    createdBy INTEGER,
+    updatedBy INTEGER,
+    createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TEXT DEFAULT CURRENT_TIMESTAMP
+    )`;
+  createTable(tableName, sql);
+}
+
+function createProjectUnitsTable() {
+  const tableName = "project_units";
+  const sql = `CREATE TABLE IF NOT EXISTS ${tableName} (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    unitId INTEGER,
+    unitNumber TEXT,
+    modelName TEXT,
+    projectId INTEGER,
+    startDate TEXT,
+    endDate TEXT,
+    days INTEGER,
+    estimatedAmount REAL,
+    estimatedCost REAL,
+    estimatedProfit REAL,
+    status INTEGER DEFAULT 1,
+    budgetTMH TEXT,
+    budgetHMH TEXT,
+    actualTMH TEXT,
+    actualHMH TEXT,
+    description TEXT,
+    createdBy INTEGER,
+    updatedBy INTEGER,
+    createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (projectId) REFERENCES projects (id) ON UPDATE CASCADE ON DELETE CASCADE
+    )`;
+  createTable(tableName, sql);
+}
+
+function createProjectUnitWorkInProgressTable() {
+  const tableName = "project_unit_wip";
+  const sql = `CREATE TABLE IF NOT EXISTS ${tableName} (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    projectUnitId INTEGER,
+    percentage INTEGER,
+	  amount REAL,
+    comments TEXT,
+    createdBy INTEGER,
+    updatedBy INTEGER,
+    createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (projectUnitId) REFERENCES project_unitss (id) ON UPDATE CASCADE ON DELETE CASCADE
+    )`;
+  createTable(tableName, sql);
+}
+
+function createTable(tableName, query) {
+  db.run(query, (err) => {
+    if (err) {
+      return console.log(err);
+    } else {
+      console.log(`${tableName} table has been created.`);
+    }
+  });
+}
 
 module.exports = router;

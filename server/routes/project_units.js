@@ -33,7 +33,7 @@ router.get("/units", (req, res) => {
 });
 
 router.get("/details/:unitId", (req, res) => {
-  const query = `SELECT pu.*, cu.fullName as createdBy, uu.fullName as updatedBy, u.name as unitIdName
+  const query = `SELECT pu.*, cu.firstName || ' ' || cu.lastName as createdBy, uu.firstName || ' ' || uu.lastName as updatedBy, u.name as unitIdName
   FROM project_units as pu
   LEFT JOIN users as cu ON pu.createdBy = cu.id
   LEFT JOIN users as uu ON pu.updatedBy = uu.id
@@ -51,7 +51,7 @@ router.get("/details/:unitId", (req, res) => {
 
 router.get("/:projectId/:filter", (req, res) => {
   console.log("Params", req.params);
-  let query = `SELECT pu.*, cu.fullName as createdBy, uu.fullName as updatedBy, u.name as unitIdName
+  let query = `SELECT pu.*, cu.firstName || ' ' || cu.lastName as createdBy, uu.firstName || ' ' || uu.lastName as updatedBy, u.name as unitIdName
   FROM project_units as pu
   LEFT JOIN users as cu ON pu.createdBy = cu.id
   LEFT JOIN users as uu ON pu.updatedBy = uu.id

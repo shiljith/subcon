@@ -2,14 +2,15 @@ const express = require("express");
 const db = require("../config/db.config");
 const jwt = require("jsonwebtoken");
 const config = require("../config/config");
+const auth = require("../middleware/auth");
 
 const router = express.Router();
 
-router.post("/", (req, res, next) => {
-  console.log(req.body);
+router.post("/", auth, (req, res, next) => {
+  const user = { ...req.body, accountId: req.payload.accountId };
   db.run(
-    `INSERT INTO users (fullName, username, password, role) VALUES(?, ?, ?, ?)`,
-    Object.values(req.body),
+    `INSERT INTO users (firstName, lastName, role, username, password, accountId) VALUES(?, ?, ?, ?, ?, ?)`,
+    Object.values(user),
     (error, result, fields) => {
       if (error) {
         console.log(error);
@@ -22,12 +23,14 @@ router.post("/", (req, res, next) => {
   );
 });
 
-router.get("/", (req, res) => {
+router.get("/", auth, (req, res) => {
   db.all(
     `
-    SELECT * FROM users
-    WHERE role != 1
-    ORDER BY createdAt DESC
+    SELECT u.id, u.firstName, u.lastName, r.name as role, u.username FROM users as u
+    JOIN roles as r ON r.id = u.role
+    WHERE u.accountId = ${req.payload.accountId} AND
+    u.id != ${req.payload.id}
+    ORDER BY u.createdAt DESC
     `,
     (error, result, fields) => {
       if (error) {
@@ -73,30 +76,39 @@ router.delete("/:id", (req, res, next) => {
 });
 
 router.post("/login", (req, res, next) => {
-  db.get(
-    `SELECT * FROM users WHERE username='${req.body.username}' AND password='${req.body.password}' LIMIT 1`,
-    (error, result) => {
-      if (error) {
-        return res
-          .status(404)
-          .json({ success: false, data: null, error: error.message });
-      }
-      if (result) {
-        console.log("USER", config.TOKEN_SECRET);
-        const token = jwt.sign(
-          {
-            id: result.id,
-            fullName: result.fullName,
-            username: result.username,
-            role: result.role,
-          },
-          config.TOKEN_SECRET
-        );
-
-        return res.send({ success: true, data: { token } });
-      }
+  const query = `SELECT * FROM users WHERE username='${req.body.username}' AND password='${req.body.password}' LIMIT 1`;
+  console.log(query);
+  db.get(query, (error, result) => {
+    console.log("Login", error, result);
+    if (error) {
+      console.log(error);
+      return res
+        .status(404)
+        .json({ success: false, data: null, error: error.message });
     }
-  );
+    if (result) {
+      console.log("USER", config.TOKEN_SECRET);
+      const token = jwt.sign(
+        {
+          id: result.id,
+          firstName: result.firstName,
+          lastName: result.lastName,
+          accountId: result.accountId,
+          username: result.username,
+          role: result.role,
+        },
+        config.TOKEN_SECRET
+      );
+
+      return res.send({ success: true, data: { token } });
+    } else {
+      return res.status(403).json({
+        success: false,
+        data: null,
+        message: "Invalid username or password",
+      });
+    }
+  });
 });
 
 module.exports = router;
