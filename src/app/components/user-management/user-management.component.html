@@ -8,14 +8,30 @@
       <form [formGroup]="userForm">
         <div class="form-group">
           <mat-form-field appearance="outline">
-            <mat-label>Full Name</mat-label>
-            <input type="text" min="0" max="100" matInput formControlName="fullName" placeholder="Enter full name">
+            <mat-label>First Name</mat-label>
+            <input type="text" min="0" max="100" matInput formControlName="firstName" placeholder="Enter first name">
+          </mat-form-field>
+        </div>
+        <div class="form-group">
+          <mat-form-field appearance="outline">
+            <mat-label>Last Name</mat-label>
+            <input type="text" min="0" max="100" matInput formControlName="lastName" placeholder="Enter last name">
+          </mat-form-field>
+        </div>
+        <div class="form-group">
+          <mat-form-field appearance="outline">
+            <mat-label>Role</mat-label>
+            <mat-select formControlName="role">
+              <mat-option [value]="role.id" *ngFor="let role of roles">{{role.name}}</mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
         <div class="form-group">
           <mat-form-field appearance="outline">
             <mat-label>Username</mat-label>
             <input type="text" min="0" max="100" matInput formControlName="username" placeholder="Enter username">
+            <mat-error *ngIf="userForm.controls['username'].errors && userForm.controls['username'].errors['email']">You
+              should provide username as email.</mat-error>
           </mat-form-field>
         </div>
         <div class="form-group">
@@ -41,14 +57,19 @@
           <td mat-cell *matCellDef="let i = index"> {{ i+1 }}. </td>
         </ng-container>
 
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Name</th>
+          <td mat-cell *matCellDef="let element"> {{element?.firstName + ' ' + element?.lastName}} </td>
+        </ng-container>
+
         <ng-container matColumnDef="username">
-          <th mat-header-cell *matHeaderCellDef> username</th>
+          <th mat-header-cell *matHeaderCellDef> Username</th>
           <td mat-cell *matCellDef="let element"> {{element?.username}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="password">
-          <th mat-header-cell *matHeaderCellDef> password </th>
-          <td mat-cell *matCellDef="let element"> {{element?.password}} </td>
+        <ng-container matColumnDef="role">
+          <th mat-header-cell *matHeaderCellDef> Role </th>
+          <td mat-cell *matCellDef="let element"> {{element?.role}} </td>
         </ng-container>
 
         <ng-container matColumnDef="actions">

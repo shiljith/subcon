@@ -40,8 +40,8 @@ export class LoginComponent implements OnInit {
         }
       },
       (err) => {
-        console.log('ERROR', err);
-        this._snackBar.open(err, 'Close', {
+        console.log('ERROR', err.error.message);
+        this._snackBar.open(err.error.message, 'Close', {
           duration: 2000,
         });
       }

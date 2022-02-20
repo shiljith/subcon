@@ -25,7 +25,7 @@ export class ViewProjectComponent implements OnInit {
   project!: Project;
   displayedColumns: string[] = [
     'slno',
-    'unitName',
+    'modelName',
     'unitIdName',
     'startDate',
     'endDate',
@@ -67,9 +67,14 @@ export class ViewProjectComponent implements OnInit {
   }
 
   getProject() {
-    this.projectService.get(this.projectId).subscribe((project: Project) => {
-      this.project = project;
-    });
+    this.projectService.get(this.projectId).subscribe(
+      (project: Project) => {
+        this.project = project;
+      },
+      (err) => {
+        this.router.navigate(['/project']);
+      }
+    );
   }
 
   onEditProject(project: Project): void {
@@ -143,6 +148,7 @@ export class ViewProjectComponent implements OnInit {
   onView(projectUnit: ProjectUnit) {
     const dialogRef = this.dialog.open(ViewProjectUnitComponent, {
       width: '1000px',
+      height: '600px',
       data: projectUnit.id,
       autoFocus: false,
     });
@@ -217,5 +223,21 @@ export class ViewProjectComponent implements OnInit {
     };
 
     pdfMake.createPdf(docDefinition).open();
+  }
+
+  setStatus(status: number) {
+    let statusText = '';
+    switch (status) {
+      case 1:
+        statusText = 'In Progress';
+        break;
+      case 2:
+        statusText = 'On Hold';
+        break;
+      case 3:
+        statusText = 'Completed';
+        break;
+    }
+    return statusText;
   }
 }

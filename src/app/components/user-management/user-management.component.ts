@@ -14,7 +14,11 @@ import { User } from 'src/app/models/user';
 export class UserManagementComponent implements OnInit {
   userForm!: FormGroup;
   dataSource!: User[];
-  displayedColumns: string[] = ['SlNo', 'username', 'password', 'actions'];
+  displayedColumns: string[] = ['SlNo', 'name', 'username', 'role', 'actions'];
+  roles: any[] = [
+    { id: 1, name: 'Admin' },
+    { id: 2, name: 'Project Engineer' },
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -25,8 +29,10 @@ export class UserManagementComponent implements OnInit {
 
   ngOnInit(): void {
     this.userForm = this.fb.group({
-      fullName: ['', Validators.required],
-      username: ['', Validators.required],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      role: ['', Validators.required],
+      username: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
     });
     this.getUsers();
@@ -39,8 +45,9 @@ export class UserManagementComponent implements OnInit {
   }
 
   onSubmit() {
-    const user = { ...this.userForm.value, role: 2 };
-    this.userService.add(user).subscribe((res) => {
+    if (this.userForm.invalid) return;
+
+    this.userService.add(this.userForm.value).subscribe((res) => {
       this.userForm.reset();
       this.userForm.markAsPristine();
       this.userForm.markAsUntouched();

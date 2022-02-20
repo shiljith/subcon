@@ -30,11 +30,13 @@ export class ViewProjectUnitComponent implements OnInit {
     'SlNo',
     'percentage',
     'amount',
+    'comments',
     'updatedBy',
     'actions',
   ];
   isAdminAccess: boolean = false;
   selectedWipId!: number | undefined;
+  isVisibleWipControls: boolean = true;
 
   constructor(
     private projectUnitService: ProjectUnitService,
@@ -55,6 +57,7 @@ export class ViewProjectUnitComponent implements OnInit {
     this.wipForm = this.fb.group({
       percentage: ['', Validators.required],
       amount: ['', Validators.required],
+      comments: ['', Validators.required],
     });
     this.getProjectUnit();
   }
@@ -94,6 +97,11 @@ export class ViewProjectUnitComponent implements OnInit {
         return acc + value.amount;
       }, 0);
       this.balance = this.projectUnit.estimatedAmount - wipTotal;
+      if (this.balance <= 0) {
+        this.isVisibleWipControls = false;
+      } else {
+        this.isVisibleWipControls = true;
+      }
     });
   }
 
@@ -101,6 +109,7 @@ export class ViewProjectUnitComponent implements OnInit {
     this.wipForm.patchValue({
       percentage: wip.percentage,
       amount: wip.amount,
+      comments: wip.comments,
     });
     this.selectedWipId = wip.id;
   }
@@ -175,5 +184,22 @@ export class ViewProjectUnitComponent implements OnInit {
         });
       }
     });
+  }
+
+  onChangePercentage(event: any) {
+    const percentage: number = Number(event.target.value);
+    if (percentage && percentage > 0 && percentage <= 100) {
+      console.log(percentage);
+      const amount = (this.projectUnit.estimatedAmount * percentage) / 100;
+      this.wipForm.controls['amount'].setValue(amount);
+
+      if (amount > this.balance) {
+        this.wipForm.controls['amount'].setErrors({
+          balance_validator: 'The percentage amout is grater than balance',
+        });
+      }
+    } else {
+      this.wipForm.controls['amount'].setValue('');
+    }
   }
 }

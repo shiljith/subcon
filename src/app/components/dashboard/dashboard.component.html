@@ -4,59 +4,71 @@
   </div>
   <div class="app-body">
     <div class="dashboard">
+      <div class="dashboard-head">Dashboard</div>
       <div class="row">
         <div class="col">
-          <div class="tile twv">
-            <div class="title">Total work value</div>
-            <div class="count">{{tileValues?.totalWorkValue | currency:'AED'}}</div>
+          <div class="tile twv tile-blue">
+            <div class="icon">
+              <mat-icon>dns</mat-icon>
+            </div>
+            <div class="tile-body">
+              <div class="title">Total Projects</div>
+              <div class="count">{{projectCount}}</div>
+            </div>
           </div>
         </div>
 
         <div class="col">
-          <div class="tile twv">
-            <div class="title">Total Billed as on Date</div>
-            <div class="count">{{tileValues?.totalBilledAsOnDate | currency:'AED'}}</div>
+          <div class="tile twv tile-yellow">
+            <div class="tile-body">
+              <div class="title">Total work value</div>
+              <div class="count">{{totalWorkValue | currency:'AED'}}</div>
+            </div>
           </div>
         </div>
 
         <div class="col">
-          <div class="tile twv">
-            <div class="title">Balance work value</div>
-            <div class="count">{{tileValues?.balanceWorkValue | currency:'AED'}}</div>
+          <div class="tile twv tile-green">
+            <div class="tile-body">
+              <div class="title">Total Billed as on Date</div>
+              <div class="count">{{totalBilled | currency:'AED'}}</div>
+            </div>
           </div>
         </div>
 
         <div class="col">
-          <div class="tile twv">
-            <div class="title">Total Escalator Count</div>
-            <div class="count">{{tileValues?.totalEscalatorCount}}</div>
-          </div>
-        </div>
-
-        <div class="col">
-          <div class="tile twv">
-            <div class="title">Total Travellator Count</div>
-            <div class="count">{{tileValues?.totalTravellatorCount}}</div>
-          </div>
-        </div>
-
-        <div class="col">
-          <div class="tile twv">
-            <div class="title">Total Elivator Count</div>
-            <div class="count">{{tileValues?.totalElivatorCount}}</div>
+          <div class="tile twv tile-red">
+            <div class="tile-body">
+              <div class="title">Balance work value</div>
+              <div class="count">{{balanceWorkValue | currency:'AED'}}</div>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="graph-wrapper">
-        <div class="graph-container">
+        <div class="unit-container">
+          <div class="unit">
+            <div class="unit-header">Escalator</div>
+            <div class="unit-count">33</div>
+          </div>
+          <div class="unit">
+            <div class="unit-header">Escalator</div>
+            <div class="unit-count">33</div>
+          </div>
+          <div class="unit">
+            <div class="unit-header">Escalator</div>
+            <div class="unit-count">33</div>
+          </div>
+        </div>
+        <div class="">
           <div class="title">Month wise work value</div>
-          <div class="graph" *ngIf="lineChartData">
-            <canvas baseChart type="bar" [data]="lineChartData">
+          <div class="" *ngIf="lineChartData">
+            <canvas baseChart type="line" [data]="lineChartData">
             </canvas>
           </div>
         </div>
-        <div class="graph-container">
+        <div class="">
           <div class="title">Project status</div>
           <div class="graph">
             <canvas baseChart type="pie" [data]="pieChartData">
@@ -65,7 +77,52 @@
         </div>
       </div>
 
-      <div class="man-hour">
+      <div class="dashboard-container-3">
+        <div class="pinned-projects">
+          <div class="title">Pinned Projects</div>
+          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+            <!--- Note that these columns can be defined in any order.
+                  The actual rendered columns are set as a property on the row definition" -->
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="position">
+              <th mat-header-cell *matHeaderCellDef> No. </th>
+              <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="weight">
+              <th mat-header-cell *matHeaderCellDef> Weight </th>
+              <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="symbol">
+              <th mat-header-cell *matHeaderCellDef> Symbol </th>
+              <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+        <div class="">
+          <div class="title">Month wise work value</div>
+          <div class="" *ngIf="lineChartData">
+            <canvas baseChart type="bar" [data]="lineChartData">
+            </canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="man-hour">
         <div class="estimated">
           <div class="title">Estimated Man Hour</div>
           <div class="mh-body">
@@ -95,7 +152,7 @@
           </div>
           <div class="total">{{manHour?.actual?.technician + manHour?.actual?.helper}}</div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>

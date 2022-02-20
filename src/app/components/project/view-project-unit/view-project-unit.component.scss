@@ -1,13 +1,14 @@
 .project-unit-view {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
+  grid-template-columns: repeat(1, 1fr);
 
   .project-card {
+    padding-top: 1rem;
     &-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      border-bottom: 1px solid #dfdfdf;
 
       .project-name {
         &.mb-1 {
@@ -28,7 +29,6 @@
         text-align: justify;
         text-indent: 0.75rem;
         padding: 0.5rem 0;
-        border-top: 1px solid #dfdfdf;
         margin-top: 0.5rem;
       }
       .bt-1 {
@@ -55,7 +55,7 @@
   margin-left: 0.5rem;
 }
 .wip-table {
-  height: calc(100vh - 330px);
+  height: calc(100vh - 380px);
   overflow-y: scroll;
 }
 
