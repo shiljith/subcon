@@ -23,7 +23,7 @@ router.get("/project-count", auth, (req, res) => {
 
 router.get("/total-work-value", auth, (req, res) => {
   const query = `
-    SELECT SUM(pu.estimatedAmount) as totalWorkValue FROM project_units as pu
+    SELECT SUM(pu.unitValue) as totalWorkValue FROM project_units as pu
     JOIN  projects as p ON p.id = pu.projectId WHERE p.accountId = ${req.payload.accountId} 
   `;
   db.get(query, (error, result, fields) => {
@@ -59,7 +59,7 @@ router.get("/total-billed", auth, (req, res) => {
 
 router.get("/balance-work-value", auth, (req, res) => {
   const query = `
-    SELECT (pu.estimatedAmount - SUM(puw.amount)) as balanceWorkValue FROM project_unit_wip as puw
+    SELECT (pu.unitValue - SUM(puw.amount)) as balanceWorkValue FROM project_unit_wip as puw
     JOIN project_units as pu ON pu.id = puw.projectUnitId
     JOIN projects as p ON p.id = pu.projectId 
     WHERE p.accountId = ${req.payload.accountId} GROUP BY pu.id   
@@ -97,6 +97,8 @@ router.get("/month-wise-work-value", (req, res) => {
       {
         data: [],
         label: "Work Value",
+        pointRadius: 5,
+        pointHoverRadius: 10,
       },
     ],
   };
@@ -121,7 +123,7 @@ router.get("/month-wise-work-value", (req, res) => {
     (
     select 
     strftime('%m',startDate) as month,
-    sum(estimatedAmount) as total_est
+    sum(unitValue) as total_est
     from project_units
     where strftime('%Y',startDate) = '2022'
     group by strftime('%m',startDate)
@@ -136,6 +138,24 @@ router.get("/month-wise-work-value", (req, res) => {
       console.log("PSTATUS", result);
       monthWiseWorkValue.datasets[0].data = Object.values(result);
       return res.json({ success: true, data: monthWiseWorkValue });
+    } else {
+      return res.status(404).send({ message: "Not found" });
+    }
+  });
+});
+
+router.get("/get-project-unit-count", auth, (req, res) => {
+  const query = `
+    SELECT COUNT(*) as escalator, COUNT(*) as elevator, COUNT(*) as travelator FROM project_units as pu
+    JOIN projects as p ON p.id = pu.projectId 
+    WHERE p.accountId = ${req.payload.accountId}  
+  `;
+  db.get(query, (error, result) => {
+    if (error) {
+      return res.status(404).json({ success: false, data: null, error: error });
+    }
+    if (result) {
+      return res.json({ success: true, data: result });
     } else {
       return res.status(404).send({ message: "Not found" });
     }

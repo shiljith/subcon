@@ -71,6 +71,17 @@ export class ProjectService {
     );
   }
 
+  updatePinStatus(data: any, id: number): Observable<any> {
+    return this.httpClient.patch(`${this.apiEndPoint}/pin/${id}`, data).pipe(
+      map((res: any) => {
+        if (res && res.success) {
+          return res.success;
+        }
+      }),
+      catchError(this.handleError)
+    );
+  }
+
   get(id: number): Observable<any> {
     return this.httpClient.get(`${this.apiEndPoint}/${id}`).pipe(
       map((res: any) => res.data),
@@ -101,5 +112,21 @@ export class ProjectService {
     }
     console.log(errorMessage);
     return throwError(errorMessage);
+  }
+
+  getStatus(status: number) {
+    let statusText = '';
+    switch (status) {
+      case 1:
+        statusText = 'In Progress';
+        break;
+      case 2:
+        statusText = 'On Hold';
+        break;
+      case 3:
+        statusText = 'Completed';
+        break;
+    }
+    return statusText;
   }
 }

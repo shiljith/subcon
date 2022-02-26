@@ -122,4 +122,14 @@ export class ProjectComponent implements OnInit {
   resetSearchValue() {
     this.projectSearchForm.controls['search'].setValue('');
   }
+
+  pinProject(id: number, pinnedStatus: number) {
+    this.projectService
+      .updatePinStatus({ pinned: !pinnedStatus }, id)
+      .subscribe((pinned) => {
+        if (pinned) {
+          this.getProjects();
+        }
+      });
+  }
 }

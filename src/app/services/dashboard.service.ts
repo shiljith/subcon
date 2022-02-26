@@ -89,4 +89,14 @@ export class DashboardService {
       })
     );
   }
+
+  getProjectUnitCount() {
+    return this.http.get(`${this.baseUrl}/get-project-unit-count`).pipe(
+      map((res: any) => {
+        if (res && res.success) {
+          return res.data;
+        }
+      })
+    );
+  }
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
@@ -10,6 +11,9 @@ import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 })
 export class ReportsComponent implements OnInit {
   constructor() {}
+  projects: any[] = [];
+  displayedColumns: string[] = ['slno', 'pNumber', 'name', 'contractor'];
+  reportForm!: FormGroup;
 
   ngOnInit(): void {}
 

@@ -5,6 +5,7 @@ export interface Project {
   description: string;
   contractor: string;
   status: number;
+  pinned: number;
   createdBy: string;
   updatedBy: string;
   createdAt: string;

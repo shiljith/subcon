@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   ChartConfiguration,
   ChartData,
@@ -10,18 +11,6 @@ import { NgChartsConfiguration } from 'ng2-charts';
 import { Project } from 'src/app/models/project';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { ProjectService } from 'src/app/services/project.service';
-const ELEMENT_DATA: any[] = [
-  { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-  { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-  { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-  { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-  { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-  { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-  { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-  { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-  { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-  { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
-];
 
 @Component({
   selector: 'app-dashboard',
@@ -29,6 +18,30 @@ const ELEMENT_DATA: any[] = [
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
+  public lineChartOptions: ChartConfiguration['options'] = {
+    elements: {
+      line: {
+        tension: 0.5,
+      },
+    },
+    scales: {
+      // We use this empty structure as a placeholder for dynamic theming.
+      x: {
+        display: true,
+        title: {
+          display: true,
+          text: 'Month',
+        },
+      },
+      y: {
+        display: true,
+        title: {
+          display: true,
+          text: 'Amount',
+        },
+      },
+    },
+  };
   lineChartData!: any;
   pieChartData: any;
   tileValues: any;
@@ -37,12 +50,18 @@ export class DashboardComponent implements OnInit {
   totalWorkValue: number = 0;
   totalBilled: number = 0;
   balanceWorkValue: number = 0;
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = ELEMENT_DATA;
+  displayedColumns: string[] = ['slNo', 'name', 'contractor', 'status'];
   pinnedProjects: Project[] = [];
+  projectUnitCount: any = {
+    escalator: 0,
+    elevator: 0,
+    travalator: 0,
+  };
+
   constructor(
     private dasboardService: DashboardService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -53,6 +72,14 @@ export class DashboardComponent implements OnInit {
     this.getWorkValueData();
     this.getProjectStatus();
     this.getPinnedProjects();
+    this.getProjectUnitCount();
+    this.getManHour();
+  }
+
+  getProjectUnitCount() {
+    this.dasboardService.getProjectUnitCount().subscribe((res) => {
+      this.projectUnitCount = res;
+    });
   }
 
   getPinnedProjects() {
@@ -110,5 +137,13 @@ export class DashboardComponent implements OnInit {
     this.dasboardService.getManHour().subscribe((data: any) => {
       this.manHour = data;
     });
+  }
+
+  setStatus(status: number) {
+    return this.projectService.getStatus(status);
+  }
+
+  goToProject(id: number) {
+    this.router.navigate(['/project', id]);
   }
 }

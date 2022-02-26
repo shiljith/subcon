@@ -158,6 +158,7 @@ function createProjectUnitWorkInProgressTable() {
     percentage INTEGER,
 	  amount REAL,
     comments TEXT,
+    invoiceNumber TEXT,
     status INTEGER DEFAULT 0,
     createdBy INTEGER,
     updatedBy INTEGER,

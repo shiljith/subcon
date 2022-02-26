@@ -1,2 +1,68 @@
-<app-header></app-header>
-<p>reports works!</p>
+<div class="report-container">
+  <app-header></app-header>
+
+  <div class="report-header">
+    <div class="report-header-name">Report</div>
+    <form>
+      <div class="actions">
+        <div class="global-search">
+          <mat-form-field appearance="outline">
+            <mat-label>Search</mat-label>
+            <input matInput placeholder="Enter key word" autocomplete="off">
+            <button matSuffix mat-icon-button aria-label="Clear">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+        <div class="status">
+          <mat-form-field appearance="outline">
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="status">
+              <mat-option value="0">All</mat-option>
+              <mat-option value="1">In Progress</mat-option>
+              <mat-option value="2">On Hold</mat-option>
+              <mat-option value="3">Completed</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <button mat-raised-button color="primary">
+          <mat-icon>add</mat-icon>Create Project
+        </button>
+      </div>
+    </form>
+  </div>
+  <table mat-table [dataSource]="projects">
+
+    <ng-container matColumnDef="slno">
+      <th mat-header-cell *matHeaderCellDef> Sl. No. </th>
+      <td mat-cell *matCellDef="let i = index;"> {{i + 1}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="pNumber">
+      <th mat-header-cell *matHeaderCellDef> Project No </th>
+      <td mat-cell *matCellDef="let element"> {{element?.pNumber}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Project Name </th>
+      <td mat-cell *matCellDef="let element"> {{element?.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="contractor">
+      <th mat-header-cell *matHeaderCellDef> Contractor </th>
+      <td mat-cell *matCellDef="let element"> {{element?.contractor}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="updatedBy">
+      <th mat-header-cell *matHeaderCellDef> Updated By </th>
+      <td mat-cell *matCellDef="let element"> {{element?.updatedBy}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="12">There is no project found yet.</td>
+    </tr>
+  </table>
+</div>

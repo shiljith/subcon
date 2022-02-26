@@ -16,7 +16,7 @@ export class UserManagementComponent implements OnInit {
   dataSource!: User[];
   displayedColumns: string[] = ['SlNo', 'name', 'username', 'role', 'actions'];
   roles: any[] = [
-    { id: 1, name: 'Admin' },
+    //{ id: 1, name: 'Admin' },
     { id: 2, name: 'Project Engineer' },
   ];
 

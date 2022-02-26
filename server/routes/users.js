@@ -29,7 +29,7 @@ router.get("/", auth, (req, res) => {
     SELECT u.id, u.firstName, u.lastName, r.name as role, u.username FROM users as u
     JOIN roles as r ON r.id = u.role
     WHERE u.accountId = ${req.payload.accountId} AND
-    u.id != ${req.payload.id}
+    role != 1
     ORDER BY u.createdAt DESC
     `,
     (error, result, fields) => {

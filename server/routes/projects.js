@@ -25,9 +25,7 @@ router.post("/", auth, (req, res, next) => {
   );
 });
 
-router.post("/pinned", auth, (req, res) => {
-  const searchTerm = req.body.search;
-  const status = Number(req.body.status);
+router.get("/pinned", auth, (req, res) => {
   let query = `
     SELECT * FROM projects
     WHERE accountId = ${req.payload.accountId} AND pinned = 1
@@ -87,6 +85,21 @@ router.get("/:id", auth, (req, res, next) => {
       } else {
         return res.status(404).send("project not found.");
       }
+    }
+  );
+});
+
+router.patch("/pin/:id", (req, res) => {
+  db.run(
+    `UPDATE projects SET pinned= ? WHERE id=${req.params.id}`,
+    Object.values(req.body),
+    (error, result) => {
+      if (error) {
+        return res
+          .status(404)
+          .json({ success: false, data: null, error: error });
+      }
+      return res.send({ success: true, data: result });
     }
   );
 });
