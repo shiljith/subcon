@@ -7,8 +7,12 @@ router.post("/", (req, res, next) => {
   console.log(req.body);
   db.run(
     `INSERT INTO project_units 
-    (unitId, unitNumber, modelName, startDate, endDate, days, estimatedCost, estimatedProfit, estimatedAmount, status, budgetTMH, budgetHMH, actualTMH, actualHMH, description, updatedBy, createdBy, projectId)
-    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+    (
+      unitId, unitNumber, modelName, startDate, endDate, days, budgetTMH, budgetHMH, actualTMH, actualHMH,
+      unitValue, adminCost, estimatedCost, estimatedProfit, actualCost, actualProfit,  status, 
+      description, updatedBy, createdBy, projectId
+    )
+    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
     Object.values(req.body),
     (error) => {
       if (error) {
@@ -91,8 +95,8 @@ router.patch("/:id", (req, res) => {
   db.run(
     `UPDATE project_units SET 
     unitId = ?, unitNumber = ?, modelName = ?, startDate = ?, endDate = ?, days = ?,
-    estimatedCost = ?, estimatedProfit = ?, estimatedAmount = ?, status = ?,
-    budgetTMH = ?, budgetHMH = ?, actualTMH = ?, actualHMH = ?,
+    budgetTMH = ?, budgetHMH = ?, actualTMH = ?, actualHMH = ?, unitValue = ?, adminCost = ?, 
+    estimatedCost = ?, estimatedProfit = ?, actualCost = ?, actualProfit = ?, status = ?,
     description = ?, updatedBy= ? WHERE id=${req.params.id}`,
     Object.values(req.body),
     (error, result) => {

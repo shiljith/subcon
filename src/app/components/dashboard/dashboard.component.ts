@@ -7,7 +7,9 @@ import {
   ChartType,
 } from 'chart.js';
 import { NgChartsConfiguration } from 'ng2-charts';
+import { Project } from 'src/app/models/project';
 import { DashboardService } from 'src/app/services/dashboard.service';
+import { ProjectService } from 'src/app/services/project.service';
 const ELEMENT_DATA: any[] = [
   { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
   { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
@@ -37,7 +39,11 @@ export class DashboardComponent implements OnInit {
   balanceWorkValue: number = 0;
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = ELEMENT_DATA;
-  constructor(private dasboardService: DashboardService) {}
+  pinnedProjects: Project[] = [];
+  constructor(
+    private dasboardService: DashboardService,
+    private projectService: ProjectService
+  ) {}
 
   ngOnInit(): void {
     this.getProjectCount();
@@ -46,6 +52,13 @@ export class DashboardComponent implements OnInit {
     this.getBalanceWorkValue();
     this.getWorkValueData();
     this.getProjectStatus();
+    this.getPinnedProjects();
+  }
+
+  getPinnedProjects() {
+    this.projectService.getPinned().subscribe((projects) => {
+      this.pinnedProjects = projects;
+    });
   }
 
   getProjectCount() {

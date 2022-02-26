@@ -8,34 +8,40 @@
 
   <mat-dialog-content>
     <div class="form-group">
-      <mat-form-field appearance="outline" class="col-4">
+      <mat-form-field appearance="outline" class="col-3">
         <mat-label>Project Unit</mat-label>
         <mat-select formControlName="unitId">
           <mat-option [value]="unit.id" *ngFor="let unit of projectUnits">{{unit.name}}</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field appearance="outline" class="col-4">
+      <mat-form-field appearance="outline" class="col-3">
         <mat-label>Unit Number</mat-label>
         <input matInput formControlName="unitNumber" placeholder="Enter unit number">
         <mat-error>Please enter unit number</mat-error>
       </mat-form-field>
-      <mat-form-field appearance="outline" class="col-4">
+      <mat-form-field appearance="outline" class="col-3">
         <mat-label>Model Name</mat-label>
         <input matInput formControlName="modelName" placeholder="Enter model name">
         <mat-error>Please enter model name</mat-error>
       </mat-form-field>
+      <mat-form-field appearance="outline" class="col-3">
+        <mat-label>Unit Value</mat-label>
+        <input type="number" matInput formControlName="unitValue" (keyup)="calculateAmount()"
+          (change)="calculateAmount()" placeholder="Enter Unit Value">
+        <mat-error>Please enter unit value</mat-error>
+      </mat-form-field>
     </div>
 
     <div class="form-group">
-      <mat-form-field appearance="outline" class="col-6">
-        <mat-label>Enter project start & end date</mat-label>
+      <mat-form-field appearance="outline" class="col-3">
+        <mat-label>Project start & end date</mat-label>
         <mat-date-range-input [rangePicker]="picker">
           <input formControlName="startDate" matStartDate placeholder="Start date">
           <input formControlName="endDate" matEndDate placeholder="End date">
         </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-date-range-picker #picker></mat-date-range-picker>
-        <mat-error>Please enter a valid start date or end date</mat-error>
+        <mat-error>Invalid start date or end date</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="col-3">
@@ -51,42 +57,60 @@
           <mat-option value="3">Completed</mat-option>
         </mat-select>
       </mat-form-field>
-    </div>
 
-    <div class="form-group">
-      <mat-form-field appearance="outline" class="col-4">
-        <mat-label>Estimated Amount</mat-label>
-        <input type="number" matInput formControlName="estimatedAmount" placeholder="Enter Estimated Amount">
-        <mat-error>Please enter total amount</mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="outline" class="col-4">
-        <mat-label>Estimated Cost</mat-label>
-        <input type="number" matInput formControlName="estimatedCost" placeholder="Enter estimated cost">
-        <mat-error>Please enter estimated cost</mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="outline" class="col-4">
-        <mat-label>Estimated Profit</mat-label>
-        <input type="number" formControlName="estimatedProfit" matInput placeholder="Enter estimated profit">
-        <mat-error>Please enter estimated profit</mat-error>
+      <mat-form-field appearance="outline" class="col-3">
+        <mat-label>Admin Cost (%)</mat-label>
+        <input type="number" min="0" max="100" matInput formControlName="adminCost" (change)="calculateAmount()"
+          (change)="calculateAmount()" placeholder="Enter Admin Cost">
       </mat-form-field>
     </div>
 
     <div class="form-group">
       <mat-form-field appearance="outline" class="col-3">
         <mat-label>Budget Technical Man Hour</mat-label>
-        <input matInput formControlName="budgetTMH" placeholder="Enter budget technical man hour">
+        <input type="number" matInput formControlName="budgetTMH" (keyup)="calculateEstimatedAmount()"
+          (change)="calculateEstimatedAmount()" placeholder="Enter budget technical man hour">
+        <mat-hint>CTC: {{technicianSalary}} / Hour</mat-hint>
       </mat-form-field>
       <mat-form-field appearance="outline" class="col-3">
         <mat-label>Budget Helper Man Hour</mat-label>
-        <input matInput formControlName="budgetHMH" placeholder="Enter budget helper man hour">
+        <input type="number" matInput formControlName="budgetHMH" (keyup)="calculateEstimatedAmount()"
+          (change)="calculateEstimatedAmount()" placeholder="Enter budget helper man hour">
+        <mat-hint>CTC: {{helperSalary}} / Hour</mat-hint>
       </mat-form-field>
       <mat-form-field appearance="outline" class="col-3">
         <mat-label>Actual Technical Man Hour</mat-label>
-        <input matInput formControlName="actualTMH" placeholder="Enter actual technical man hour">
+        <input type="number" matInput formControlName="actualTMH" (keyup)="calculateActualAmount()"
+          (change)="calculateActualAmount()" placeholder="Enter actual technical man hour">
       </mat-form-field>
       <mat-form-field appearance="outline" class="col-3">
         <mat-label>Actual Helper Man Hour</mat-label>
-        <input matInput formControlName="actualHMH" placeholder="Enter actual helper man hour">
+        <input type="number" matInput formControlName="actualHMH" (keyup)="calculateActualAmount()"
+          (change)="calculateActualAmount()" placeholder="Enter actual helper man hour">
+      </mat-form-field>
+    </div>
+
+    <div class="form-group">
+
+      <mat-form-field appearance="outline" class="col-3">
+        <mat-label>Estimated Cost</mat-label>
+        <input type="number" matInput formControlName="estimatedCost" placeholder="Enter estimated cost">
+        <mat-error>Please enter estimated cost</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-3">
+        <mat-label>Estimated Profit</mat-label>
+        <input type="number" formControlName="estimatedProfit" matInput placeholder="Enter estimated profit">
+        <mat-error>Please enter estimated profit</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-3">
+        <mat-label>Actual Cost</mat-label>
+        <input type="number" matInput formControlName="actualCost" placeholder="Enter actual cost">
+        <mat-error>Please enter actual cost</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="col-3">
+        <mat-label>Actual Profit</mat-label>
+        <input type="number" formControlName="actualProfit" matInput placeholder="Enter actual profit">
+        <mat-error>Please enter actual profit</mat-error>
       </mat-form-field>
     </div>
 

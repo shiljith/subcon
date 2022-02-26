@@ -7,8 +7,8 @@ router.post("/", (req, res, next) => {
   console.log(req.body);
   db.run(
     `INSERT INTO project_unit_wip
-    (percentage, amount, comments, projectUnitId, createdBy,updatedBy)
-    VALUES (?, ?, ?, ?, ?, ?)`,
+    (percentage, amount, comments, invoiceNumber, projectUnitId, createdBy, updatedBy)
+    VALUES (?, ?, ?, ?, ?, ?, ?)`,
     Object.values(req.body),
     (error) => {
       if (error) {
@@ -18,6 +18,23 @@ router.post("/", (req, res, next) => {
           .json({ success: false, data: null, error: error });
       }
       return res.send({ success: true });
+    }
+  );
+});
+
+router.patch("/change-status/:id", (req, res) => {
+  console.log(req.body);
+  db.run(
+    `UPDATE project_unit_wip SET status = ? WHERE id=${req.params.id}`,
+    Object.values(req.body),
+    (error, result) => {
+      if (error) {
+        console.log(error);
+        return res
+          .status(404)
+          .json({ success: false, data: null, error: error });
+      }
+      return res.send({ success: true, data: result });
     }
   );
 });
@@ -46,7 +63,7 @@ router.get("/:unitId", (req, res) => {
 router.patch("/:id", (req, res) => {
   console.log(req.body);
   db.run(
-    `UPDATE project_unit_wip SET percentage = ?, amount = ?, comments = ?, updatedBy = ? WHERE id=${req.params.id}`,
+    `UPDATE project_unit_wip SET percentage = ?, amount = ?, comments = ?, invoiceNumber = ?, updatedBy = ? WHERE id=${req.params.id}`,
     Object.values(req.body),
     (error, result) => {
       if (error) {

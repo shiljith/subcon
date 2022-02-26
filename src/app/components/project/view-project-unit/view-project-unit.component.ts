@@ -14,6 +14,7 @@ import { WIP } from 'src/app/models/wip';
 import { AuthService } from 'src/app/services/auth.service';
 import { ProjectUnitService } from 'src/app/services/project-unit.service';
 import { AddProjectUnitComponent } from '../add-project-unit/add-project-unit.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-view-project-unit',
@@ -28,10 +29,12 @@ export class ViewProjectUnitComponent implements OnInit {
   dataSource!: WIP[];
   displayedColumns: string[] = [
     'SlNo',
+    'invoiceNumber',
     'percentage',
     'amount',
     'comments',
     'updatedBy',
+    'status',
     'actions',
   ];
   isAdminAccess: boolean = false;
@@ -47,17 +50,22 @@ export class ViewProjectUnitComponent implements OnInit {
     public dialog: MatDialog,
     private authService: AuthService,
     @Inject(MAT_DIALOG_DATA) private projectUnitId: number,
-    private dialogRef: MatDialogRef<ViewProjectUnitComponent>
+    private dialogRef: MatDialogRef<ViewProjectUnitComponent>,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
     this.isAdminAccess = this.authService.isAdminAccess();
+    if (this.isAdminAccess) {
+      this.displayedColumns.push('approval');
+    }
     this.unitId = this.projectUnitId;
     console.log(this.unitId);
     this.wipForm = this.fb.group({
       percentage: ['', Validators.required],
       amount: ['', Validators.required],
       comments: ['', Validators.required],
+      invoiceNumber: [''],
     });
     this.getProjectUnit();
   }
@@ -66,6 +74,7 @@ export class ViewProjectUnitComponent implements OnInit {
     this.projectUnitService
       .get(this.unitId)
       .subscribe((project: ProjectUnit) => {
+        console.log(project);
         if (project) {
           this.projectUnit = project;
           this.getWip();
@@ -93,10 +102,12 @@ export class ViewProjectUnitComponent implements OnInit {
   getWip() {
     this.wipService.getAll(this.projectUnit.id).subscribe((wip: WIP[]) => {
       this.dataSource = wip;
-      const wipTotal = wip.reduce((acc, value) => {
-        return acc + value.amount;
-      }, 0);
-      this.balance = this.projectUnit.estimatedAmount - wipTotal;
+      const wipTotal = wip
+        .filter((e: WIP) => e.status === 1)
+        .reduce((acc, value) => {
+          return acc + value.amount;
+        }, 0);
+      this.balance = this.projectUnit.unitValue - wipTotal;
       if (this.balance <= 0) {
         this.isVisibleWipControls = false;
       } else {
@@ -110,6 +121,7 @@ export class ViewProjectUnitComponent implements OnInit {
       percentage: wip.percentage,
       amount: wip.amount,
       comments: wip.comments,
+      invoiceNumber: wip.invoiceNumber,
     });
     this.selectedWipId = wip.id;
   }
@@ -190,7 +202,7 @@ export class ViewProjectUnitComponent implements OnInit {
     const percentage: number = Number(event.target.value);
     if (percentage && percentage > 0 && percentage <= 100) {
       console.log(percentage);
-      const amount = (this.projectUnit.estimatedAmount * percentage) / 100;
+      const amount = (this.projectUnit.unitValue * percentage) / 100;
       this.wipForm.controls['amount'].setValue(amount);
 
       if (amount > this.balance) {
@@ -201,5 +213,42 @@ export class ViewProjectUnitComponent implements OnInit {
     } else {
       this.wipForm.controls['amount'].setValue('');
     }
+  }
+
+  onStatusChange(wip: WIP, status: number) {
+    const checkBalance = this.balance - wip.amount;
+    if (checkBalance < 0 && status === 1) {
+      this._snackBar.open(
+        `You can't approve this wip the amount is grather than balance. Please approve accordingly.`,
+        'Close',
+        {
+          duration: 5000,
+        }
+      );
+    } else {
+      this.wipService.updateStatus({ status }, wip.id).subscribe((res) => {
+        console.log(res);
+
+        if (res) {
+          this.getProjectUnit();
+        }
+      });
+    }
+  }
+
+  getStatus(status: number) {
+    let statusText = '';
+    switch (status) {
+      case 0:
+        statusText = 'In Progress';
+        break;
+      case 1:
+        statusText = 'Approved';
+        break;
+      case 2:
+        statusText = 'Rejected';
+        break;
+    }
+    return statusText;
   }
 }

@@ -42,6 +42,15 @@ export class WipService {
     );
   }
 
+  updateStatus(data: any, id: number): Observable<any> {
+    return this.httpClient
+      .patch(`${this.apiEndPoint}/change-status/${id}`, data)
+      .pipe(
+        map((res: any) => res.success),
+        catchError(this.handleError)
+      );
+  }
+
   get(id: number): Observable<any> {
     return this.httpClient.get(`${this.apiEndPoint}/${id}`).pipe(
       map((res: any) => res.data),

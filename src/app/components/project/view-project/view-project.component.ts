@@ -25,11 +25,11 @@ export class ViewProjectComponent implements OnInit {
   project!: Project;
   displayedColumns: string[] = [
     'slno',
-    'modelName',
     'unitIdName',
+    'modelName',
+    'unitValue',
     'startDate',
     'endDate',
-    'estimatedAmount',
     'status',
     'actions',
   ];

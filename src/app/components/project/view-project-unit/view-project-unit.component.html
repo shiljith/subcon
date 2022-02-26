@@ -46,23 +46,45 @@
 
           <div class="d-flex bt-1">
             <div class="d-col-2">
-              <div class="title">Budget HMH:</div>
+              <div class="title">Budget Technical Man Hour:</div>
               <div class="value">{{projectUnit?.budgetTMH}}</div>
             </div>
             <div class="d-col-2">
-              <div class="title">Budget HMH:</div>
+              <div class="title">Budget Helper Man Hour:</div>
               <div class="value">{{projectUnit?.budgetHMH}}</div>
             </div>
           </div>
 
           <div class="d-flex bt-1">
             <div class="d-col-2">
-              <div class="title">Actual HMH:</div>
+              <div class="title">Actual Technical Man Hour:</div>
               <div class="value">{{projectUnit?.actualTMH}}</div>
             </div>
             <div class="d-col-2">
-              <div class="title">Actual HMH:</div>
+              <div class="title">Actual Helper Man Hour:</div>
               <div class="value">{{projectUnit?.actualHMH}}</div>
+            </div>
+          </div>
+
+          <div class="d-flex bt-1">
+            <div class="d-col-2">
+              <div class="title">Estimated Amount:</div>
+              <div class="value">{{projectUnit?.estimatedCost | currency:'AED '}}</div>
+            </div>
+            <div class="d-col-2">
+              <div class="title">Estimated Profit:</div>
+              <div class="value">{{projectUnit?.estimatedProfit | currency:'AED '}}</div>
+            </div>
+          </div>
+
+          <div class="d-flex bt-1">
+            <div class="d-col-2">
+              <div class="title">Actual Amount:</div>
+              <div class="value">{{projectUnit?.actualCost | currency:'AED '}}</div>
+            </div>
+            <div class="d-col-2">
+              <div class="title">Actual Profit:</div>
+              <div class="value">{{projectUnit?.actualProfit | currency:'AED '}}</div>
             </div>
           </div>
 
@@ -97,22 +119,22 @@
           <div class="d-flex">
             <div class="d-col-2">
               <div class="title">Amount:</div>
-              <div class="value">{{projectUnit?.estimatedAmount | currency:'INR'}}</div>
+              <div class="value">{{projectUnit?.unitValue | currency:'AED'}}</div>
             </div>
             <div class="d-col-2">
               <div class="title">Balance:</div>
-              <div class="value">{{ balance | currency:'INR'}}</div>
+              <div class="value">{{ balance | currency:'AED'}}</div>
             </div>
           </div>
 
           <div class="d-flex">
             <div class="d-col-2">
               <div class="title">Cost:</div>
-              <div class="value"> {{projectUnit?.estimatedCost | currency:'INR'}}</div>
+              <div class="value"> {{projectUnit?.estimatedCost | currency:'AED'}}</div>
             </div>
             <div class="d-col-2">
               <div class="title">Profit:</div>
-              <div class="value">{{projectUnit?.estimatedProfit | currency:'INR'}}</div>
+              <div class="value">{{projectUnit?.estimatedProfit | currency:'AED'}}</div>
             </div>
           </div>
 
@@ -120,18 +142,25 @@
             <form [formGroup]="wipForm" *ngIf="isVisibleWipControls">
               <div class="wip-control">
                 <div class="form-group">
-                  <mat-form-field appearance="outline" class="col-4">
+                  <mat-form-field appearance="outline" class="col-3">
                     <mat-label>Percentage</mat-label>
                     <input type="number" min="0" max="100" matInput formControlName="percentage"
-                      placeholder="Enter percentage" (keyup)="onChangePercentage($event)" autocomplete="off">
+                      placeholder="Enter percentage" (change)="onChangePercentage($event)"
+                      (keyup)="onChangePercentage($event)" autocomplete="off">
                   </mat-form-field>
-                  <mat-form-field appearance="outline" class="col-4">
-                    <mat-label>Comments</mat-label>
-                    <input type="text" matInput formControlName="comments" placeholder="Enter Comments">
-                  </mat-form-field>
-                  <mat-form-field appearance="outline" class="col-4">
+                  <mat-form-field appearance="outline" class="col-3">
                     <mat-label>Amount</mat-label>
                     <input type="number" matInput formControlName="amount" placeholder="Enter amount" readonly>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="col-3">
+                    <mat-label>Comments</mat-label>
+                    <input type="text" matInput formControlName="comments" placeholder="Enter Comments"
+                      autocomplete="off">
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="col-3">
+                    <mat-label>invoice Number</mat-label>
+                    <input type="text" matInput formControlName="invoiceNumber" placeholder="Enter invoice number"
+                      autocomplete="off">
                   </mat-form-field>
                   <mat-error
                     *ngIf="wipForm.controls['amount'].errors && wipForm.controls['amount'].errors['balance_validator']">
@@ -160,6 +189,11 @@
                   <td mat-cell *matCellDef="let i = index"> {{ i+1 }} </td>
                 </ng-container>
 
+                <ng-container matColumnDef="invoiceNumber">
+                  <th mat-header-cell *matHeaderCellDef> Invoice No. </th>
+                  <td mat-cell *matCellDef="let element"> {{ element?.invoiceNumber }} </td>
+                </ng-container>
+
                 <ng-container matColumnDef="percentage">
                   <th mat-header-cell *matHeaderCellDef> Percentage (%) </th>
                   <td mat-cell *matCellDef="let element"> {{element?.percentage}} </td>
@@ -178,6 +212,24 @@
                 <ng-container matColumnDef="updatedBy">
                   <th mat-header-cell *matHeaderCellDef> Updated By </th>
                   <td mat-cell *matCellDef="let element"> {{element?.updatedBy | titlecase}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                  <th mat-header-cell *matHeaderCellDef> Status </th>
+                  <td mat-cell *matCellDef="let element"> {{getStatus(element.status)}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="approval">
+                  <th mat-header-cell *matHeaderCellDef> Approval </th>
+                  <td mat-cell *matCellDef="let element">
+                    <button class="mr-1" mat-raised-button color="primary" (click)="onStatusChange(element, 1)"
+                      [disabled]="!isVisibleWipControls">
+                      Approve
+                    </button>
+                    <button mat-raised-button color="warn" (click)="onStatusChange(element, 2)">
+                      Reject
+                    </button>
+                  </td>
                 </ng-container>
 
                 <ng-container matColumnDef="actions">

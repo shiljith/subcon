@@ -110,6 +110,7 @@ function createProjectsTable() {
     status INTERGER,
 	  description TEXT,
     contractor TEXT,
+    pinned INTEGER DEFAULT 0,
     createdBy INTEGER,
     updatedBy INTEGER,
     createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
@@ -129,9 +130,12 @@ function createProjectUnitsTable() {
     startDate TEXT,
     endDate TEXT,
     days INTEGER,
-    estimatedAmount REAL,
+    unitValue REAL,
+    adminCost INTEGER,
     estimatedCost REAL,
     estimatedProfit REAL,
+    actualCost REAL,
+    actualProfit REAL,
     status INTEGER DEFAULT 1,
     budgetTMH TEXT,
     budgetHMH TEXT,
@@ -141,8 +145,7 @@ function createProjectUnitsTable() {
     createdBy INTEGER,
     updatedBy INTEGER,
     createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
-    updatedAt TEXT DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (projectId) REFERENCES projects (id) ON UPDATE CASCADE ON DELETE CASCADE
+    updatedAt TEXT DEFAULT CURRENT_TIMESTAMP
     )`;
   createTable(tableName, sql);
 }
@@ -155,11 +158,11 @@ function createProjectUnitWorkInProgressTable() {
     percentage INTEGER,
 	  amount REAL,
     comments TEXT,
+    status INTEGER DEFAULT 0,
     createdBy INTEGER,
     updatedBy INTEGER,
     createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
-    updatedAt TEXT DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (projectUnitId) REFERENCES project_unitss (id) ON UPDATE CASCADE ON DELETE CASCADE
+    updatedAt TEXT DEFAULT CURRENT_TIMESTAMP
     )`;
   createTable(tableName, sql);
 }

@@ -1,0 +1,14 @@
+.user-management {
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-gap: 1rem;
+
+  mat-form-field {
+    width: 100%;
+  }
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+}

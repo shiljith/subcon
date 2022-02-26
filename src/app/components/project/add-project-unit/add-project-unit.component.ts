@@ -22,6 +22,8 @@ export class AddProjectUnitComponent implements OnInit {
   projectForm!: FormGroup;
   projectUnits!: any[];
   projectId!: number;
+  technicianSalary: number = 0;
+  helperSalary: number = 0;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -36,7 +38,8 @@ export class AddProjectUnitComponent implements OnInit {
   ngOnInit(): void {
     console.log('DATA', this.data);
     this.projectId = this.data.project.projectId;
-
+    this.technicianSalary = 15.45;
+    this.helperSalary = 13.19;
     this.projectForm = this.formBuilder.group({
       unitId: ['', Validators.required],
       unitNumber: ['', Validators.required],
@@ -44,14 +47,17 @@ export class AddProjectUnitComponent implements OnInit {
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       days: ['', Validators.required],
-      estimatedCost: ['', Validators.required],
-      estimatedProfit: ['', Validators.required],
-      estimatedAmount: ['', Validators.required],
+      budgetTMH: [0, Validators.required],
+      budgetHMH: [0, Validators.required],
+      actualTMH: [0, Validators.required],
+      actualHMH: [0, Validators.required],
+      unitValue: ['0.00', Validators.required],
+      adminCost: [0, Validators.required],
+      estimatedCost: ['0.00', Validators.required],
+      estimatedProfit: ['0.00', Validators.required],
+      actualCost: ['0.00', Validators.required],
+      actualProfit: ['0.00', Validators.required],
       status: ['', Validators.required],
-      budgetTMH: [''],
-      budgetHMH: [''],
-      actualTMH: [''],
-      actualHMH: [''],
       description: [''],
     });
     this.getProjectUnits();
@@ -68,7 +74,10 @@ export class AddProjectUnitComponent implements OnInit {
         status: this.data.project.status.toString(),
         estimatedCost: this.data.project.estimatedCost,
         estimatedProfit: this.data.project.estimatedProfit,
-        estimatedAmount: this.data.project.estimatedAmount,
+        actualCost: this.data.project.actualCost,
+        actualProfit: this.data.project.actualProfit,
+        unitValue: this.data.project.unitValue,
+        adminCost: this.data.project.adminCost,
         budgetTMH: this.data.project.budgetTMH,
         budgetHMH: this.data.project.budgetHMH,
         actualTMH: this.data.project.actualTMH,
@@ -122,5 +131,56 @@ export class AddProjectUnitComponent implements OnInit {
 
   parseDate(date: Date) {
     return date.toISOString().slice(0, 19).replace('T', ' ');
+  }
+
+  calculate(tmh: number, hmr: number) {
+    const unitValue: number = Number(
+      this.projectForm.controls['unitValue'].value
+    );
+    const adminCost: number = Number(
+      this.projectForm.controls['adminCost'].value
+    );
+    const totalSalary = this.technicianSalary * tmh + this.helperSalary * tmh;
+    const adminTotalCost = (totalSalary * adminCost) / 100;
+    const cost = totalSalary + adminTotalCost;
+    const profit = unitValue - cost;
+    return { cost, profit };
+  }
+
+  calculateAmount() {
+    this.calculateEstimatedAmount();
+    this.calculateActualAmount();
+  }
+
+  calculateEstimatedAmount() {
+    const budgetTMH: number = Number(
+      this.projectForm.controls['budgetTMH'].value
+    );
+    const budgetHMH: number = Number(
+      this.projectForm.controls['budgetHMH'].value
+    );
+    const estimated = this.calculate(budgetTMH, budgetHMH);
+
+    this.projectForm.controls['estimatedCost'].setValue(
+      estimated.cost.toFixed(2)
+    );
+    this.projectForm.controls['estimatedProfit'].setValue(
+      estimated.profit.toFixed(2)
+    );
+  }
+
+  calculateActualAmount() {
+    const actualTMH: number = Number(
+      this.projectForm.controls['actualTMH'].value
+    );
+    const actualHMH: number = Number(
+      this.projectForm.controls['actualHMH'].value
+    );
+    const actual = this.calculate(actualTMH, actualHMH);
+
+    this.projectForm.controls['actualCost'].setValue(actual.cost.toFixed(2));
+    this.projectForm.controls['actualProfit'].setValue(
+      actual.profit.toFixed(2)
+    );
   }
 }

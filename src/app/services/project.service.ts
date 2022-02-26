@@ -27,6 +27,17 @@ export class ProjectService {
     );
   }
 
+  getPinned(): Observable<any> {
+    return this.httpClient.get(`${this.apiEndPoint}/pinned`).pipe(
+      map((res: any) => {
+        if (res && res.success) {
+          return res.data;
+        }
+      }),
+      catchError(this.handleError)
+    );
+  }
+
   filter(searchTerms: any): Observable<any> {
     console.log(searchTerms);
     return this.httpClient.post(`${this.apiEndPoint}/filter`, searchTerms).pipe(

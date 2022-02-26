@@ -25,6 +25,25 @@ router.post("/", auth, (req, res, next) => {
   );
 });
 
+router.post("/pinned", auth, (req, res) => {
+  const searchTerm = req.body.search;
+  const status = Number(req.body.status);
+  let query = `
+    SELECT * FROM projects
+    WHERE accountId = ${req.payload.accountId} AND pinned = 1
+    ORDER BY updatedAt DESC
+  `;
+  db.all(query, (error, result, fields) => {
+    console.log(error);
+    if (error) {
+      return res
+        .status(404)
+        .json({ success: false, data: null, error: error.message });
+    }
+    return res.json({ success: true, data: result });
+  });
+});
+
 router.post("/filter", auth, (req, res) => {
   const searchTerm = req.body.search;
   const status = Number(req.body.status);
