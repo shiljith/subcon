@@ -1,7 +1,4 @@
 <mat-toolbar color="primary">
-  <button mat-icon-button>
-    <mat-icon>menu</mat-icon>
-  </button>
   <span>{{accountName | uppercase}}</span>
   <span class="header-spacer"></span>
   <button mat-button routerLink="/dashboard">
@@ -20,7 +17,7 @@
     <mat-icon>person</mat-icon> {{ user?.firstName + ' ' +user?.lastName | titlecase}}
   </button>
   <mat-menu #menu="matMenu">
-    <button routerLink="/settings" mat-menu-item>
+    <button routerLink="/settings" mat-menu-item *ngIf="isAdminAccess">
       <mat-icon>settings</mat-icon>Settings
     </button>
     <button (click)="logout()" mat-menu-item>

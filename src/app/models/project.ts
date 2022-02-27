@@ -16,6 +16,7 @@ export interface ProjectUnit {
   id: number;
   unitId: number | string;
   unitNumber: string;
+  unitIdName?: string;
   modelName: string;
   projectId: number;
   startDate: string;

@@ -8,7 +8,9 @@ import {
   ChartType,
 } from 'chart.js';
 import { NgChartsConfiguration } from 'ng2-charts';
+import { Account } from 'src/app/models/account';
 import { Project } from 'src/app/models/project';
+import { AccountService } from 'src/app/services/account.service';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { ProjectService } from 'src/app/services/project.service';
 
@@ -57,11 +59,14 @@ export class DashboardComponent implements OnInit {
     elevator: 0,
     travalator: 0,
   };
+  technicianSalary: number = 0;
+  helperSalary: number = 0;
 
   constructor(
     private dasboardService: DashboardService,
     private projectService: ProjectService,
-    private router: Router
+    private router: Router,
+    private accountService: AccountService
   ) {}
 
   ngOnInit(): void {
@@ -74,6 +79,14 @@ export class DashboardComponent implements OnInit {
     this.getPinnedProjects();
     this.getProjectUnitCount();
     this.getManHour();
+    this.getAccountDetails();
+  }
+
+  getAccountDetails() {
+    this.accountService.get().subscribe((account: Account) => {
+      this.technicianSalary = account.technicianSalary;
+      this.helperSalary = account.helperSalary;
+    });
   }
 
   getProjectUnitCount() {

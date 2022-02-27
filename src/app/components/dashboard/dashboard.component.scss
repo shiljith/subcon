@@ -217,6 +217,8 @@
 .pinned-project {
   height: 300px;
   overflow: auto;
+  border: 1px solid #cacaca;
+  border-radius: 4px;
 }
 
 .man-hour-container {
@@ -244,13 +246,20 @@
       }
     }
     &-body {
+      text-align: center;
       padding-left: 1rem;
-      .man-hour-head {
-        font-size: 22px;
+      .man-hour-header {
+        font-size: 16px;
+        font-weight: 500;
       }
       .man-hour-count {
+        margin-top: 0.25rem;
         font-size: 24px;
         font-weight: 500;
+      }
+      .man-hour-salary {
+        margin-top: 0.25rem;
+        font-size: 16px;
       }
     }
   }

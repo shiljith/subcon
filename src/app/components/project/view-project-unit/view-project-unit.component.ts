@@ -51,7 +51,8 @@ export class ViewProjectUnitComponent implements OnInit {
     private authService: AuthService,
     @Inject(MAT_DIALOG_DATA) private projectUnitId: number,
     private dialogRef: MatDialogRef<ViewProjectUnitComponent>,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private projectService: ProjectService
   ) {}
 
   ngOnInit(): void {
@@ -231,16 +232,25 @@ export class ViewProjectUnitComponent implements OnInit {
 
         if (res) {
           this.getProjectUnit();
+          this._snackBar.open(
+            `The wip status has been ${this.getStatus(status)}`,
+            'Close',
+            {
+              duration: 5000,
+            }
+          );
         }
       });
     }
   }
-
+  getProjectUnitStatus(status: any) {
+    return this.projectService.getStatus(status);
+  }
   getStatus(status: number) {
     let statusText = '';
     switch (status) {
       case 0:
-        statusText = 'In Progress';
+        statusText = 'Pending';
         break;
       case 1:
         statusText = 'Approved';

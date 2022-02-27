@@ -1,20 +1,17 @@
-<div class="modal-header">
-  <h2 mat-dialog-title>Project Unit</h2>
-  <button mat-icon-button mat-dialog-close>
+<div class="project-unit-view">
+  <button class="close-btn" mat-icon-button mat-dialog-close>
     <mat-icon>close</mat-icon>
   </button>
-</div>
-<div class="project-unit-view">
   <mat-tab-group mat-align-tabs="start">
-    <mat-tab label="Details">
+    <mat-tab label="Project Unit Details">
       <div class="project-card">
         <div class="project-card-header">
           <div class="project-name">
-            {{projectUnit?.modelName | titlecase}}
-            <div class="project-no">{{projectUnit?.unitNumber | uppercase}}</div>
+            {{projectUnit?.unitNumber | uppercase}} ({{projectUnit?.unitIdName}})
+            <div class="project-no">{{projectUnit?.modelName | uppercase}} </div>
           </div>
           <div class="actions">
-            <button mat-icon-button [matMenuTriggerFor]="menu">
+            <button mat-mini-fab [matMenuTriggerFor]="menu" color="primary">
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
@@ -30,9 +27,6 @@
           </div>
         </div>
         <div class="project-card-body">
-          <div class="description">
-            {{ projectUnit?.description }}
-          </div>
           <div class="d-flex bt-1">
             <div class="d-col-2">
               <div class="title">Start Date:</div>
@@ -41,6 +35,28 @@
             <div class="d-col-2">
               <div class="title">End Date:</div>
               <div class="value">{{projectUnit?.endDate | date}}</div>
+            </div>
+          </div>
+
+          <div class="d-flex bt-1">
+            <div class="d-col-2">
+              <div class="title">Unit Value:</div>
+              <div class="value">{{ projectUnit?.unitValue | currency: 'AED ' }}</div>
+            </div>
+            <div class="d-col-2">
+              <div class="title">Admin Cost Percentage:</div>
+              <div class="value">{{projectUnit?.adminCost }}%</div>
+            </div>
+          </div>
+
+          <div class="d-flex bt-1">
+            <div class="d-col-2">
+              <div class="title">No of Days:</div>
+              <div class="value">{{ projectUnit?.days }}</div>
+            </div>
+            <div class="d-col-2">
+              <div class="title">Status:</div>
+              <div class="value">{{getProjectUnitStatus(projectUnit?.status) }}</div>
             </div>
           </div>
 
@@ -68,7 +84,7 @@
 
           <div class="d-flex bt-1">
             <div class="d-col-2">
-              <div class="title">Estimated Amount:</div>
+              <div class="title">Estimated Cost:</div>
               <div class="value">{{projectUnit?.estimatedCost | currency:'AED '}}</div>
             </div>
             <div class="d-col-2">
@@ -79,7 +95,7 @@
 
           <div class="d-flex bt-1">
             <div class="d-col-2">
-              <div class="title">Actual Amount:</div>
+              <div class="title">Actual Cost:</div>
               <div class="value">{{projectUnit?.actualCost | currency:'AED '}}</div>
             </div>
             <div class="d-col-2">
@@ -110,6 +126,10 @@
             </div>
           </div>
 
+          <div class="description bt-1">
+            {{ projectUnit?.description }}
+          </div>
+
         </div>
       </div>
     </mat-tab>
@@ -118,23 +138,34 @@
         <div class="project-card-body">
           <div class="d-flex">
             <div class="d-col-2">
-              <div class="title">Amount:</div>
-              <div class="value">{{projectUnit?.unitValue | currency:'AED'}}</div>
+              <div class="title">Unit Value:</div>
+              <div class="value">{{projectUnit?.unitValue | currency:'AED '}}</div>
             </div>
             <div class="d-col-2">
               <div class="title">Balance:</div>
-              <div class="value">{{ balance | currency:'AED'}}</div>
+              <div class="value">{{ balance | currency:'AED '}}</div>
             </div>
           </div>
 
           <div class="d-flex">
             <div class="d-col-2">
-              <div class="title">Cost:</div>
-              <div class="value"> {{projectUnit?.estimatedCost | currency:'AED'}}</div>
+              <div class="title">Estimated Cost:</div>
+              <div class="value"> {{projectUnit?.estimatedCost | currency:'AED '}}</div>
             </div>
             <div class="d-col-2">
-              <div class="title">Profit:</div>
-              <div class="value">{{projectUnit?.estimatedProfit | currency:'AED'}}</div>
+              <div class="title">Estimated Profit:</div>
+              <div class="value">{{projectUnit?.estimatedProfit | currency:'AED '}}</div>
+            </div>
+          </div>
+
+          <div class="d-flex">
+            <div class="d-col-2">
+              <div class="title">Actual Cost:</div>
+              <div class="value"> {{projectUnit?.actualCost | currency:'AED '}}</div>
+            </div>
+            <div class="d-col-2">
+              <div class="title">Actual Profit:</div>
+              <div class="value">{{projectUnit?.actualProfit | currency:'AED '}}</div>
             </div>
           </div>
 
@@ -154,8 +185,8 @@
                   </mat-form-field>
                   <mat-form-field appearance="outline" class="col-3">
                     <mat-label>Comments</mat-label>
-                    <input type="text" matInput formControlName="comments" placeholder="Enter Comments"
-                      autocomplete="off">
+                    <textarea type="text" matInput formControlName="comments" placeholder="Enter Comments"
+                      autocomplete="off" rows="1"></textarea>
                   </mat-form-field>
                   <mat-form-field appearance="outline" class="col-3">
                     <mat-label>invoice Number</mat-label>
@@ -205,8 +236,8 @@
                 </ng-container>
 
                 <ng-container matColumnDef="comments">
-                  <th mat-header-cell *matHeaderCellDef> Comments </th>
-                  <td mat-cell *matCellDef="let element"> {{element?.comments}} </td>
+                  <th mat-header-cell *matHeaderCellDef width="200px"> Comments </th>
+                  <td mat-cell *matCellDef="let element" class="ws" width="200px"> {{element?.comments}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="updatedBy">
@@ -219,14 +250,15 @@
                   <td mat-cell *matCellDef="let element"> {{getStatus(element.status)}} </td>
                 </ng-container>
 
-                <ng-container matColumnDef="approval">
+                <ng-container matColumnDef="approval" [stickyEnd]="'true'">
                   <th mat-header-cell *matHeaderCellDef> Approval </th>
                   <td mat-cell *matCellDef="let element">
-                    <button class="mr-1" mat-raised-button color="primary" (click)="onStatusChange(element, 1)"
-                      [disabled]="!isVisibleWipControls">
+                    <button class="btn-green mr-1" mat-raised-button color="primary"
+                      (click)="onStatusChange(element, 1)" [disabled]="!isVisibleWipControls || element.status === 1">
                       Approve
                     </button>
-                    <button mat-raised-button color="warn" (click)="onStatusChange(element, 2)">
+                    <button mat-raised-button color="warn" (click)="onStatusChange(element, 2)"
+                      [disabled]="element.status === 2">
                       Reject
                     </button>
                   </td>
@@ -235,10 +267,12 @@
                 <ng-container matColumnDef="actions">
                   <th mat-header-cell *matHeaderCellDef> Actions </th>
                   <td mat-cell *matCellDef="let element">
-                    <button mat-icon-button color="primary" (click)="onEdit(element)">
+                    <button mat-icon-button color="primary" (click)="onEdit(element)"
+                      *ngIf="!(!isAdminAccess && element.status === 1)">
                       <mat-icon>edit</mat-icon>
                     </button>
-                    <button mat-icon-button color="warn" (click)="onDelete(element)">
+                    <button mat-icon-button color="warn" (click)="onDelete(element)"
+                      *ngIf="!(!isAdminAccess && element.status === 1)">
                       <mat-icon>delete</mat-icon>
                     </button>
                   </td>

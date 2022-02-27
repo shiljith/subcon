@@ -146,6 +146,7 @@
               <div class="man-hour-body">
                 <div class="man-hour-header">Technical</div>
                 <div class="man-hour-count">{{manHour?.estimated?.technician}}</div>
+                <div class="man-hour-salary">{{technicianSalary}} / hour</div>
               </div>
             </div>
             <div class="man-hour btmh">
@@ -155,6 +156,7 @@
               <div class="man-hour-body">
                 <div class="man-hour-header">Helper</div>
                 <div class="man-hour-count">{{manHour?.estimated?.helper}}</div>
+                <div class="man-hour-salary">{{helperSalary}} / hour</div>
               </div>
             </div>
             <div class="man-hour btmh">
@@ -164,6 +166,9 @@
               <div class="man-hour-body">
                 <div class="man-hour-header">Total</div>
                 <div class="man-hour-count">{{manHour?.estimated?.technician + manHour?.estimated?.helper}}</div>
+                <div class="man-hour-salary">
+                  {{ (manHour?.estimated?.technician * technicianSalary) + (manHour?.estimated?.helper * helperSalary) }}
+                </div>
               </div>
             </div>
           </div>
@@ -176,6 +181,7 @@
               <div class="man-hour-body">
                 <div class="man-hour-header">Technical</div>
                 <div class="man-hour-count">{{manHour?.actual?.technician}}</div>
+                <div class="man-hour-salary">{{technicianSalary}} / hour</div>
               </div>
             </div>
             <div class="man-hour atmh">
@@ -185,6 +191,7 @@
               <div class="man-hour-body">
                 <div class="man-hour-header">Helper</div>
                 <div class="man-hour-count">{{manHour?.actual?.helper}}</div>
+                <div class="man-hour-salary">{{helperSalary}} / hour</div>
               </div>
             </div>
             <div class="man-hour atmh">
@@ -194,6 +201,9 @@
               <div class="man-hour-body">
                 <div class="man-hour-header">Total</div>
                 <div class="man-hour-count">{{manHour?.actual?.technician + manHour?.actual?.helper}}</div>
+                <div class="man-hour-salary">
+                  {{(manHour?.actual?.technician * manHour?.actual?.technician) + (manHour?.actual?.helper * helperSalary)}}
+                </div>
               </div>
             </div>
           </div>

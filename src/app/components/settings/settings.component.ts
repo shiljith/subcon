@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AccountService } from 'src/app/services/account.service';
 
 @Component({
@@ -11,21 +12,40 @@ export class SettingsComponent implements OnInit {
   settingsForm!: FormGroup;
   constructor(
     private fb: FormBuilder,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
     this.settingsForm = this.fb.group({
       name: ['', Validators.required],
-      description: ['', Validators.required],
+      address: ['', Validators.required],
+      technicianSalary: ['0.00', Validators.required],
+      helperSalary: ['0.00', Validators.required],
     });
+    this.getAccountDetails();
   }
 
   getAccountDetails() {
-    this.accountService.get().subscribe((res) => {
-      this.settingsForm.patchValue(res);
+    this.accountService.get().subscribe((account) => {
+      console.log(account);
+
+      this.settingsForm.patchValue({
+        name: account.name,
+        address: account.address,
+        technicianSalary: account.technicianSalary.toFixed(2),
+        helperSalary: account.helperSalary.toFixed(2),
+      });
     });
   }
 
-  onSubmit() {}
+  onSubmit() {
+    this.accountService.update(this.settingsForm.value).subscribe((res) => {
+      if (res) {
+        this.snackBar.open('Account details updated successfully.', 'Close', {
+          duration: 3000,
+        });
+      }
+    });
+  }
 }

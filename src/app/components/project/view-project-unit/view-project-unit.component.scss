@@ -1,7 +1,14 @@
 .project-unit-view {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(1, 1fr);
 
+  .close-btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 99;
+  }
   .project-card {
     padding-top: 1rem;
     &-header {
@@ -9,6 +16,8 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid #dfdfdf;
+      padding-bottom: 0.5rem;
+      padding-right: 0.5rem;
 
       .project-name {
         &.mb-1 {
@@ -56,12 +65,21 @@
   margin-left: 0.5rem;
 }
 .wip-table {
-  height: calc(100vh - 380px);
-  overflow-y: scroll;
+  height: calc(100vh - 335px);
+  overflow-y: auto;
 }
 
 :host ::ng-deep {
   .mat-form-field-wrapper {
     padding-bottom: 0;
   }
+}
+.ws {
+  white-space: pre-line;
+  word-break: break-all;
+}
+
+.btn-green {
+  background-color: green;
+  color: #fff;
 }

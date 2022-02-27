@@ -12,6 +12,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ProjectUnitService } from 'src/app/services/project-unit.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { ActivatedRoute } from '@angular/router';
+import { AccountService } from 'src/app/services/account.service';
+import { Account } from 'src/app/models/account';
 
 @Component({
   selector: 'app-add-project-unit',
@@ -32,14 +34,13 @@ export class AddProjectUnitComponent implements OnInit {
     private dialogRef: MatDialogRef<AddProjectUnitComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private authService: AuthService,
-    private route: ActivatedRoute
+    private accountService: AccountService
   ) {}
 
   ngOnInit(): void {
     console.log('DATA', this.data);
     this.projectId = this.data.project.projectId;
-    this.technicianSalary = 15.45;
-    this.helperSalary = 13.19;
+    this.getAccountDetails();
     this.projectForm = this.formBuilder.group({
       unitId: ['', Validators.required],
       unitNumber: ['', Validators.required],
@@ -85,6 +86,13 @@ export class AddProjectUnitComponent implements OnInit {
       };
       this.projectForm.patchValue(data);
     }
+  }
+
+  getAccountDetails() {
+    this.accountService.get().subscribe((account: Account) => {
+      this.technicianSalary = account.technicianSalary;
+      this.helperSalary = account.helperSalary;
+    });
   }
 
   getProjectUnits() {
@@ -133,17 +141,26 @@ export class AddProjectUnitComponent implements OnInit {
     return date.toISOString().slice(0, 19).replace('T', ' ');
   }
 
-  calculate(tmh: number, hmr: number) {
+  calculate(tmh: number, hmh: number) {
     const unitValue: number = Number(
       this.projectForm.controls['unitValue'].value
     );
     const adminCost: number = Number(
       this.projectForm.controls['adminCost'].value
     );
-    const totalSalary = this.technicianSalary * tmh + this.helperSalary * tmh;
+
+    const totalSalary = this.technicianSalary * tmh + this.helperSalary * hmh;
     const adminTotalCost = (totalSalary * adminCost) / 100;
     const cost = totalSalary + adminTotalCost;
     const profit = unitValue - cost;
+    console.log(
+      unitValue,
+      adminCost,
+      totalSalary,
+      adminTotalCost,
+      cost,
+      profit
+    );
     return { cost, profit };
   }
 
@@ -177,6 +194,7 @@ export class AddProjectUnitComponent implements OnInit {
       this.projectForm.controls['actualHMH'].value
     );
     const actual = this.calculate(actualTMH, actualHMH);
+    console.log(actual);
 
     this.projectForm.controls['actualCost'].setValue(actual.cost.toFixed(2));
     this.projectForm.controls['actualProfit'].setValue(
