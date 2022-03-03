@@ -1,2 +1,29 @@
 .report-container {
+  padding: 1rem 2rem;
+
+  .report-header-name {
+    font-size: 28px;
+    font-weight: 500;
+    color: #949299;
+    margin-bottom: 0.5rem;
+  }
+
+  .wip-report {
+    padding: 1rem 0;
+
+    &-header {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+  }
+
+  .report-header {
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      align-items: center;
+    }
+  }
 }

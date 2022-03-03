@@ -15,6 +15,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ProjectUnitService } from 'src/app/services/project-unit.service';
 import { AddProjectUnitComponent } from '../add-project-unit/add-project-unit.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { WipTimelineComponent } from './wip-timeline/wip-timeline.component';
 
 @Component({
   selector: 'app-view-project-unit',
@@ -92,7 +93,12 @@ export class ViewProjectUnitComponent implements OnInit {
       updatedBy: this.authService.getUser()?.id,
     };
     this.wipService.add(data).subscribe((res) => {
-      console.log(res);
+      console.log('ADDED', res);
+      const description = `
+        User has been added ${this.wipForm.value.percentage} % of amount which is 
+        ${this.wipForm.value.amount} AED and reason added is ${this.wipForm.value.comments} with invoice number ${this.wipForm.value.invoiceNumber}
+      `;
+      this.addTimeline(res.wipId, 'Added', description, 'add');
       this.getWip();
       this.wipForm.reset();
       this.wipForm.markAsPristine();
@@ -132,14 +138,18 @@ export class ViewProjectUnitComponent implements OnInit {
       ...this.wipForm.value,
       updatedBy: this.authService.getUser()?.id,
     };
-    this.wipService
-      .update(data, Number(this.selectedWipId))
-      .subscribe((res) => {
-        if (res) {
-          this.getWip();
-          this.onClearEdit();
-        }
-      });
+    const wipId = Number(this.selectedWipId);
+    this.wipService.update(data, wipId).subscribe((res) => {
+      if (res) {
+        const description = `
+          User has been updated ${this.wipForm.value.percentage} % of amount which is 
+          ${this.wipForm.value.amount} AED and reason added is ${this.wipForm.value.comments} with invoice number ${this.wipForm.value.invoiceNumber}
+        `;
+        this.addTimeline(wipId, 'edit', description, 'edit');
+        this.getWip();
+        this.onClearEdit();
+      }
+    });
   }
 
   onClearEdit() {
@@ -231,6 +241,11 @@ export class ViewProjectUnitComponent implements OnInit {
         console.log(res);
 
         if (res) {
+          const statusText = status === 1 ? 'approved' : 'rejected';
+          const description = `
+            Work in progress has been ${statusText}
+          `;
+          this.addTimeline(wip.id, statusText, description, 'check');
           this.getProjectUnit();
           this._snackBar.open(
             `The wip status has been ${this.getStatus(status)}`,
@@ -260,5 +275,34 @@ export class ViewProjectUnitComponent implements OnInit {
         break;
     }
     return statusText;
+  }
+
+  openTimeLine(wip: WIP) {
+    const dialogRef = this.dialog.open(WipTimelineComponent, {
+      width: '800px',
+      height: '500px',
+      data: wip.id,
+      autoFocus: false,
+    });
+  }
+
+  addTimeline(
+    wipId: number,
+    action: string,
+    description: string,
+    icon: string
+  ) {
+    const data = {
+      wipId,
+      action,
+      description,
+      icon,
+      createdBy: this.authService.getUser().id,
+    };
+    this.wipService.addTimeline(data).subscribe((res) => {
+      if (res) {
+        console.log(res);
+      }
+    });
   }
 }

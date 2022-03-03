@@ -150,7 +150,7 @@ export class AddProjectUnitComponent implements OnInit {
     );
 
     const totalSalary = this.technicianSalary * tmh + this.helperSalary * hmh;
-    const adminTotalCost = (totalSalary * adminCost) / 100;
+    const adminTotalCost = (unitValue * adminCost) / 100;
     const cost = totalSalary + adminTotalCost;
     const profit = unitValue - cost;
     console.log(

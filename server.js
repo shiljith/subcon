@@ -8,6 +8,8 @@ const userRouter = require("./server/routes/users");
 const wipRouter = require("./server/routes/wips");
 const projectUnitRouter = require("./server/routes/project_units");
 const accountRouter = require("./server/routes/accounts");
+const reportRouter = require("./server/routes/reports");
+const wipTimelineRouter = require("./server/routes/wip_timeline");
 const dbRoute = require("./server/routes/database");
 const { requestLogger, responseLogger } = require("./server/middleware/logger");
 const app = express();
@@ -33,6 +35,8 @@ app.use("/api/project-unit", projectUnitRouter);
 app.use("/api/database", dbRoute);
 app.use("/api/dashboard", dashboardRouter);
 app.use("/api/account", accountRouter);
+app.use("/api/report", reportRouter);
+app.use("/api/wip-timeline", wipTimelineRouter);
 
 // PORT
 const port = process.env.PORT || 8080;

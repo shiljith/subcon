@@ -1,0 +1,19 @@
+<div class="timeline">
+  <div class="timeline-header">
+    <div class="name">Timeline</div>
+    <button class="close-btn" mat-icon-button mat-dialog-close>
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div class="timeline-body">
+    <div class="timeline">
+      <div class="container" [class.left]="i%2 === 0" [class.right]="i%2 !== 0"
+        *ngFor="let timeline of wipTimelines; let i = index">
+        <div class="content">
+          <p>{{timeline?.description}} by {{timeline?.createdBy}} on
+            {{timeline?.createdAt | date:'medium'}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -41,6 +41,11 @@ export class DashboardComponent implements OnInit {
           display: true,
           text: 'Amount',
         },
+        ticks: {
+          callback: function (value, index, values) {
+            return +Number(value) / 1000 + 'k';
+          },
+        },
       },
     },
   };
@@ -84,6 +89,8 @@ export class DashboardComponent implements OnInit {
 
   getAccountDetails() {
     this.accountService.get().subscribe((account: Account) => {
+      console.log('ACCOUNT', account);
+
       this.technicianSalary = account.technicianSalary;
       this.helperSalary = account.helperSalary;
     });

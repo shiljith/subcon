@@ -4,7 +4,6 @@
   </div>
   <div class="app-body">
     <div class="dashboard">
-      <div class="dashboard-head">Dashboard</div>
       <div class="row">
         <div class="col">
           <div class="tile twv tile-blue">
@@ -86,13 +85,13 @@
           </div>
         </div>
         <div class="line-graph">
-          <div class="title">Project Value</div>
+          <div class="title">Installation Progress</div>
           <div class="" *ngIf="lineChartData">
             <canvas baseChart type="line" [data]="lineChartData" [options]="lineChartOptions">
             </canvas>
           </div>
         </div>
-        <div class="">
+        <div class="pie-graph">
           <div class="title">Project Status</div>
           <div class="graph">
             <canvas baseChart type="pie" [data]="pieChartData">
@@ -136,79 +135,90 @@
           </div>
         </div>
 
-        <div>
-          <div class="title">Budget Man Hour</div>
-          <div class="man-hour-container">
-            <div class="man-hour btmh">
-              <div class="man-hour-icon">
-                <mat-icon>settings_accessibility</mat-icon>
+        <div class="man-hour-wrapper">
+          <div class="budget-mh">
+            <div class="title">Budgeted Man-Hours</div>
+            <div class="man-hour-container">
+              <div class="man-hour btmh">
+                <div class="man-hour-icon">
+                  <mat-icon>settings_accessibility</mat-icon>
+                </div>
+                <div class="man-hour-body">
+                  <div class="man-hour-header">Technician</div>
+                  <div class="man-hour-count">{{(manHour?.estimatedTechnician * technicianSalary) | currency:'AED '}}
+                  </div>
+                  <div class="man-hour-salary">{{manHour?.estimatedTechnician}}</div>
+                </div>
               </div>
-              <div class="man-hour-body">
-                <div class="man-hour-header">Technical</div>
-                <div class="man-hour-count">{{manHour?.estimated?.technician}}</div>
-                <div class="man-hour-salary">{{technicianSalary}} / hour</div>
+              <div class="man-hour btmh">
+                <div class="man-hour-icon">
+                  <mat-icon>wheelchair_pickup</mat-icon>
+                </div>
+                <div class="man-hour-body">
+                  <div class="man-hour-header">Helper</div>
+                  <div class="man-hour-count">{{(manHour?.estimatedHelper * helperSalary) | currency:'AED '}}</div>
+                  <div class="man-hour-salary">{{manHour?.estimatedHelper}}</div>
+                </div>
               </div>
-            </div>
-            <div class="man-hour btmh">
-              <div class="man-hour-icon">
-                <mat-icon>wheelchair_pickup</mat-icon>
-              </div>
-              <div class="man-hour-body">
-                <div class="man-hour-header">Helper</div>
-                <div class="man-hour-count">{{manHour?.estimated?.helper}}</div>
-                <div class="man-hour-salary">{{helperSalary}} / hour</div>
-              </div>
-            </div>
-            <div class="man-hour btmh">
-              <div class="man-hour-icon">
-                <mat-icon>functions</mat-icon>
-              </div>
-              <div class="man-hour-body">
-                <div class="man-hour-header">Total</div>
-                <div class="man-hour-count">{{manHour?.estimated?.technician + manHour?.estimated?.helper}}</div>
-                <div class="man-hour-salary">
-                  {{ (manHour?.estimated?.technician * technicianSalary) + (manHour?.estimated?.helper * helperSalary) }}
+              <div class="man-hour btmh">
+                <div class="man-hour-icon">
+                  <mat-icon>functions</mat-icon>
+                </div>
+                <div class="man-hour-body">
+                  <div class="man-hour-header">Total</div>
+                  <div class="man-hour-count">
+                    {{ (manHour?.estimatedTechnician * technicianSalary) + (manHour?.estimatedHelper * helperSalary) | currency:'AED '}}
+                  </div>
+                  <div class="man-hour-salary">
+                    {{manHour?.estimatedTechnician + manHour?.estimatedHelper}}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="title">Actual Man Hour</div>
-          <div class="man-hour-container">
-            <div class="man-hour atmh">
-              <div class="man-hour-icon">
-                <mat-icon>settings_accessibility</mat-icon>
+
+          <div class="actual-mh">
+
+            <div class="title">Actual Man-Hours</div>
+            <div class="man-hour-container">
+              <div class="man-hour atmh">
+                <div class="man-hour-icon">
+                  <mat-icon>settings_accessibility</mat-icon>
+                </div>
+                <div class="man-hour-body">
+                  <div class="man-hour-header">Technician</div>
+                  <div class="man-hour-count">{{(manHour?.actualTechnician * technicianSalary) | currency:'AED '}}
+                  </div>
+                  <div class="man-hour-salary">{{manHour?.actualTechnician}}</div>
+                </div>
               </div>
-              <div class="man-hour-body">
-                <div class="man-hour-header">Technical</div>
-                <div class="man-hour-count">{{manHour?.actual?.technician}}</div>
-                <div class="man-hour-salary">{{technicianSalary}} / hour</div>
+              <div class="man-hour atmh">
+                <div class="man-hour-icon">
+                  <mat-icon>wheelchair_pickup</mat-icon>
+                </div>
+                <div class="man-hour-body">
+                  <div class="man-hour-header">Helper</div>
+                  <div class="man-hour-count">{{(manHour?.actualHelper * helperSalary) | currency:'AED '}}</div>
+                  <div class="man-hour-salary">{{manHour?.actualHelper}}</div>
+                </div>
               </div>
-            </div>
-            <div class="man-hour atmh">
-              <div class="man-hour-icon">
-                <mat-icon>wheelchair_pickup</mat-icon>
-              </div>
-              <div class="man-hour-body">
-                <div class="man-hour-header">Helper</div>
-                <div class="man-hour-count">{{manHour?.actual?.helper}}</div>
-                <div class="man-hour-salary">{{helperSalary}} / hour</div>
-              </div>
-            </div>
-            <div class="man-hour atmh">
-              <div class="man-hour-icon">
-                <mat-icon>functions</mat-icon>
-              </div>
-              <div class="man-hour-body">
-                <div class="man-hour-header">Total</div>
-                <div class="man-hour-count">{{manHour?.actual?.technician + manHour?.actual?.helper}}</div>
-                <div class="man-hour-salary">
-                  {{(manHour?.actual?.technician * manHour?.actual?.technician) + (manHour?.actual?.helper * helperSalary)}}
+              <div class="man-hour atmh">
+                <div class="man-hour-icon">
+                  <mat-icon>functions</mat-icon>
+                </div>
+                <div class="man-hour-body">
+                  <div class="man-hour-header">Total</div>
+                  <div class="man-hour-count">
+                    {{(manHour?.actualTechnician * technicianSalary) + (manHour?.actualHelper * helperSalary) | currency:'AED '}}
+                  </div>
+                  <div class="man-hour-salary">
+                    {{manHour?.actualTechnician + manHour?.actualHelper}}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </div>

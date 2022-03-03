@@ -40,6 +40,8 @@ import { NgChartsModule } from 'ng2-charts';
 import { TokenInterceptorService } from './interceptors/token.interceptor';
 import { MatTabsModule } from '@angular/material/tabs';
 import { SettingsComponent } from './components/settings/settings.component';
+import { ReportPreviewComponent } from './components/reports/report-preview/report-preview.component';
+import { WipTimelineComponent } from './components/project/view-project-unit/wip-timeline/wip-timeline.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +59,8 @@ import { SettingsComponent } from './components/settings/settings.component';
     ViewProjectUnitComponent,
     ReportsComponent,
     SettingsComponent,
+    ReportPreviewComponent,
+    WipTimelineComponent,
   ],
   imports: [
     BrowserModule,

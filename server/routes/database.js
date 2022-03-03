@@ -11,6 +11,7 @@ const tables = [
   "projects",
   "project_units",
   "project_unit_wip",
+  "project_unit_wip_timeline",
 ];
 
 router.delete("/drop", (req, res, next) => {
@@ -45,6 +46,7 @@ router.post("/create", (req, res) => {
     createProjectsTable();
     createProjectUnitsTable();
     createProjectUnitWorkInProgressTable();
+    createProjectUnitWorkInProgressTimelineTable();
   });
 });
 
@@ -166,6 +168,20 @@ function createProjectUnitWorkInProgressTable() {
     updatedBy INTEGER,
     createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
     updatedAt TEXT DEFAULT CURRENT_TIMESTAMP
+    )`;
+  createTable(tableName, sql);
+}
+
+function createProjectUnitWorkInProgressTimelineTable() {
+  const tableName = "project_unit_wip_timeline";
+  const sql = `CREATE TABLE IF NOT EXISTS ${tableName} (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    wipId INTEGER,
+    action TEXT,
+    description TEXT,
+    icon TEXT,
+    createdBy INTEGER,
+    createdAt TEXT DEFAULT CURRENT_TIMESTAMP
     )`;
   createTable(tableName, sql);
 }

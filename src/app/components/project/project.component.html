@@ -73,7 +73,7 @@
           <div class="description">
             {{ (project.description.length > 80)? (project.description | slice: 0:80)+'..' : (project.description) }}
           </div>
-          <div class="contractor">Contractor: <strong>{{project.contractor | titlecase}}</strong></div>
+          <div class="contractor">Main Contractor: <strong>{{project.contractor | titlecase}}</strong></div>
           <div class="status" [ngSwitch]="project.status">
             <div class="status-item in-progress" *ngSwitchCase="1">
               <mat-icon>pending</mat-icon>

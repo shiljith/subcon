@@ -267,6 +267,9 @@
                 <ng-container matColumnDef="actions">
                   <th mat-header-cell *matHeaderCellDef> Actions </th>
                   <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button color="secondary" (click)="openTimeLine(element)">
+                      <mat-icon>calendar_month</mat-icon>
+                    </button>
                     <button mat-icon-button color="primary" (click)="onEdit(element)"
                       *ngIf="!(!isAdminAccess && element.status === 1)">
                       <mat-icon>edit</mat-icon>

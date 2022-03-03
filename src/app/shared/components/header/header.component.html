@@ -1,4 +1,4 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" class="no-print">
   <span>{{accountName | uppercase}}</span>
   <span class="header-spacer"></span>
   <button mat-button routerLink="/dashboard">
@@ -7,7 +7,7 @@
   <button mat-button routerLink="/project">
     <mat-icon>real_estate_agent</mat-icon> Projects
   </button>
-  <button mat-button routerLink="/reports">
+  <button mat-button routerLink="/report">
     <mat-icon>assessment</mat-icon> Reports
   </button>
   <button mat-button routerLink="/user-management" *ngIf="isAdminAccess">

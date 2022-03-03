@@ -24,15 +24,41 @@ export class WipService {
     );
   }
 
+  getTimeline(wipId: number): Observable<any> {
+    return this.httpClient
+      .get(`${environment.baseUrl}/wip-timeline/${wipId}`)
+      .pipe(
+        map((res: any) => {
+          if (res && res.success) {
+            return res.data;
+          }
+        }),
+        catchError(this.handleError)
+      );
+  }
+
   add(data: WIP): Observable<any> {
     return this.httpClient.post(this.apiEndPoint, data).pipe(
       map((res: any) => {
         if (res && res.success) {
-          return res.success;
+          return res.data;
         }
       }),
       catchError(this.handleError)
     );
+  }
+
+  addTimeline(data: any): Observable<any> {
+    return this.httpClient
+      .post(`${environment.baseUrl}/wip-timeline`, data)
+      .pipe(
+        map((res: any) => {
+          if (res && res.success) {
+            return res.success;
+          }
+        }),
+        catchError(this.handleError)
+      );
   }
 
   update(data: WIP, id: number): Observable<any> {

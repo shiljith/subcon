@@ -77,59 +77,61 @@ router.get("/balance-work-value", auth, (req, res) => {
   });
 });
 
-router.get("/month-wise-work-value", (req, res) => {
+router.get("/month-wise-work-value", auth, (req, res) => {
   const monthWiseWorkValue = {
     labels: [
-      "January",
-      "February",
-      "March",
-      "April",
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
       "May",
-      "June",
-      "July",
-      "Augest",
-      "September",
-      "October",
-      "November",
-      "December",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
     ],
     datasets: [
       {
         data: [],
-        label: "Work Value",
+        label: "Billing",
         pointRadius: 5,
         pointHoverRadius: 10,
       },
     ],
   };
   const query = `
-    select coalesce(sum(jan_est),0) as jan_est, coalesce(sum(feb_est),0) as feb_est, coalesce(sum(mar_est),0) as mar_est, coalesce(sum(apr_est),0) as apr_est, coalesce(sum(may_est),0) as may_est,
-    coalesce(sum(jun_est),0) as jun_est,coalesce(sum(jul_est),0) as jul_est,coalesce(sum(aug_est),0) as aug_est,coalesce(sum(sep_est),0) as sep_est,coalesce(sum(oct_est),0) as oct_est,
-    coalesce(sum(nov_est),0) as nov_est,coalesce(sum(dec_est),0) as dec_est from(
-    select 
-    case when month='01' then total_est else 0 end as jan_est,
-    case when month='02' then total_est else 0 end as feb_est,
-    case when month='03' then total_est else 0 end as mar_est,
-    case when month='04' then total_est else 0 end as apr_est,
-    case when month='05' then total_est else 0 end as may_est,
-    case when month='06' then total_est else 0 end as jun_est,
-    case when month='07' then total_est else 0 end as jul_est,
-    case when month='08' then total_est else 0 end as aug_est,
-    case when month='09' then total_est else 0 end as sep_est,
-    case when month='10' then total_est else 0 end as oct_est,
-    case when month='11' then total_est else 0 end as nov_est,
-    case when month='12' then total_est else 0 end as dec_est
-    from
-    (
-    select 
-    strftime('%m',startDate) as month,
-    sum(unitValue) as total_est
-    from project_units
-    where strftime('%Y',startDate) = '2022'
-    group by strftime('%m',startDate)
-    )A
-    )B 
+  select coalesce(sum(jan_est),0) as jan_est, coalesce(sum(feb_est),0) as feb_est, coalesce(sum(mar_est),0) as mar_est, coalesce(sum(apr_est),0) as apr_est, coalesce(sum(may_est),0) as may_est,
+  coalesce(sum(jun_est),0) as jun_est,coalesce(sum(jul_est),0) as jul_est,coalesce(sum(aug_est),0) as aug_est,coalesce(sum(sep_est),0) as sep_est,coalesce(sum(oct_est),0) as oct_est,
+  coalesce(sum(nov_est),0) as nov_est,coalesce(sum(dec_est),0) as dec_est from(
+  select 
+  case when month='01' then total_est else 0 end as jan_est,
+  case when month='02' then total_est else 0 end as feb_est,
+  case when month='03' then total_est else 0 end as mar_est,
+  case when month='04' then total_est else 0 end as apr_est,
+  case when month='05' then total_est else 0 end as may_est,
+  case when month='06' then total_est else 0 end as jun_est,
+  case when month='07' then total_est else 0 end as jul_est,
+  case when month='08' then total_est else 0 end as aug_est,
+  case when month='09' then total_est else 0 end as sep_est,
+  case when month='10' then total_est else 0 end as oct_est,
+  case when month='11' then total_est else 0 end as nov_est,
+  case when month='12' then total_est else 0 end as dec_est
+  from
+  (
+  select 
+  strftime('%m',startDate) as month,
+  sum(unitValue) as total_est
+  from project_units a
+inner join projects b on a.projectId=b.id and b.accountId=${req.payload.accountId}
+  where strftime('%Y',startDate) = '2022'
+  group by strftime('%m',startDate)
+  )A
+  )B
   `;
+  console.log("QUERY", query);
   db.get(query, (error, result, fields) => {
     if (error) {
       return res.status(404).json({ success: false, data: null, error: error });
@@ -146,9 +148,18 @@ router.get("/month-wise-work-value", (req, res) => {
 
 router.get("/get-project-unit-count", auth, (req, res) => {
   const query = `
-    SELECT COUNT(*) as escalator, COUNT(*) as elevator, COUNT(*) as travelator FROM project_units as pu
-    JOIN projects as p ON p.id = pu.projectId 
-    WHERE p.accountId = ${req.payload.accountId}  
+    select coalesce(sum(escalator),0) as escalator,coalesce(sum(elevator),0) as elevator,coalesce(sum(travelator),0) as travelator from(
+    select 
+    coalesce(case when upper(name)='ESCALATOR' then cnt end,0) as escalator,
+    coalesce(case when upper(name)='ELEVATOR' then cnt end,0) as elevator,
+    coalesce(case when upper(name)='TRAVELATOR' then cnt end,0) as travelator
+    from(
+    SELECT b.name,count(*) as cnt
+    from project_units a
+    join units b on a.unitId=b.id and b.accountId = ${req.payload.accountId}
+    group by b.name
+    )A
+    )B
   `;
   db.get(query, (error, result) => {
     if (error) {
@@ -199,23 +210,13 @@ router.get("/project-status", auth, (req, res) => {
   });
 });
 
-router.get("/man-hour", (req, res) => {
-  return res.json({
-    success: true,
-    data: {
-      estimated: {
-        technician: 8,
-        helper: 22,
-      },
-      actual: {
-        technician: 13,
-        helper: 32,
-      },
-    },
-  });
-  db.all(
+router.get("/man-hour", auth, (req, res) => {
+  db.get(
     `
-      SELECT COUNT(unitId) as totalWorkValue FROM project_units as pu 
+      SELECT coalesce(sum(budgetTMH),0) as estimatedTechnician, coalesce(sum(budgetHMH),0) as estimatedHelper,
+      coalesce(sum(actualTMH),0) as actualTechnician, coalesce(sum(actualHMH),0) as actualHelper
+      from project_units a
+      join projects b on a.projectId=b.id and accountId=${req.payload.accountId}
     `,
     (error, result, fields) => {
       if (error) {
@@ -223,7 +224,12 @@ router.get("/man-hour", (req, res) => {
           .status(404)
           .json({ success: false, data: null, error: error });
       }
-      return res.json({ success: true, data: result });
+      if (result) {
+        console.log("PSTATUS", result);
+        return res.json({ success: true, data: result });
+      } else {
+        return res.status(404).send({ message: "Not found" });
+      }
     }
   );
 });

@@ -12,8 +12,8 @@ Content-Type: application/json
 
 {
   "tableName": "accounts",
-  "columns": "(name, logo, description, paymentStatus, paymentDate, paymentValidDate)",
-  "values": "('Cognizant', 'assets/images/accounts/cognizant.jpg', 'Cognizant is a multi national company', 1, '12-02-2022', '12-03-2022')"
+  "columns": "(name, logo, address, technicianSalary, helperSalary, paymentStatus, paymentDate, paymentValidDate)",
+  "values": "('Cognizant', 'assets/images/accounts/cognizant.jpg', 'Cognizant is a multi national company', '10', '15', 1, '12-02-2022', '12-03-2022')"
 }
 
 ### insert Role
@@ -33,7 +33,7 @@ Content-Type: application/json
 {
   "tableName": "users",
   "columns": "(accountId, firstName, lastName, username, password, role)",
-  "values": "(1, 'Shiljith', 'Mp', 'shiljith07@gmail.com', '123', 1)"
+  "values": "(1, 'Aswin', 'Mp', 'ashwin@gmail.com', '123', 1)"
 }
 
 ### insert Unit

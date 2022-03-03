@@ -115,3 +115,9 @@ table {
     margin-bottom: 0;
   }
 }
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}

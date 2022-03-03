@@ -5,6 +5,7 @@ import { LoginComponent } from './components/login/login.component';
 import { ProjectComponent } from './components/project/project.component';
 import { ViewProjectUnitComponent } from './components/project/view-project-unit/view-project-unit.component';
 import { ViewProjectComponent } from './components/project/view-project/view-project.component';
+import { ReportPreviewComponent } from './components/reports/report-preview/report-preview.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { UserManagementComponent } from './components/user-management/user-management.component';
@@ -42,8 +43,13 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'reports',
+    path: 'report',
     component: ReportsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'report/preview',
+    component: ReportPreviewComponent,
     canActivate: [AuthGuard],
   },
   {

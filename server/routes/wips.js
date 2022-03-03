@@ -17,7 +17,17 @@ router.post("/", (req, res, next) => {
           .status(404)
           .json({ success: false, data: null, error: error });
       }
-      return res.send({ success: true });
+      db.get("SELECT last_insert_rowid() as wipId", {}, (error, result) => {
+        console.log("LAST ID", error, result);
+        if (error) {
+          return res
+            .status(404)
+            .json({ success: false, data: null, error: error });
+        }
+        if (result) {
+          return res.send({ success: true, data: result });
+        }
+      });
     }
   );
 });
