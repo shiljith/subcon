@@ -12,9 +12,12 @@
     padding: 1rem 0;
 
     &-header {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
+      .form-fields {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 0.5rem;
+      }
     }
   }
 
@@ -25,5 +28,11 @@
       gap: 1rem;
       align-items: center;
     }
+  }
+}
+
+:host ::ng-deep {
+  .mat-form-field-wrapper {
+    padding-bottom: 0;
   }
 }

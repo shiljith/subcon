@@ -37,8 +37,9 @@ router.get("/wip-report", auth, (req, res) => {
   });
 });
 
-router.get("/ipo-report/:unit/:contractor/:name", auth, (req, res) => {
-  console.log("PARAM", req.params);
+router.get("/ipo-report", auth, (req, res) => {
+  const params = req.query;
+  console.log("PARAM", params);
   let query = `
     SELECT 
       p.contractor, p.name, u.name as projectUnit, unitNumber, modelName, unitValue,
@@ -47,15 +48,23 @@ router.get("/ipo-report/:unit/:contractor/:name", auth, (req, res) => {
     FROM projects p
     INNER JOIN project_units pu ON p.id = pu.projectId
     INNER JOIN units u ON pu.unitId = u.id WHERE`;
-  if (req.params.unit && req.params.unit !== "null") {
-    query += ` upper(u.name) = upper('${req.params.unit}') AND`;
+
+  if (params.contractor && params.contractor !== "") {
+    query += ` upper(p.contractor) = upper('${params.contractor}') AND`;
   }
-  if (req.params.contractor && req.params.contractor !== "null") {
-    query += ` upper(p.contractor) = upper('${req.params.contractor}') AND`;
+
+  if (params.name && params.name !== "") {
+    query += ` upper(p.name) = upper('${params.name}') AND`;
   }
-  if (req.params.name && req.params.name !== "null") {
-    query += ` upper(p.name) = upper('${req.params.name}') AND`;
+
+  if (params.unit && params.unit !== "") {
+    query += ` upper(u.id) = upper('${params.unit}') AND`;
   }
+
+  // if (params.unitId && params.unitId !== "") {
+  //   query += ` upper(pu.unitId) = upper('${params.unitId}') AND`;
+  // }
+
   query += ` p.accountId = ${req.payload.accountId}`;
   console.log("QERY", query);
   db.all(query, (error, result) => {

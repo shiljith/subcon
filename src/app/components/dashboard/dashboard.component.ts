@@ -43,7 +43,10 @@ export class DashboardComponent implements OnInit {
         },
         ticks: {
           callback: function (value, index, values) {
-            return +Number(value) / 1000 + 'k';
+            if (value >= 1000) {
+              return Number(value) / 1000 + 'k';
+            }
+            return value;
           },
         },
       },

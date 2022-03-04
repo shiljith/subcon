@@ -41,6 +41,11 @@ export class UserManagementComponent implements OnInit {
   getUsers() {
     this.userService.getAll().subscribe((users: User[]) => {
       this.dataSource = users;
+      if (this.dataSource.length >= 3) {
+        this.userForm.disable();
+      } else {
+        this.userForm.enable();
+      }
     });
   }
 

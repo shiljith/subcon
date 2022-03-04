@@ -13,25 +13,22 @@ export class ReportService {
 
   constructor(private httpClient: HttpClient) {}
 
-  getWorkInProgressReport(): Observable<any> {
-    return this.httpClient.get(`${this.apiEndPoint}/wip-report`).pipe(
-      map((res: any) => {
-        if (res && res.success) {
-          return res.data;
-        }
-      })
-    );
-  }
-  getInstallationProgressOverviewReport(): Observable<any> {
-    const data = {
-      unit: 'Escalator',
-      contractor: 'Aswin',
-      name: 'javascript',
-    };
+  getWorkInProgressReport(data: any): Observable<any> {
+    const queryParam = `contractor=${data.mainContractor}&name=${data.projectName}&unit=${data.projectUnit}&unitId=${data.unitId}`;
     return this.httpClient
-      .get(
-        `${this.apiEndPoint}/ipo-report/${data.unit}/${data.contractor}/${data.name}`
-      )
+      .get(`${this.apiEndPoint}/wip-report?${queryParam}`)
+      .pipe(
+        map((res: any) => {
+          if (res && res.success) {
+            return res.data;
+          }
+        })
+      );
+  }
+  getInstallationProgressOverviewReport(data: any): Observable<any> {
+    const queryParam = `contractor=${data.mainContractor}&name=${data.projectName}&unit=${data.projectUnit}&unitId=${data.unitId}`;
+    return this.httpClient
+      .get(`${this.apiEndPoint}/ipo-report?${queryParam}`)
       .pipe(
         map((res: any) => {
           if (res && res.success) {

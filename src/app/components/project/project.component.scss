@@ -160,4 +160,13 @@ $completed: #238823;
   .mat-form-field-wrapper {
     padding-bottom: 0;
   }
+  .pin-active {
+    color: #ff5d2d !important;
+  }
+  .pin-deactive {
+    color: #818181 !important;
+  }
+  .pin-icon {
+    transform: rotate(45deg);
+  }
 }

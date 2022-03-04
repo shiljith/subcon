@@ -60,8 +60,8 @@
 
       <mat-form-field appearance="outline" class="col-3">
         <mat-label>Admin Cost (%)</mat-label>
-        <input type="number" min="0" max="100" matInput formControlName="adminCost" (keyup)="calculateAmount()"
-          (change)="calculateAmount()" placeholder="Enter Admin Cost">
+        <input type="number" min="0" max="100" step="1" matInput formControlName="adminCost"
+          (keyup)="calculateAmount(true)" (change)="calculateAmount(true)" placeholder="Enter Admin Cost">
       </mat-form-field>
     </div>
 
@@ -70,13 +70,11 @@
         <mat-label>Budget Technical Man Hour</mat-label>
         <input type="number" matInput formControlName="budgetTMH" (keyup)="calculateEstimatedAmount()"
           (change)="calculateEstimatedAmount()" placeholder="Enter budget technical man hour">
-        <mat-hint>CTC: {{technicianSalary}} / Hour</mat-hint>
       </mat-form-field>
       <mat-form-field appearance="outline" class="col-3">
         <mat-label>Budget Helper Man Hour</mat-label>
         <input type="number" matInput formControlName="budgetHMH" (keyup)="calculateEstimatedAmount()"
           (change)="calculateEstimatedAmount()" placeholder="Enter budget helper man hour">
-        <mat-hint>CTC: {{helperSalary}} / Hour</mat-hint>
       </mat-form-field>
       <mat-form-field appearance="outline" class="col-3">
         <mat-label>Actual Technical Man Hour</mat-label>

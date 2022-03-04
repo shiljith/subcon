@@ -9,20 +9,43 @@
       <mat-tab label="Work In Progress Report">
         <div class="wip-report">
           <div class="wip-report-header">
-            <div class="status">
-              <mat-form-field appearance="outline">
-                <mat-label>Status</mat-label>
-                <mat-select>
-                  <mat-option value="0">All</mat-option>
-                  <mat-option value="1">In Progress</mat-option>
-                  <mat-option value="2">On Hold</mat-option>
-                  <mat-option value="3">Completed</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <button mat-raised-button color="primary" (click)="previewWIPReport()" [disabled]="wipReport.length === 0">
-              <mat-icon>visibility</mat-icon> Preview
-            </button>
+            <form [formGroup]="filterWIPForm">
+              <div class="form-fields">
+
+                <mat-form-field appearance="outline" class="col-3">
+                  <mat-label>Main Contractor</mat-label>
+                  <input matInput formControlName="mainContractor" placeholder="Enter main contractor">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-3">
+                  <mat-label>Project Name</mat-label>
+                  <input matInput formControlName="projectName" placeholder="Enter project name">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-3">
+                  <mat-label>Project Unit</mat-label>
+                  <mat-select formControlName="projectUnit">
+                    <mat-option [value]="unit.id" *ngFor="let unit of projectUnits">{{unit.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-3">
+                  <mat-label>Unit ID</mat-label>
+                  <input matInput formControlName="unitId" placeholder="Enter unit id">
+                </mat-form-field>
+
+                <button mat-raised-button color="accent" (click)="filterWIPReport()"
+                  [disabled]="wipReport.length === 0">
+                  <mat-icon>filter_list</mat-icon>
+                </button>
+
+                <button mat-raised-button color="primary" (click)="previewWIPReport()"
+                  [disabled]="wipReport.length === 0">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+              </div>
+            </form>
+
           </div>
           <div class="wip-report-body">
             <table mat-table [dataSource]="wipReport">
@@ -50,9 +73,43 @@
       <mat-tab label="Installation Progress Overview">
         <div class="wip-report">
           <div class="wip-report-header">
-            <button mat-raised-button color="primary" (click)="previewIPOReport()" [disabled]="ipoReport.length === 0">
-              <mat-icon>visibility</mat-icon> Preview
-            </button>
+            <form [formGroup]="filterIPOForm">
+              <div class="form-fields">
+
+                <mat-form-field appearance="outline" class="col-3">
+                  <mat-label>Main Contractor</mat-label>
+                  <input matInput formControlName="mainContractor" placeholder="Enter main contractor">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-3">
+                  <mat-label>Project Name</mat-label>
+                  <input matInput formControlName="projectName" placeholder="Enter project name">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-3">
+                  <mat-label>Project Unit</mat-label>
+                  <mat-select formControlName="projectUnit">
+                    <mat-option [value]="unit.id" *ngFor="let unit of projectUnits">{{unit.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-3">
+                  <mat-label>Unit ID</mat-label>
+                  <input matInput formControlName="unitId" placeholder="Enter unit id">
+                </mat-form-field>
+
+                <button mat-raised-button color="accent" (click)="filterIPOReport()"
+                  [disabled]="wipReport.length === 0">
+                  <mat-icon>filter_list</mat-icon>
+                </button>
+
+                <button mat-raised-button color="primary" (click)="previewIPOReport()"
+                  [disabled]="ipoReport.length === 0">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+              </div>
+            </form>
+
           </div>
           <div class="wip-report-body">
             <table mat-table [dataSource]="ipoReport">

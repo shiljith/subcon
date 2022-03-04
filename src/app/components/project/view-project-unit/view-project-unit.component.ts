@@ -95,8 +95,10 @@ export class ViewProjectUnitComponent implements OnInit {
     this.wipService.add(data).subscribe((res) => {
       console.log('ADDED', res);
       const description = `
-        User has been added ${this.wipForm.value.percentage} % of amount which is 
-        ${this.wipForm.value.amount} AED and reason added is ${this.wipForm.value.comments} with invoice number ${this.wipForm.value.invoiceNumber}
+        Invoice No: <strong>${this.wipForm.value.invoiceNumber}</strong><br/>
+        Percentage: <strong>${this.wipForm.value.percentage}%</strong><br/>
+        Amount: <strong>${this.wipForm.value.amount}</strong><br/>
+        Comments: <strong>${this.wipForm.value.comments}</strong>
       `;
       this.addTimeline(res.wipId, 'Added', description, 'add');
       this.getWip();
@@ -142,10 +144,12 @@ export class ViewProjectUnitComponent implements OnInit {
     this.wipService.update(data, wipId).subscribe((res) => {
       if (res) {
         const description = `
-          User has been updated ${this.wipForm.value.percentage} % of amount which is 
-          ${this.wipForm.value.amount} AED and reason added is ${this.wipForm.value.comments} with invoice number ${this.wipForm.value.invoiceNumber}
-        `;
-        this.addTimeline(wipId, 'edit', description, 'edit');
+          Invoice No: <strong>${this.wipForm.value.invoiceNumber}</strong><br/>
+          Percentage: <strong>${this.wipForm.value.percentage}%</strong><br/>
+          Amount: <strong>${this.wipForm.value.amount}</strong><br/>
+          Comments: <strong>${this.wipForm.value.comments}</strong>
+      `;
+        this.addTimeline(wipId, 'Updated', description, 'edit');
         this.getWip();
         this.onClearEdit();
       }
@@ -241,11 +245,10 @@ export class ViewProjectUnitComponent implements OnInit {
         console.log(res);
 
         if (res) {
-          const statusText = status === 1 ? 'approved' : 'rejected';
-          const description = `
-            Work in progress has been ${statusText}
-          `;
-          this.addTimeline(wip.id, statusText, description, 'check');
+          const statusText = status === 1 ? 'Approved' : 'Rejected';
+          const icon = status === 1 ? 'check' : 'close';
+          const description = ``;
+          this.addTimeline(wip.id, statusText, description, icon);
           this.getProjectUnit();
           this._snackBar.open(
             `The wip status has been ${this.getStatus(status)}`,

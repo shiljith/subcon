@@ -46,11 +46,11 @@
             <div class="project-no">{{project.poNumber | uppercase}}</div>
           </div>
           <div class="actions">
-            <button mat-icon-button color="{{(project.pinned) ? 'primary': ''}}"
-              (click)="pinProject(project.id, project.pinned)">
+            <button mat-icon-button (click)="pinProject(project.id, project.pinned)" class="pin-icon"
+              [class.pin-deactive]="!project.pinned" [class.pin-active]="project.pinned">
               <mat-icon>push_pin</mat-icon>
             </button>
-            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Project actions">
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Project actions" class="pin-deactive">
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">

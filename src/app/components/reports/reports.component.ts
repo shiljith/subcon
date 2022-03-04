@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { Account } from 'src/app/models/account';
 import { AccountService } from 'src/app/services/account.service';
+import { ProjectUnitService } from 'src/app/services/project-unit.service';
 import { ReportService } from 'src/app/services/report.service';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
@@ -18,6 +19,10 @@ export class ReportsComponent implements OnInit {
   account!: Account;
   wipReport: any[] = [];
   ipoReport: any[] = [];
+  projectUnits: any[] = [];
+  filterIPOForm!: FormGroup;
+  filterWIPForm!: FormGroup;
+
   wipTableColumns: Array<any> = [
     { title: 'Sl.No.', value: 'slno' },
     { title: 'Main Contractor', value: 'contractor' },
@@ -56,26 +61,49 @@ export class ReportsComponent implements OnInit {
   constructor(
     private reportService: ReportService,
     private router: Router,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private projectUnitService: ProjectUnitService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
+    this.filterIPOForm = this.fb.group({
+      mainContractor: [''],
+      projectName: [''],
+      projectUnit: [''],
+      unitId: [''],
+    });
+    this.filterWIPForm = this.fb.group({
+      mainContractor: [null],
+      projectName: [null],
+      projectUnit: [null],
+      unitId: [null],
+    });
     this.getWorkInProgressReport();
     this.getInstallationProgressOverviewReport();
+    this.getProjectUnits();
     this.accountService.get().subscribe((account: Account) => {
       this.account = account;
     });
   }
 
-  getWorkInProgressReport() {
-    this.reportService.getWorkInProgressReport().subscribe((res) => {
-      this.wipReport = res;
+  getProjectUnits() {
+    this.projectUnitService.getUnits().subscribe((units) => {
+      this.projectUnits = units;
     });
+  }
+
+  getWorkInProgressReport() {
+    this.reportService
+      .getWorkInProgressReport(this.filterWIPForm.value)
+      .subscribe((res) => {
+        this.wipReport = res;
+      });
   }
 
   getInstallationProgressOverviewReport() {
     this.reportService
-      .getInstallationProgressOverviewReport()
+      .getInstallationProgressOverviewReport(this.filterIPOForm.value)
       .subscribe((res) => {
         this.ipoReport = res;
       });
@@ -107,6 +135,13 @@ export class ReportsComponent implements OnInit {
 
   getColumns(columns: Array<Object>) {
     return columns.map((m: any) => m.value);
+  }
+
+  filterWIPReport() {
+    this.getWorkInProgressReport();
+  }
+  filterIPOReport() {
+    this.getInstallationProgressOverviewReport();
   }
 
   generateWIPReportPDF() {

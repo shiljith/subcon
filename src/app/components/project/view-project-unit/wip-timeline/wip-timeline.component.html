@@ -10,8 +10,21 @@
       <div class="container" [class.left]="i%2 === 0" [class.right]="i%2 !== 0"
         *ngFor="let timeline of wipTimelines; let i = index">
         <div class="content">
-          <p>{{timeline?.description}} by {{timeline?.createdBy}} on
-            {{timeline?.createdAt | date:'medium'}}</p>
+          <div class="c-item">
+            <div class="c-item-icon" [ngClass]="{
+                'apporved' : timeline?.action == 'Approved',
+                'rejected' : timeline?.action == 'Rejected',
+                'added' : timeline?.action == 'Added',
+                'edited' : timeline?.action == 'Updated'
+              }">
+              <mat-icon>{{timeline?.icon}}</mat-icon>
+            </div>
+            <div class="c-item-header">
+              {{timeline?.action}} by <strong>{{timeline?.createdBy}}</strong> on
+              <strong>{{timeline?.createdAt | date:'medium'}}</strong>
+            </div>
+          </div>
+          <div class="description" *ngIf="timeline?.description !==''" [innerHTML]="timeline?.description"></div>
         </div>
       </div>
     </div>

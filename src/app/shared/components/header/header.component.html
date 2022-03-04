@@ -1,23 +1,23 @@
 <mat-toolbar color="primary" class="no-print">
   <span>{{accountName | uppercase}}</span>
   <span class="header-spacer"></span>
-  <button mat-button routerLink="/dashboard">
+  <button mat-button routerLink="/dashboard" routerLinkActive="header-active">
     <mat-icon>dashboard</mat-icon> Dashboard
   </button>
-  <button mat-button routerLink="/project">
+  <button mat-button routerLink="/project" routerLinkActive="header-active">
     <mat-icon>real_estate_agent</mat-icon> Projects
   </button>
-  <button mat-button routerLink="/report">
+  <button mat-button routerLink="/report" routerLinkActive="header-active">
     <mat-icon>assessment</mat-icon> Reports
   </button>
-  <button mat-button routerLink="/user-management" *ngIf="isAdminAccess">
+  <button mat-button routerLink="/user-management" *ngIf="isAdminAccess" routerLinkActive="header-active">
     <mat-icon>supervisor_account</mat-icon> User Management
   </button>
   <button mat-button [matMenuTriggerFor]="menu">
     <mat-icon>person</mat-icon> {{ user?.firstName + ' ' +user?.lastName | titlecase}}
   </button>
   <mat-menu #menu="matMenu">
-    <button routerLink="/settings" mat-menu-item *ngIf="isAdminAccess">
+    <button routerLink="/settings" mat-menu-item *ngIf="isAdminAccess" routerLinkActive="header-active">
       <mat-icon>settings</mat-icon>Settings
     </button>
     <button (click)="logout()" mat-menu-item>

@@ -222,16 +222,24 @@
 
 .pinned-project {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  height: 330px;
+  height: 370px;
   overflow: auto;
   //border: 1px solid #cacaca;
   border-radius: 4px;
 }
 
 .man-hour-wrapper {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+  .man-hour-wrapper-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  > .title {
+    padding-bottom: 0;
+  }
+  .title {
+    text-align: center;
+  }
 }
 .man-hour-container {
   display: grid;

@@ -40,11 +40,12 @@
             <input type="text" matInput formControlName="password" placeholder="Enter password">
           </mat-form-field>
         </div>
-        <div class="actions">
+        <div class="actions" *ngIf="this.dataSource.length < 3">
           <button type="button" (click)="onSubmit()" mat-raised-button color="accent" [disabled]="userForm.invalid">
             <mat-icon>add</mat-icon> Create New User
           </button>
         </div>
+        <div class="user-limit-error" *ngIf="this.dataSource.length >= 3">You can add 3 users only at this time.</div>
       </form>
     </mat-card-content>
   </mat-card>

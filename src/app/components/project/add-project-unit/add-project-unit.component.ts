@@ -164,7 +164,15 @@ export class AddProjectUnitComponent implements OnInit {
     return { cost, profit };
   }
 
-  calculateAmount() {
+  calculateAmount(checkAdminCost: boolean = false) {
+    if (checkAdminCost) {
+      if (this.projectForm.controls['adminCost'].value > 100) {
+        this.projectForm.controls['adminCost'].setValue(100);
+      }
+      if (this.projectForm.controls['adminCost'].value < 0) {
+        this.projectForm.controls['adminCost'].setValue(0);
+      }
+    }
     this.calculateEstimatedAmount();
     this.calculateActualAmount();
   }
