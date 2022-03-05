@@ -1,0 +1,62 @@
+<div class="filter-container">
+  <mat-form-field appearance="outline">
+    <mat-label>Main Contractor</mat-label>
+    <mat-select [formControl]="mainContractorMultiCtrl" placeholder="Main Contractors" [multiple]="true"
+      #mainContractorMultiSelect>
+      <mat-option>
+        <ngx-mat-select-search [formControl]="mainContractorMultiFilterCtrl" placeholderLabel="Search"
+          noEntriesFoundLabel="Main contractor not found">
+        </ngx-mat-select-search>
+      </mat-option>
+      <mat-option *ngFor="let mainContractor of filteredMainContractorsMulti | async" [value]="mainContractor">
+        {{mainContractor.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Project</mat-label>
+    <mat-select [formControl]="projectMultiCtrl" placeholder="Projects" [multiple]="true" #projectMultiSelect>
+      <mat-option>
+        <ngx-mat-select-search [formControl]="projectMultiFilterCtrl" placeholderLabel="Search"
+          noEntriesFoundLabel="Project not found">
+        </ngx-mat-select-search>
+      </mat-option>
+      <mat-option *ngFor="let project of filteredProjectsMulti | async" [value]="project">
+        {{project.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Project Unit</mat-label>
+    <mat-select [multiple]="true" [formControl]="projectUnitMultiCtrl">
+      <mat-option [value]="unit" *ngFor="let unit of projectUnits">{{unit.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Unit ID</mat-label>
+    <mat-select [formControl]="unitNumberMultiCtrl" placeholder="unitNumbers" [multiple]="true" #unitNumberMultiSelect>
+      <mat-option>
+        <ngx-mat-select-search [formControl]="unitNumberMultiFilterCtrl" placeholderLabel="Search"
+          noEntriesFoundLabel="unitNumber not found">
+        </ngx-mat-select-search>
+      </mat-option>
+      <mat-option *ngFor="let unitNumber of filteredUnitNumbersMulti | async" [value]="unitNumber">
+        {{unitNumber.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Start & End Date</mat-label>
+    <mat-date-range-input [rangePicker]="picker">
+      <input matStartDate placeholder="Start date" [formControl]="startDate">
+      <input matEndDate placeholder="End date" [formControl]="endDate">
+    </mat-date-range-input>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+    <mat-error>Invalid start date or end date</mat-error>
+  </mat-form-field>
+</div>

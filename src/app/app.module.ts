@@ -20,7 +20,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import {
+  DateAdapter,
+  MatNativeDateModule,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+} from '@angular/material/core';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { LoginComponent } from './components/login/login.component';
 import { MatMenuModule } from '@angular/material/menu';
@@ -42,7 +47,21 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { SettingsComponent } from './components/settings/settings.component';
 import { ReportPreviewComponent } from './components/reports/report-preview/report-preview.component';
 import { WipTimelineComponent } from './components/project/view-project-unit/wip-timeline/wip-timeline.component';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { ReportFilterComponent } from './components/reports/report-filter/report-filter.component';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
+const MY_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 @NgModule({
   declarations: [
     AppComponent,
@@ -61,6 +80,7 @@ import { WipTimelineComponent } from './components/project/view-project-unit/wip
     SettingsComponent,
     ReportPreviewComponent,
     WipTimelineComponent,
+    ReportFilterComponent,
   ],
   imports: [
     BrowserModule,
@@ -88,6 +108,8 @@ import { WipTimelineComponent } from './components/project/view-project-unit/wip
     MatSidenavModule,
     NgChartsModule,
     MatTabsModule,
+    NgxMatSelectSearchModule,
+    MatMomentDateModule,
   ],
   providers: [
     {
@@ -95,6 +117,7 @@ import { WipTimelineComponent } from './components/project/view-project-unit/wip
       useClass: TokenInterceptorService,
       multi: true,
     },
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   ],
   bootstrap: [AppComponent],
 })

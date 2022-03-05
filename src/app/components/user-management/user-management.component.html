@@ -2,7 +2,7 @@
 <div class="user-management">
   <mat-card class="card">
     <mat-card-header>
-      <mat-card-title>User Management</mat-card-title>
+      <mat-card-title class="name">Add New User</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <form [formGroup]="userForm">
@@ -40,12 +40,12 @@
             <input type="text" matInput formControlName="password" placeholder="Enter password">
           </mat-form-field>
         </div>
-        <div class="actions" *ngIf="this.dataSource.length < 3">
+        <div class="actions" *ngIf="dataSource.length < 3">
           <button type="button" (click)="onSubmit()" mat-raised-button color="accent" [disabled]="userForm.invalid">
             <mat-icon>add</mat-icon> Create New User
           </button>
         </div>
-        <div class="user-limit-error" *ngIf="this.dataSource.length >= 3">You can add 3 users only at this time.</div>
+        <div class="user-limit-error" *ngIf="dataSource.length >= 3">You can add 3 users only at this time.</div>
       </form>
     </mat-card-content>
   </mat-card>

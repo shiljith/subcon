@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DeleteConfirmationComponent } from '../project/delete-confirmation/delete-confirmation.component';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-user-management',
@@ -13,7 +14,7 @@ import { User } from 'src/app/models/user';
 })
 export class UserManagementComponent implements OnInit {
   userForm!: FormGroup;
-  dataSource!: User[];
+  dataSource: User[] = [];
   displayedColumns: string[] = ['SlNo', 'name', 'username', 'role', 'actions'];
   roles: any[] = [
     //{ id: 1, name: 'Admin' },
@@ -24,7 +25,8 @@ export class UserManagementComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private userService: UserService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -52,12 +54,18 @@ export class UserManagementComponent implements OnInit {
   onSubmit() {
     if (this.userForm.invalid) return;
 
-    this.userService.add(this.userForm.value).subscribe((res) => {
-      this.userForm.reset();
-      this.userForm.markAsPristine();
-      this.userForm.markAsUntouched();
-      this.getUsers();
-    });
+    this.userService.add(this.userForm.value).subscribe(
+      (res) => {
+        this.userForm.reset();
+        this.userForm.markAsPristine();
+        this.userForm.markAsUntouched();
+        this.getUsers();
+      },
+      (err) => {
+        console.log(err);
+        this.snackBar.open(err.error.error.message, 'Close');
+      }
+    );
   }
 
   onDelete(user: User): void {

@@ -149,7 +149,7 @@
                     <div class="man-hour-header">Technician</div>
                     <div class="man-hour-count">{{(manHour?.estimatedTechnician * technicianSalary) | currency:'AED '}}
                     </div>
-                    <div class="man-hour-salary">{{manHour?.estimatedTechnician}}</div>
+                    <div class="man-hour-salary">{{manHour?.estimatedTechnician}} Hours</div>
                   </div>
                 </div>
                 <div class="man-hour btmh">
@@ -159,7 +159,7 @@
                   <div class="man-hour-body">
                     <div class="man-hour-header">Helper</div>
                     <div class="man-hour-count">{{(manHour?.estimatedHelper * helperSalary) | currency:'AED '}}</div>
-                    <div class="man-hour-salary">{{manHour?.estimatedHelper}}</div>
+                    <div class="man-hour-salary">{{manHour?.estimatedHelper}} Hours</div>
                   </div>
                 </div>
                 <div class="man-hour btmh">
@@ -172,7 +172,7 @@
                       {{ (manHour?.estimatedTechnician * technicianSalary) + (manHour?.estimatedHelper * helperSalary) | currency:'AED '}}
                     </div>
                     <div class="man-hour-salary">
-                      {{manHour?.estimatedTechnician + manHour?.estimatedHelper}}
+                      {{manHour?.estimatedTechnician + manHour?.estimatedHelper}} Hours
                     </div>
                   </div>
                 </div>
@@ -191,7 +191,7 @@
                     <div class="man-hour-header">Technician</div>
                     <div class="man-hour-count">{{(manHour?.actualTechnician * technicianSalary) | currency:'AED '}}
                     </div>
-                    <div class="man-hour-salary">{{manHour?.actualTechnician}}</div>
+                    <div class="man-hour-salary">{{manHour?.actualTechnician}} Hours</div>
                   </div>
                 </div>
                 <div class="man-hour atmh">
@@ -201,7 +201,7 @@
                   <div class="man-hour-body">
                     <div class="man-hour-header">Helper</div>
                     <div class="man-hour-count">{{(manHour?.actualHelper * helperSalary) | currency:'AED '}}</div>
-                    <div class="man-hour-salary">{{manHour?.actualHelper}}</div>
+                    <div class="man-hour-salary">{{manHour?.actualHelper}} Hours</div>
                   </div>
                 </div>
                 <div class="man-hour atmh">
@@ -214,7 +214,7 @@
                       {{(manHour?.actualTechnician * technicianSalary) + (manHour?.actualHelper * helperSalary) | currency:'AED '}}
                     </div>
                     <div class="man-hour-salary">
-                      {{manHour?.actualTechnician + manHour?.actualHelper}}
+                      {{manHour?.actualTechnician + manHour?.actualHelper}} Hours
                     </div>
                   </div>
                 </div>

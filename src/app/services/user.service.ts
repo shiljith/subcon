@@ -29,8 +29,7 @@ export class UserService {
         if (res && res.success) {
           return res.data;
         }
-      }),
-      catchError(this.handleError)
+      })
     );
   }
 

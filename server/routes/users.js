@@ -8,17 +8,41 @@ const router = express.Router();
 
 router.post("/", auth, (req, res, next) => {
   const user = { ...req.body, accountId: req.payload.accountId };
-  db.run(
-    `INSERT INTO users (firstName, lastName, role, username, password, accountId) VALUES(?, ?, ?, ?, ?, ?)`,
-    Object.values(user),
-    (error, result, fields) => {
+  db.get(
+    `SELECT COUNT(*) as isUsernameExist FROM users WHERE username = '${user.username}'`,
+    (error, result) => {
+      console.log("WERTY", error, result);
       if (error) {
-        console.log(error);
         return res
           .status(404)
           .json({ success: false, data: null, error: error });
       }
-      return res.send({ success: true, data: result });
+      if (result) {
+        if (result.isUsernameExist === 0) {
+          db.run(
+            `INSERT INTO users (firstName, lastName, role, username, password, accountId) VALUES(?, ?, ?, ?, ?, ?)`,
+            Object.values(user),
+            (error, result, fields) => {
+              if (error) {
+                console.log(error);
+                return res
+                  .status(404)
+                  .json({ success: false, data: null, error: error });
+              }
+              return res.send({ success: true, data: result });
+            }
+          );
+        } else {
+          return res.status(404).json({
+            success: false,
+            data: null,
+            error: {
+              message:
+                "Username is already taken in this application. Please create user with another one.",
+            },
+          });
+        }
+      }
     }
   );
 });

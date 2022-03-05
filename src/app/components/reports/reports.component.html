@@ -3,39 +3,16 @@
 
   <div class="report-container">
 
-    <div class="report-header-name">Reports</div>
-
     <mat-tab-group>
-      <mat-tab label="Work In Progress Report">
+      <mat-tab label="Work In Progress">
         <div class="wip-report">
           <div class="wip-report-header">
-            <form [formGroup]="filterWIPForm">
+            <form>
               <div class="form-fields">
 
-                <mat-form-field appearance="outline" class="col-3">
-                  <mat-label>Main Contractor</mat-label>
-                  <input matInput formControlName="mainContractor" placeholder="Enter main contractor">
-                </mat-form-field>
+                <app-report-filter #wipFilter></app-report-filter>
 
-                <mat-form-field appearance="outline" class="col-3">
-                  <mat-label>Project Name</mat-label>
-                  <input matInput formControlName="projectName" placeholder="Enter project name">
-                </mat-form-field>
-
-                <mat-form-field appearance="outline" class="col-3">
-                  <mat-label>Project Unit</mat-label>
-                  <mat-select formControlName="projectUnit">
-                    <mat-option [value]="unit.id" *ngFor="let unit of projectUnits">{{unit.name}}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline" class="col-3">
-                  <mat-label>Unit ID</mat-label>
-                  <input matInput formControlName="unitId" placeholder="Enter unit id">
-                </mat-form-field>
-
-                <button mat-raised-button color="accent" (click)="filterWIPReport()"
-                  [disabled]="wipReport.length === 0">
+                <button mat-raised-button color="accent" (click)="filterWIPReport()">
                   <mat-icon>filter_list</mat-icon>
                 </button>
 
@@ -52,8 +29,11 @@
 
               <ng-container *ngFor="let column of wipTableColumns" [matColumnDef]="column.value">
                 <th mat-header-cell *matHeaderCellDef> {{column.title | titlecase}} </th>
-                <ng-container *ngIf="column.value !== 'slno'">
+                <ng-container *ngIf="column.value !== 'slno' && column.value !== 'status' ">
                   <td mat-cell *matCellDef="let element"> {{ element[column.value]}} </td>
+                </ng-container>
+                <ng-container *ngIf="column.value === 'status'">
+                  <td mat-cell *matCellDef="let element"> {{ getStatus(element.status)}} </td>
                 </ng-container>
                 <ng-container *ngIf="column.value === 'slno'">
                   <td mat-cell *matCellDef="let i = index;"> {{i + 1}} </td>
@@ -64,39 +44,19 @@
               <tr mat-row *matRowDef="let row; columns: getColumns(wipTableColumns);"></tr>
 
               <tr class="mat-row" *matNoDataRow>
-                <td class="mat-cell" colspan="12">There is no work in progress report found yet.</td>
+                <td class="mat-cell" colspan="13">There is no work in progress report found yet.</td>
               </tr>
             </table>
           </div>
         </div>
       </mat-tab>
-      <mat-tab label="Installation Progress Overview">
+      <mat-tab label="Installation Project Overview">
         <div class="wip-report">
           <div class="wip-report-header">
-            <form [formGroup]="filterIPOForm">
+            <form>
               <div class="form-fields">
 
-                <mat-form-field appearance="outline" class="col-3">
-                  <mat-label>Main Contractor</mat-label>
-                  <input matInput formControlName="mainContractor" placeholder="Enter main contractor">
-                </mat-form-field>
-
-                <mat-form-field appearance="outline" class="col-3">
-                  <mat-label>Project Name</mat-label>
-                  <input matInput formControlName="projectName" placeholder="Enter project name">
-                </mat-form-field>
-
-                <mat-form-field appearance="outline" class="col-3">
-                  <mat-label>Project Unit</mat-label>
-                  <mat-select formControlName="projectUnit">
-                    <mat-option [value]="unit.id" *ngFor="let unit of projectUnits">{{unit.name}}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline" class="col-3">
-                  <mat-label>Unit ID</mat-label>
-                  <input matInput formControlName="unitId" placeholder="Enter unit id">
-                </mat-form-field>
+                <app-report-filter #ipoFilter></app-report-filter>
 
                 <button mat-raised-button color="accent" (click)="filterIPOReport()"
                   [disabled]="wipReport.length === 0">

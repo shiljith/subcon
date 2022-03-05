@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import * as pdfMake from 'pdfmake/build/pdfmake';
@@ -6,8 +6,12 @@ import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { Account } from 'src/app/models/account';
 import { AccountService } from 'src/app/services/account.service';
 import { ProjectUnitService } from 'src/app/services/project-unit.service';
+import { ProjectService } from 'src/app/services/project.service';
 import { ReportService } from 'src/app/services/report.service';
+import { ReportFilterComponent } from './report-filter/report-filter.component';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
+
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-reports',
@@ -15,6 +19,11 @@ import { ReportService } from 'src/app/services/report.service';
   styleUrls: ['./reports.component.scss'],
 })
 export class ReportsComponent implements OnInit {
+  @ViewChild('wipFilter')
+  reportFilter!: ReportFilterComponent;
+  @ViewChild('ipoFilter')
+  reportFilterIPO!: ReportFilterComponent;
+
   reportForm!: FormGroup;
   account!: Account;
   wipReport: any[] = [];
@@ -24,9 +33,9 @@ export class ReportsComponent implements OnInit {
   filterWIPForm!: FormGroup;
 
   wipTableColumns: Array<any> = [
-    { title: 'Sl.No.', value: 'slno' },
+    { title: 'No.', value: 'slno' },
     { title: 'Main Contractor', value: 'contractor' },
-    { title: 'Project Name', value: 'name' },
+    { title: 'Project', value: 'name' },
     { title: 'PO Number', value: 'poNumber' },
     { title: 'Unit ID', value: 'unitId' },
     { title: 'Unit Value', value: 'unitValue' },
@@ -35,23 +44,22 @@ export class ReportsComponent implements OnInit {
     { title: 'Balance', value: 'balance' },
     { title: 'Balance Unit Value', value: 'balanceUnitValue' },
     { title: 'Status', value: 'status' },
+    { title: 'Start Date', value: 'startDate' },
+    { title: 'End Date', value: 'endDate' },
   ];
   ipoTableColumns: Array<any> = [
-    { title: 'Sl.No.', value: 'slno' },
+    { title: 'No.', value: 'slno' },
     { title: 'Main Contractor', value: 'contractor' },
-    { title: 'Project Name', value: 'name' },
-    { title: 'Project Unit Name', value: 'projectUnit' },
-    { title: 'Unit Number', value: 'unitNumber' },
-    { title: 'Model Name', value: 'modelName' },
+    { title: 'Project', value: 'name' },
+    { title: 'Project Unit', value: 'projectUnit' },
+    { title: 'Unit ID', value: 'unitNumber' },
     { title: 'Unit Value', value: 'unitValue' },
     { title: 'Admin Cost', value: 'adminCost' },
     { title: 'Days', value: 'days' },
-    { title: 'Estimated Cost', value: 'estimatedCost' },
-    { title: 'Estimated Profit', value: 'estimatedProfit' },
+    { title: 'Est. Cost', value: 'estimatedCost' },
+    { title: 'Est. Profit', value: 'estimatedProfit' },
     { title: 'Actual Cost', value: 'actualCost' },
     { title: 'Actual Profit', value: 'actualProfit' },
-    { title: 'Budget HMH', value: 'budgetTMH' },
-    { title: 'Budget HMH', value: 'budgetHMH' },
     { title: 'Actual HMH', value: 'actualTMH' },
     { title: 'Actual HMH', value: 'actualHMH' },
     { title: 'Start Date', value: 'startDate' },
@@ -63,7 +71,8 @@ export class ReportsComponent implements OnInit {
     private router: Router,
     private accountService: AccountService,
     private projectUnitService: ProjectUnitService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private projectService: ProjectService
   ) {}
 
   ngOnInit(): void {
@@ -94,16 +103,72 @@ export class ReportsComponent implements OnInit {
   }
 
   getWorkInProgressReport() {
-    this.reportService
-      .getWorkInProgressReport(this.filterWIPForm.value)
-      .subscribe((res) => {
-        this.wipReport = res;
-      });
+    const filter = {
+      mainContractor: this.reportFilter?.mainContractorMultiCtrl?.value
+        ? this.covertToWhereIN(
+            this.reportFilter?.mainContractorMultiCtrl?.value
+          )
+        : '',
+      projectName: this.reportFilter?.projectMultiCtrl?.value
+        ? this.covertToWhereIN(this.reportFilter?.projectMultiCtrl?.value)
+        : '',
+      projectUnit: this.reportFilter?.projectUnitMultiCtrl?.value
+        ? this.covertToWhereIN(this.reportFilter?.projectUnitMultiCtrl?.value)
+        : '',
+      unitNumber: this.reportFilter?.unitNumberMultiCtrl?.value
+        ? this.covertToWhereIN(this.reportFilter?.unitNumberMultiCtrl?.value)
+        : '',
+      startDate: this.reportFilter?.startDate?.value
+        ? moment(this.reportFilter?.startDate?.value).format('MM/DD/YYYY')
+        : '',
+      endDate: this.reportFilter?.endDate?.value
+        ? moment(this.reportFilter?.endDate?.value).format('MM/DD/YYYY')
+        : '',
+    };
+    console.log('WIP', filter);
+
+    this.reportService.getWorkInProgressReport(filter).subscribe((res) => {
+      this.wipReport = res;
+    });
+  }
+
+  covertToWhereIN(selected: Array<any>) {
+    return selected.reduce((acc, value, i) => {
+      if (i === selected.length - 1) {
+        return (acc += `'${value.name}')`);
+      }
+      return `${acc}'${value.name}',`;
+    }, '(');
   }
 
   getInstallationProgressOverviewReport() {
+    const filter = {
+      mainContractor: this.reportFilterIPO?.mainContractorMultiCtrl?.value
+        ? this.covertToWhereIN(
+            this.reportFilterIPO?.mainContractorMultiCtrl?.value
+          )
+        : '',
+      projectName: this.reportFilterIPO?.projectMultiCtrl?.value
+        ? this.covertToWhereIN(this.reportFilterIPO?.projectMultiCtrl?.value)
+        : '',
+      projectUnit: this.reportFilterIPO?.projectUnitMultiCtrl?.value
+        ? this.covertToWhereIN(
+            this.reportFilterIPO?.projectUnitMultiCtrl?.value
+          )
+        : '',
+      unitNumber: this.reportFilterIPO?.unitNumberMultiCtrl?.value
+        ? this.covertToWhereIN(this.reportFilterIPO?.unitNumberMultiCtrl?.value)
+        : '',
+      startDate: this.reportFilterIPO?.startDate?.value
+        ? moment(this.reportFilterIPO?.startDate?.value).format('MM/DD/YYYY')
+        : '',
+      endDate: this.reportFilterIPO?.endDate?.value
+        ? moment(this.reportFilterIPO?.endDate?.value).format('MM/DD/YYYY')
+        : '',
+    };
+    console.log('WIP', filter);
     this.reportService
-      .getInstallationProgressOverviewReport(this.filterIPOForm.value)
+      .getInstallationProgressOverviewReport(filter)
       .subscribe((res) => {
         this.ipoReport = res;
       });
@@ -203,5 +268,9 @@ export class ReportsComponent implements OnInit {
     };
 
     pdfMake.createPdf(docDefinition).open();
+  }
+
+  getStatus(value: number) {
+    return this.projectService.getStatus(value);
   }
 }
