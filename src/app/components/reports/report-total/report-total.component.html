@@ -1,0 +1,8 @@
+<div class="report-total-wrapper" *ngIf="reportTotal.length > 0">
+  <div class="report-total-container">
+    <div *ngFor="let total of reportTotal" class="report-total">
+      <div class="name">{{total?.name}}</div>
+      <div class="value">{{total?.value | currency: 'AED '}}</div>
+    </div>
+  </div>
+</div>

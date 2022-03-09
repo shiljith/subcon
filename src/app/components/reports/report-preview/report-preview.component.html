@@ -27,11 +27,15 @@
 
         <ng-container *ngFor="let column of report?.tableSource?.header" [matColumnDef]="column.value">
           <th mat-header-cell *matHeaderCellDef> {{column.title | titlecase}} </th>
-          <ng-container *ngIf="column.value !== 'slno'">
+          <ng-container *ngIf="column.value !== 'slno' && column.value !== 'status'">
             <td mat-cell *matCellDef="let element"> {{ element[column.value]}} </td>
           </ng-container>
           <ng-container *ngIf="column.value === 'slno'">
             <td mat-cell *matCellDef="let i = index;"> {{i + 1}} </td>
+          </ng-container>
+          <ng-container *ngIf="column.value === 'status'">
+            <td mat-cell *matCellDef="let element"> {{ getStatus(element.status)}} </td>
+            <td mat-footer-cell *matFooterCellDef></td>
           </ng-container>
         </ng-container>
 
@@ -42,6 +46,8 @@
           <td class="mat-cell" colspan="12">There is no report found yet.</td>
         </tr>
       </table>
+
+      <app-report-total [reportTotal]="report?.tableSource?.total"></app-report-total>
     </div>
   </div>
 </div>

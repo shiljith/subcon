@@ -50,6 +50,7 @@ import { WipTimelineComponent } from './components/project/view-project-unit/wip
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { ReportFilterComponent } from './components/reports/report-filter/report-filter.component';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { ReportTotalComponent } from './components/reports/report-total/report-total.component';
 
 const MY_FORMATS = {
   parse: {
@@ -81,6 +82,7 @@ const MY_FORMATS = {
     ReportPreviewComponent,
     WipTimelineComponent,
     ReportFilterComponent,
+    ReportTotalComponent,
   ],
   imports: [
     BrowserModule,

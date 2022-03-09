@@ -102,6 +102,18 @@ export class ReportsComponent implements OnInit {
     });
   }
 
+  getTotalWip(key: string) {
+    return this.wipReport
+      .map((t) => t[key])
+      .reduce((acc, value) => acc + value, 0);
+  }
+
+  getTotalIpo(key: string) {
+    return this.ipoReport
+      .map((t) => t[key])
+      .reduce((acc, value) => acc + value, 0);
+  }
+
   getWorkInProgressReport() {
     const filter = {
       mainContractor: this.reportFilter?.mainContractorMultiCtrl?.value
@@ -181,6 +193,15 @@ export class ReportsComponent implements OnInit {
       tableSource: {
         header: this.wipTableColumns,
         data: this.wipReport,
+        total: [
+          { name: 'Total Unit Value', key: 'unitValue' },
+          { name: 'Total WIP', key: 'totalWIP' },
+          { name: 'Total Billed Value', key: 'totalBilledValue' },
+          { name: 'Balance', key: 'balance' },
+          { name: 'Balance Unit Value', key: 'balanceUnitValue' },
+        ].map((t) => {
+          return { name: t.name, value: this.getTotalWip(t.key) };
+        }),
       },
     };
     this.router.navigate(['/report/preview']);
@@ -193,6 +214,16 @@ export class ReportsComponent implements OnInit {
       tableSource: {
         header: this.ipoTableColumns,
         data: this.ipoReport,
+        total: [
+          { name: 'Total Unit Value', key: 'unitValue' },
+          { name: 'Admin Cost', key: 'adminCost' },
+          { name: 'Estimated Cost', key: 'estimatedCost' },
+          { name: 'Estimated Profit', key: 'estimatedProfit' },
+          { name: 'Actual Cost', key: 'actualCost' },
+          { name: 'Actual Profit', key: 'actualProfit' },
+        ].map((t) => {
+          return { name: t.name, value: this.getTotalIpo(t.key) };
+        }),
       },
     };
     this.router.navigate(['/report/preview']);
