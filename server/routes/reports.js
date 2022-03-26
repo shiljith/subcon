@@ -125,7 +125,7 @@ router.get("/wip-report", auth, (req, res) => {
     INNER JOIN ( 
       SELECT projectUnitId, SUM(percentage) as totalWIP from  project_unit_wip WHERE status = 1
     ) as puw
-    ON puw.projectUnitId = pu.unitId
+    ON puw.projectUnitId = pu.projectId
     WHERE`;
   if (param.mainContractor && param.mainContractor !== "") {
     query += ` p.contractor IN ${param.mainContractor} AND`;

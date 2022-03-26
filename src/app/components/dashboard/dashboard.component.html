@@ -5,7 +5,7 @@
   <div class="app-body">
     <div class="dashboard">
       <div class="row">
-        <div class="col">
+        <div class="col" routerLink="/project">
           <div class="tile twv tile-blue">
             <div class="icon">
               <mat-icon>real_estate_agent</mat-icon>
@@ -24,7 +24,7 @@
             </div>
             <div class="tile-body">
               <div class="title">Total Project Value</div>
-              <div class="count">{{totalWorkValue | currency:'AED'}}</div>
+              <div class="count">{{totalWorkValue | currency:'AED '}}</div>
             </div>
           </div>
         </div>
@@ -36,7 +36,7 @@
             </div>
             <div class="tile-body">
               <div class="title">Total Billed</div>
-              <div class="count">{{totalBilled | currency:'AED'}}</div>
+              <div class="count">{{totalBilled | currency:'AED '}}</div>
             </div>
           </div>
         </div>
@@ -48,7 +48,7 @@
             </div>
             <div class="tile-body">
               <div class="title">Balance Project Value</div>
-              <div class="count">{{balanceWorkValue | currency:'AED'}}</div>
+              <div class="count">{{balanceWorkValue | currency:'AED '}}</div>
             </div>
           </div>
         </div>

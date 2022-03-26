@@ -14,7 +14,7 @@
 
                 <button mat-raised-button color="accent" matTooltip="Get filtered record" matTooltipPosition="above"
                   (click)="filterWIPReport()">
-                  <mat-icon>filter_list</mat-icon>
+                  <mat-icon>search</mat-icon>
                 </button>
 
                 <button mat-raised-button color="primary" matTooltip="Report view" matTooltipPosition="above"
@@ -39,7 +39,7 @@
                   </ng-container>
                   <ng-container *ngIf="column.value === 'balanceUnitValue';else totalRow">
                     <td mat-footer-cell *matFooterCellDef>
-                      <strong>{{getTotalWip('balanceUnitValue')}} % </strong>
+                      <strong>{{getTotalWip('balanceUnitValue') | currency:'AED '}} </strong>
                     </td>
                   </ng-container>
                   <ng-container *ngIf="column.value === 'totalBilledValue';else totalRow">
@@ -49,12 +49,12 @@
                   </ng-container>
                   <ng-container *ngIf="column.value === 'balance';else totalRow">
                     <td mat-footer-cell *matFooterCellDef>
-                      <strong>{{getTotalWip('balance') | currency:'AED '}} </strong>
+                      <strong>{{getTotalWip('balance')}} % </strong>
                     </td>
                   </ng-container>
                   <ng-container *ngIf="column.value === 'totalWIP';else totalRow">
                     <td mat-footer-cell *matFooterCellDef>
-                      <strong>{{getTotalWip('totalWIP') | currency:'AED '}} </strong>
+                      <strong>{{getTotalWip('totalWIP')}} % </strong>
                     </td>
                   </ng-container>
                   <ng-template #totalRow>
@@ -94,7 +94,7 @@
 
                 <button mat-raised-button color="accent" matTooltip="Get filtered record" matTooltipPosition="above"
                   (click)="filterIPOReport()" [disabled]="ipoReport.length === 0">
-                  <mat-icon>filter_list</mat-icon>
+                  <mat-icon>search</mat-icon>
                 </button>
 
                 <button mat-raised-button color="primary" matTooltip="Report view" matTooltipPosition="above"

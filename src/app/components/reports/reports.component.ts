@@ -39,7 +39,7 @@ export class ReportsComponent implements OnInit {
     { title: 'PO Number', value: 'poNumber' },
     { title: 'Unit ID', value: 'unitId' },
     { title: 'Unit Value', value: 'unitValue' },
-    { title: 'Totoal WIP', value: 'totalWIP' },
+    { title: 'Total WIP', value: 'totalWIP' },
     { title: 'Total Billed Value', value: 'totalBilledValue' },
     { title: 'Balance', value: 'balance' },
     { title: 'Balance Unit Value', value: 'balanceUnitValue' },
