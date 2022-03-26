@@ -44,7 +44,6 @@ export class DashboardComponent implements OnInit {
           text: 'Amount',
         },
         ticks: {
-          stepSize: 1,
           callback: function (value, index, values) {
             if (value >= 1000) {
               return Number(value) / 1000 + 'k';
