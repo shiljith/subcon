@@ -2,7 +2,8 @@
   <div class="report-total-container">
     <div *ngFor="let total of reportTotal" class="report-total">
       <div class="name">{{total?.name}}</div>
-      <div class="value">{{total?.value | currency: 'AED '}}</div>
+      <div class="value" *ngIf="total?.isCurrency">{{total?.value | currency: 'AED '}}</div>
+      <div class="value" *ngIf="!(total?.isCurrency)">{{total?.value }} %</div>
     </div>
   </div>
 </div>

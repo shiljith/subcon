@@ -54,7 +54,7 @@ export class ReportsComponent implements OnInit {
     { title: 'Project Unit', value: 'projectUnit' },
     { title: 'Unit ID', value: 'unitNumber' },
     { title: 'Unit Value', value: 'unitValue' },
-    { title: 'Admin Cost', value: 'adminCost' },
+    { title: 'Admin Cost(%)', value: 'adminCost' },
     { title: 'Days', value: 'days' },
     { title: 'Est.Cost', value: 'estimatedCost' },
     { title: 'Est.Margin', value: 'estimatedProfit' },
@@ -194,13 +194,25 @@ export class ReportsComponent implements OnInit {
         header: this.wipTableColumns,
         data: this.wipReport,
         total: [
-          { name: 'Total Unit Value', key: 'unitValue' },
-          { name: 'Total WIP', key: 'totalWIP' },
-          { name: 'Total Billed Value', key: 'totalBilledValue' },
-          { name: 'Balance', key: 'balance' },
-          { name: 'Balance Unit Value', key: 'balanceUnitValue' },
+          { name: 'Total Unit Value', key: 'unitValue', isCurrency: true },
+          { name: 'Total WIP', key: 'totalWIP', isCurrency: false },
+          {
+            name: 'Total Billed Value',
+            key: 'totalBilledValue',
+            isCurrency: true,
+          },
+          { name: 'Balance', key: 'balance', isCurrency: false },
+          {
+            name: 'Balance Unit Value',
+            key: 'balanceUnitValue',
+            isCurrency: true,
+          },
         ].map((t) => {
-          return { name: t.name, value: this.getTotalWip(t.key) };
+          return {
+            name: t.name,
+            value: this.getTotalWip(t.key),
+            isCurrency: t.isCurrency,
+          };
         }),
       },
     };
@@ -221,7 +233,11 @@ export class ReportsComponent implements OnInit {
           { name: 'Actual Cost', key: 'actualCost' },
           { name: 'Actual Profit', key: 'actualProfit' },
         ].map((t) => {
-          return { name: t.name, value: this.getTotalIpo(t.key) };
+          return {
+            name: t.name,
+            value: this.getTotalIpo(t.key),
+            isCurrency: true,
+          };
         }),
       },
     };

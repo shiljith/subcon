@@ -148,6 +148,8 @@ function createProjectUnitsTable() {
     estimatedProfit REAL,
     actualCost REAL,
     actualProfit REAL,
+    technicianSalary REAL,
+    helperSalary REAL,
     status INTEGER DEFAULT 1,
     budgetTMH TEXT,
     budgetHMH TEXT,

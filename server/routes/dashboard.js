@@ -211,27 +211,25 @@ router.get("/project-status", auth, (req, res) => {
 });
 
 router.get("/man-hour", auth, (req, res) => {
-  db.get(
-    `
-      SELECT coalesce(sum(budgetTMH),0) as estimatedTechnician, coalesce(sum(budgetHMH),0) as estimatedHelper,
-      coalesce(sum(actualTMH),0) as actualTechnician, coalesce(sum(actualHMH),0) as actualHelper
-      from project_units a
-      join projects b on a.projectId=b.id and accountId=${req.payload.accountId}
-    `,
-    (error, result, fields) => {
-      if (error) {
-        return res
-          .status(404)
-          .json({ success: false, data: null, error: error });
-      }
-      if (result) {
-        console.log("PSTATUS", result);
-        return res.json({ success: true, data: result });
-      } else {
-        return res.status(404).send({ message: "Not found" });
-      }
+  const query = `
+    SELECT coalesce(sum(budgetTMH),0) as estimatedTechnician, coalesce(sum(budgetHMH),0) as estimatedHelper,
+    coalesce(sum(actualTMH),0) as actualTechnician, coalesce(sum(actualHMH),0) as actualHelper,
+    technicianSalary, helperSalary
+    from project_units a
+    join projects b on a.projectId=b.id and accountId=${req.payload.accountId}
+  `;
+  console.log("MAN", query);
+  db.get(query, (error, result, fields) => {
+    if (error) {
+      return res.status(404).json({ success: false, data: null, error: error });
     }
-  );
+    if (result) {
+      console.log("PSTATUS", result);
+      return res.json({ success: true, data: result });
+    } else {
+      return res.status(404).send({ message: "Not found" });
+    }
+  });
 });
 
 module.exports = router;

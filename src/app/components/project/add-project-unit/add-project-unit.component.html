@@ -27,7 +27,7 @@
       <mat-form-field appearance="outline" class="col-3">
         <mat-label>Unit Value</mat-label>
         <input type="number" matInput formControlName="unitValue" (keyup)="calculateAmount()"
-          (change)="calculateAmount()" placeholder="Enter Unit Value">
+          (change)="calculateAmount()" placeholder="Enter Unit Value" [readonly]="data.isEdit">
         <mat-error>Please enter unit value</mat-error>
       </mat-form-field>
     </div>
@@ -67,9 +67,9 @@
 
     <div class="form-group">
       <mat-form-field appearance="outline" class="col-3">
-        <mat-label>Budget Technical Man Hour</mat-label>
+        <mat-label>Budget Technician Man Hour</mat-label>
         <input type="number" matInput formControlName="budgetTMH" (keyup)="calculateEstimatedAmount()"
-          (change)="calculateEstimatedAmount()" placeholder="Enter budget technical man hour">
+          (change)="calculateEstimatedAmount()" placeholder="Enter budget technician man hour">
       </mat-form-field>
       <mat-form-field appearance="outline" class="col-3">
         <mat-label>Budget Helper Man Hour</mat-label>
@@ -77,9 +77,9 @@
           (change)="calculateEstimatedAmount()" placeholder="Enter budget helper man hour">
       </mat-form-field>
       <mat-form-field appearance="outline" class="col-3">
-        <mat-label>Actual Technical Man Hour</mat-label>
+        <mat-label>Actual Technician Man Hour</mat-label>
         <input type="number" matInput formControlName="actualTMH" (keyup)="calculateActualAmount()"
-          (change)="calculateActualAmount()" placeholder="Enter actual technical man hour">
+          (change)="calculateActualAmount()" placeholder="Enter actual technician man hour">
       </mat-form-field>
       <mat-form-field appearance="outline" class="col-3">
         <mat-label>Actual Helper Man Hour</mat-label>

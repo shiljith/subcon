@@ -25,40 +25,40 @@ export interface UnitNumber {
   styleUrls: ['./report-filter.component.scss'],
 })
 export class ReportFilterComponent implements OnInit {
+  @ViewChild('mainContractorMultiSelect', { static: true })
+  mainContractorMultiSelect!: MatSelect;
+  @ViewChild('projectMultiSelect', { static: true })
+  projectMultiSelect!: MatSelect;
+  @ViewChild('unitNumberMultiSelect', { static: true })
+  unitNumberMultiSelect!: MatSelect;
+
   protected mainContractor: MainContractor[] = [];
+  protected project: Project[] = [];
+  protected unitNumber: UnitNumber[] = [];
+  projectUnits: any[] = [];
 
   public mainContractorMultiCtrl: FormControl = new FormControl();
   public mainContractorMultiFilterCtrl: FormControl = new FormControl();
   public projectUnitMultiCtrl: FormControl = new FormControl();
+  public projectMultiCtrl: FormControl = new FormControl();
+  public projectMultiFilterCtrl: FormControl = new FormControl();
+  public unitNumberMultiCtrl: FormControl = new FormControl();
+  public unitNumberMultiFilterCtrl: FormControl = new FormControl();
   public startDate: FormControl = new FormControl();
   public endDate: FormControl = new FormControl();
 
   public filteredMainContractorsMulti: ReplaySubject<MainContractor[]> =
     new ReplaySubject<MainContractor[]>(1);
-  @ViewChild('mainContractorMultiSelect', { static: true })
-  mainContractorMultiSelect!: MatSelect;
-  protected _onDestroyMainContractor = new Subject<void>();
-
-  protected project: Project[] = [];
-  public projectMultiCtrl: FormControl = new FormControl();
-  public projectMultiFilterCtrl: FormControl = new FormControl();
   public filteredProjectsMulti: ReplaySubject<Project[]> = new ReplaySubject<
     Project[]
   >(1);
-  @ViewChild('projectMultiSelect', { static: true })
-  projectMultiSelect!: MatSelect;
-  protected _onDestroyProject = new Subject<void>();
-
-  protected unitNumber: UnitNumber[] = [];
-  public unitNumberMultiCtrl: FormControl = new FormControl();
-  public unitNumberMultiFilterCtrl: FormControl = new FormControl();
   public filteredUnitNumbersMulti: ReplaySubject<UnitNumber[]> =
     new ReplaySubject<UnitNumber[]>(1);
-  @ViewChild('unitNumberMultiSelect', { static: true })
-  unitNumberMultiSelect!: MatSelect;
+
+  protected _onDestroyMainContractor = new Subject<void>();
+  protected _onDestroyProject = new Subject<void>();
   protected _onDestroyUnitNumber = new Subject<void>();
 
-  projectUnits: any[] = [];
   constructor(
     private reportService: ReportService,
     private projectUnitService: ProjectUnitService
@@ -275,10 +275,21 @@ export class ReportFilterComponent implements OnInit {
 
   clearAll() {
     this.mainContractorMultiCtrl.reset();
+    this.mainContractorMultiFilterCtrl.reset();
+    this.projectUnitMultiCtrl.reset();
     this.projectMultiCtrl.reset();
-    this.mainContractorMultiCtrl.reset();
+    this.projectMultiFilterCtrl.reset();
     this.unitNumberMultiCtrl.reset();
+    this.unitNumberMultiFilterCtrl.reset();
     this.startDate.reset();
     this.endDate.reset();
+
+    // this.filteredMainContractorsMulti: ReplaySubject<MainContractor[]> =
+    //   new ReplaySubject<MainContractor[]>(1);
+    // public filteredProjectsMulti: ReplaySubject<Project[]> = new ReplaySubject<
+    //   Project[]
+    // >(1);
+    // public filteredUnitNumbersMulti: ReplaySubject<UnitNumber[]> =
+    //   new ReplaySubject<UnitNumber[]>(1);
   }
 }

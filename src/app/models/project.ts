@@ -30,6 +30,8 @@ export interface ProjectUnit {
   adminCost: number;
   estimatedCost: number;
   estimatedProfit: number;
+  technicianSalary: number;
+  helperSalary: number;
   actualCost: number;
   actualProfit: number;
   status: string;

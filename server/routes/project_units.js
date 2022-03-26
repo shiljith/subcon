@@ -10,9 +10,9 @@ router.post("/", (req, res, next) => {
     (
       unitId, unitNumber, modelName, startDate, endDate, days, budgetTMH, budgetHMH, actualTMH, actualHMH,
       unitValue, adminCost, estimatedCost, estimatedProfit, actualCost, actualProfit,  status, 
-      description, updatedBy, createdBy, projectId
+      description, updatedBy, createdBy, projectId, technicianSalary, helperSalary
     )
-    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
     Object.values(req.body),
     (error) => {
       if (error) {

@@ -129,7 +129,7 @@
                   </ng-container>
                   <ng-container *ngIf="column.value === 'adminCost';else totalRow">
                     <td mat-footer-cell *matFooterCellDef>
-                      <strong>{{getTotalIpo('adminCost') | currency:'AED '}} </strong>
+                      <strong>{{getTotalIpo('adminCost')}} % </strong>
                     </td>
                   </ng-container>
                   <ng-container *ngIf="column.value === 'actualCost';else totalRow">
