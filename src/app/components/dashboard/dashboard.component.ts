@@ -37,11 +37,14 @@ export class DashboardComponent implements OnInit {
       },
       y: {
         display: true,
+        beginAtZero: true,
+
         title: {
           display: true,
           text: 'Amount',
         },
         ticks: {
+          stepSize: 1,
           callback: function (value, index, values) {
             if (value >= 1000) {
               return Number(value) / 1000 + 'k';

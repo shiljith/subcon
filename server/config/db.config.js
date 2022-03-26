@@ -9,4 +9,12 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
   console.log("Connected to the subcon database.");
 });
 
+db.exec("PRAGMA foreign_keys = ON;", (err) => {
+  if (err) {
+    console.log("PRAGMA", err);
+    return;
+  }
+  console.log("PRAGMA Activated");
+});
+
 module.exports = db;

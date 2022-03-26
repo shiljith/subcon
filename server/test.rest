@@ -33,7 +33,7 @@ Content-Type: application/json
 {
   "tableName": "users",
   "columns": "(accountId, firstName, lastName, username, password, role)",
-  "values": "(1, 'Aswin', 'Mp', 'ashwin@gmail.com', '123', 1)"
+  "values": "(1, 'Shiljith', 'Mp', 'shiljith07@gmail.com', '123', 1)"
 }
 
 ### insert Unit

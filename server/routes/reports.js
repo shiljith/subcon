@@ -154,7 +154,7 @@ router.get("/wip-report", auth, (req, res) => {
   }
 
   query += ` p.accountId = ${req.payload.accountId}`;
-
+  console.log("WIP", query);
   db.all(query, (error, result) => {
     if (error) {
       return res.status(404).json({ success: false, data: null, error: error });
@@ -169,7 +169,6 @@ router.get("/wip-report", auth, (req, res) => {
 
 router.get("/ipo-report", auth, (req, res) => {
   const params = req.query;
-  console.log("PARAM", params);
   let query = `
     SELECT 
       p.contractor, p.name, u.name as projectUnit, unitNumber, modelName, unitValue,
@@ -207,7 +206,6 @@ router.get("/ipo-report", auth, (req, res) => {
   }
 
   query += ` p.accountId = ${req.payload.accountId}`;
-  console.log("QUERY", query);
   db.all(query, (error, result) => {
     if (error) {
       return res.status(404).json({ success: false, data: null, error: error });

@@ -73,7 +73,7 @@ router.get("/:unitId", (req, res) => {
 router.patch("/:id", (req, res) => {
   console.log(req.body);
   db.run(
-    `UPDATE project_unit_wip SET percentage = ?, amount = ?, comments = ?, invoiceNumber = ?, updatedBy = ? WHERE id=${req.params.id}`,
+    `UPDATE project_unit_wip SET percentage = ?, amount = ?, comments = ?, invoiceNumber = ?, updatedBy = ?, status = ? WHERE id=${req.params.id}`,
     Object.values(req.body),
     (error, result) => {
       if (error) {

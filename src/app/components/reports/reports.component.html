@@ -12,12 +12,13 @@
 
                 <app-report-filter #wipFilter></app-report-filter>
 
-                <button mat-raised-button color="accent" (click)="filterWIPReport()">
+                <button mat-raised-button color="accent" matTooltip="Get filtered record" matTooltipPosition="above"
+                  (click)="filterWIPReport()">
                   <mat-icon>filter_list</mat-icon>
                 </button>
 
-                <button mat-raised-button color="primary" (click)="previewWIPReport()"
-                  [disabled]="wipReport.length === 0">
+                <button mat-raised-button color="primary" matTooltip="Report view" matTooltipPosition="above"
+                  (click)="previewWIPReport()" [disabled]="wipReport.length === 0">
                   <mat-icon>visibility</mat-icon>
                 </button>
               </div>
@@ -28,7 +29,7 @@
             <table mat-table [dataSource]="wipReport">
 
               <ng-container *ngFor="let column of wipTableColumns" [matColumnDef]="column.value">
-                <th mat-header-cell *matHeaderCellDef> {{column.title | titlecase}} </th>
+                <th mat-header-cell *matHeaderCellDef> {{column.title}} </th>
                 <ng-container *ngIf="column.value !== 'slno' && column.value !== 'status' ">
                   <td mat-cell *matCellDef="let element"> {{ element[column.value]}} </td>
                   <ng-container *ngIf="column.value === 'unitValue';else totalRow">
@@ -38,7 +39,7 @@
                   </ng-container>
                   <ng-container *ngIf="column.value === 'balanceUnitValue';else totalRow">
                     <td mat-footer-cell *matFooterCellDef>
-                      <strong>{{getTotalWip('balanceUnitValue') | currency:'AED '}} </strong>
+                      <strong>{{getTotalWip('balanceUnitValue')}} % </strong>
                     </td>
                   </ng-container>
                   <ng-container *ngIf="column.value === 'totalBilledValue';else totalRow">
@@ -91,13 +92,13 @@
 
                 <app-report-filter #ipoFilter></app-report-filter>
 
-                <button mat-raised-button color="accent" (click)="filterIPOReport()"
-                  [disabled]="wipReport.length === 0">
+                <button mat-raised-button color="accent" matTooltip="Get filtered record" matTooltipPosition="above"
+                  (click)="filterIPOReport()" [disabled]="ipoReport.length === 0">
                   <mat-icon>filter_list</mat-icon>
                 </button>
 
-                <button mat-raised-button color="primary" (click)="previewIPOReport()"
-                  [disabled]="ipoReport.length === 0">
+                <button mat-raised-button color="primary" matTooltip="Report view" matTooltipPosition="above"
+                  (click)="previewIPOReport()" [disabled]="ipoReport.length === 0">
                   <mat-icon>visibility</mat-icon>
                 </button>
               </div>
@@ -108,7 +109,7 @@
             <table mat-table [dataSource]="ipoReport">
 
               <ng-container *ngFor="let column of ipoTableColumns" [matColumnDef]="column.value">
-                <th mat-header-cell *matHeaderCellDef> {{column.title | titlecase}} </th>
+                <th mat-header-cell *matHeaderCellDef> {{column.title}} </th>
                 <ng-container *ngIf="column.value !== 'slno'">
                   <td mat-cell *matCellDef="let element"> {{ element[column.value]}} </td>
                   <ng-container *ngIf="column.value === 'unitValue';else totalRow">

@@ -99,7 +99,11 @@ function createUsersTable() {
     password TEXT,
     role INTEGER,
     createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
-    updatedAt TEXT DEFAULT CURRENT_TIMESTAMP
+    updatedAt TEXT DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_accounts
+      FOREIGN KEY (accountId)
+      REFERENCES accounts(id)
+      ON DELETE CASCADE
     )`;
   createTable(tableName, sql);
 }
@@ -118,7 +122,11 @@ function createProjectsTable() {
     createdBy INTEGER,
     updatedBy INTEGER,
     createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
-    updatedAt TEXT DEFAULT CURRENT_TIMESTAMP
+    updatedAt TEXT DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_accounts
+      FOREIGN KEY (accountId)
+      REFERENCES accounts(id)
+      ON DELETE CASCADE
     )`;
   createTable(tableName, sql);
 }
@@ -149,7 +157,11 @@ function createProjectUnitsTable() {
     createdBy INTEGER,
     updatedBy INTEGER,
     createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
-    updatedAt TEXT DEFAULT CURRENT_TIMESTAMP
+    updatedAt TEXT DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_projects
+      FOREIGN KEY (projectId)
+      REFERENCES projects(id)
+      ON DELETE CASCADE
     )`;
   createTable(tableName, sql);
 }
@@ -167,7 +179,11 @@ function createProjectUnitWorkInProgressTable() {
     createdBy INTEGER,
     updatedBy INTEGER,
     createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
-    updatedAt TEXT DEFAULT CURRENT_TIMESTAMP
+    updatedAt TEXT DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_project_units
+      FOREIGN KEY (projectUnitId)
+      REFERENCES project_units(id)
+      ON DELETE CASCADE
     )`;
   createTable(tableName, sql);
 }
@@ -181,7 +197,11 @@ function createProjectUnitWorkInProgressTimelineTable() {
     description TEXT,
     icon TEXT,
     createdBy INTEGER,
-    createdAt TEXT DEFAULT CURRENT_TIMESTAMP
+    createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_project_unit_wip
+      FOREIGN KEY (wipId)
+      REFERENCES project_unit_wip(id)
+      ON DELETE CASCADE
     )`;
   createTable(tableName, sql);
 }

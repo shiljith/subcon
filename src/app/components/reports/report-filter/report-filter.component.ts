@@ -272,4 +272,13 @@ export class ReportFilterComponent implements OnInit {
       return '';
     }
   }
+
+  clearAll() {
+    this.mainContractorMultiCtrl.reset();
+    this.projectMultiCtrl.reset();
+    this.mainContractorMultiCtrl.reset();
+    this.unitNumberMultiCtrl.reset();
+    this.startDate.reset();
+    this.endDate.reset();
+  }
 }

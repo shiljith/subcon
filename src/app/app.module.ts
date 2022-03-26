@@ -51,6 +51,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { ReportFilterComponent } from './components/reports/report-filter/report-filter.component';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { ReportTotalComponent } from './components/reports/report-total/report-total.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const MY_FORMATS = {
   parse: {
@@ -112,6 +113,7 @@ const MY_FORMATS = {
     MatTabsModule,
     NgxMatSelectSearchModule,
     MatMomentDateModule,
+    MatTooltipModule,
   ],
   providers: [
     {

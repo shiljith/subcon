@@ -139,6 +139,7 @@ export class ViewProjectUnitComponent implements OnInit {
     const data = {
       ...this.wipForm.value,
       updatedBy: this.authService.getUser()?.id,
+      status: 0,
     };
     const wipId = Number(this.selectedWipId);
     this.wipService.update(data, wipId).subscribe((res) => {
