@@ -3,6 +3,15 @@ const db = require("../config/db.config");
 const auth = require("../middleware/auth");
 
 const router = express.Router();
+router.get("/all", (req, res) => {
+  db.all(`SELECT * FROM accounts`, (error, result, fields) => {
+    if (error) {
+      console.log(error);
+      return res.status(404).json({ success: false, data: null, error: error });
+    }
+    return res.json({ success: true, data: result });
+  });
+});
 
 router.get("/", auth, (req, res) => {
   db.get(

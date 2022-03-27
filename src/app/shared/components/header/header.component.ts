@@ -11,7 +11,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class HeaderComponent implements OnInit {
   user!: User | undefined;
   isAdminAccess: boolean = false;
-  accountName: string = 'SubCon';
+  accountName: string = '';
 
   constructor(private router: Router, private authService: AuthService) {}
 

@@ -31,9 +31,11 @@ router.post("/insert", (req, res) => {
   console.log(query);
   db.run(query, (err) => {
     if (err) {
-      return console.log("DATA INSERT ERROR", err.message);
+      console.log("DATA INSERT ERROR", err.message);
+      return res.status(500).send(err.message);
     }
     console.log(`Data inserted successfully.`);
+    return res.status(200).send("Data inserted successfully.");
   });
 });
 
