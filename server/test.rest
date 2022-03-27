@@ -46,13 +46,3 @@ Content-Type: application/json
   "values": "(1, 'Escalator'), (1, 'Elevator'), (1, 'Travelator')"
 }
 
-
-### insert Account In Server
-POST https://sj-subcon.herokuapp.com/api/database/insert
-Content-Type: application/json
-
-{
-  "tableName": "accounts",
-  "columns": "(name, logo, address, technicianSalary, helperSalary, paymentStatus, paymentDate, paymentValidDate)",
-  "values": "('Prompt', 'assets/images/accounts/prompt_logo.jpg', 'Office No  101 Shaheen Building ,Po Box No 128318 ,Salam Street-Abu Dhabi ,United Arab Emirates', '10', '15', 1, '12-02-2022', '12-03-2022')"
-}

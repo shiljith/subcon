@@ -112,21 +112,32 @@ router.get("/wip-report", auth, (req, res) => {
   const endDate = null;
   const param = req.query;
 
+  // let query = `
+  //   SELECT
+  //     contractor, p.name, poNumber, unitId, unitValue, totalWIP,
+  //     unitValue*(cast(totalWIP as DOUBLE))/100 as totalBilledValue,
+  //       100-cast(totalWIP as DOUBLE) as balance,
+  //       unitValue-(unitValue*(cast(totalWIP as DOUBLE))/100) as balanceUnitValue, pu.status,
+  //       strftime('%d/%m/%Y', pu.startDate) as startDate,strftime('%d/%m/%Y', pu.endDate) as endDate
+  //   FROM projects as p
+  //   INNER JOIN project_units pu ON p.id = pu.projectId
+  //   INNER JOIN units as u ON u.id = pu.unitId
+  //   INNER JOIN (
+  //     SELECT projectUnitId, SUM(percentage) as totalWIP from  project_unit_wip WHERE status = 1
+  //   ) as puw
+  //   ON puw.projectUnitId = pu.projectId
+  //   WHERE`;
   let query = `
-    SELECT 
-      contractor, p.name, poNumber, unitId, unitValue, totalWIP, 
-      unitValue*(cast(totalWIP as DOUBLE))/100 as totalBilledValue,
-        100-cast(totalWIP as DOUBLE) as balance,
-        unitValue-(unitValue*(cast(totalWIP as DOUBLE))/100) as balanceUnitValue, pu.status,
-        strftime('%d/%m/%Y', pu.startDate) as startDate,strftime('%d/%m/%Y', pu.endDate) as endDate
-    FROM projects as p
-    INNER JOIN project_units pu ON p.id = pu.projectId
-    INNER JOIN units as u ON u.id = pu.unitId
-    INNER JOIN ( 
-      SELECT projectUnitId, SUM(percentage) as totalWIP from  project_unit_wip WHERE status = 1
-    ) as puw
-    ON puw.projectUnitId = pu.projectId
-    WHERE`;
+    select p.contractor,p.name,p.poNumber,pu.unitId,pu.unitValue,pu.status,
+    puw.projectUnitId,u.name, sum(puw.percentage) as totalWIP,sum(puw.amount) as totalBilledValue,
+    100-sum(puw.percentage) as balance, (pu.unitValue-sum(puw.amount)) as balanceUnitValue,
+    strftime('%d/%m/%Y', pu.startDate) as startDate,strftime('%d/%m/%Y', pu.endDate) as endDate
+    from projects  p
+    inner join project_units  pu on p.id =pu.projectId
+    inner join project_unit_wip puw on pu.id=puw.projectUnitId
+    inner join units u on u.id=pu.unitId
+    WHERE
+  `;
   if (param.mainContractor && param.mainContractor !== "") {
     query += ` p.contractor IN ${param.mainContractor} AND`;
   }
@@ -153,7 +164,8 @@ router.get("/wip-report", auth, (req, res) => {
     AND strftime('%m/%d/%Y', pu.endDate) <= '${param.endDate}' AND`;
   }
 
-  query += ` p.accountId = ${req.payload.accountId}`;
+  query += ` p.accountId = ${req.payload.accountId}
+  group by puw.projectUnitId,p.contractor,p.name,p.poNumber,pu.unitId,pu.unitValue,pu.status,pu.startDate,pu.endDate,u.name`;
   console.log("WIP", query);
   db.all(query, (error, result) => {
     if (error) {
