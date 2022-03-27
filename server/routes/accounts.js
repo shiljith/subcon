@@ -7,7 +7,7 @@ const router = express.Router();
 router.get("/", auth, (req, res) => {
   db.get(
     `
-    SELECT name, address, technicianSalary, helperSalary, paymentStatus FROM accounts WHERE id = ${req.payload.accountId}
+    SELECT name, logo, address, technicianSalary, helperSalary, paymentStatus FROM accounts WHERE id = ${req.payload.accountId}
     `,
     (error, result, fields) => {
       if (error) {

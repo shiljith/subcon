@@ -15,12 +15,11 @@
       display: flex;
       gap: 0.5rem;
       &-logo {
-        img {
-          width: 100px;
-          height: 100px;
-          background-size: cover;
-          border-radius: 50%;
-        }
+        width: 100px;
+        height: 100px;
+        background-repeat: no-repeat;
+        background-size: contain;
+        border-radius: 50%;
       }
       &-name {
         font-size: 28px;

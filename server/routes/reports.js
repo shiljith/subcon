@@ -128,8 +128,8 @@ router.get("/wip-report", auth, (req, res) => {
   //   ON puw.projectUnitId = pu.projectId
   //   WHERE`;
   let query = `
-    select p.contractor,p.name,p.poNumber,pu.unitId,pu.unitValue,pu.status,
-    puw.projectUnitId,u.name, sum(puw.percentage) as totalWIP,sum(puw.amount) as totalBilledValue,
+    select p.contractor,p.name,p.poNumber,pu.unitNumber,pu.unitValue,pu.status,
+    puw.projectUnitId, u.name as projectUnit, sum(puw.percentage) as totalWIP,sum(puw.amount) as totalBilledValue,
     100-sum(puw.percentage) as balance, (pu.unitValue-sum(puw.amount)) as balanceUnitValue,
     strftime('%d/%m/%Y', pu.startDate) as startDate,strftime('%d/%m/%Y', pu.endDate) as endDate
     from projects  p
@@ -165,7 +165,8 @@ router.get("/wip-report", auth, (req, res) => {
   }
 
   query += ` p.accountId = ${req.payload.accountId} and u.accountId=${req.payload.accountId} and puw.status=1
-  group by puw.projectUnitId,p.contractor,p.name,p.poNumber,pu.unitId,pu.unitValue,pu.status,pu.startDate,pu.endDate,u.name`;
+  group by puw.projectUnitId, p.contractor, p.name,p.poNumber, pu.unitId, pu.unitValue,
+  pu.status, pu.startDate, pu.endDate, projectUnit`;
   console.log("WIP", query);
   db.all(query, (error, result) => {
     if (error) {
