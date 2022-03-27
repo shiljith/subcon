@@ -47,16 +47,7 @@
                       <strong>{{getTotalWip('totalBilledValue') | currency:'AED '}} </strong>
                     </td>
                   </ng-container>
-                  <ng-container *ngIf="column.value === 'balance';else totalRow">
-                    <td mat-footer-cell *matFooterCellDef>
-                      <strong>{{getTotalWip('balance')}} % </strong>
-                    </td>
-                  </ng-container>
-                  <ng-container *ngIf="column.value === 'totalWIP';else totalRow">
-                    <td mat-footer-cell *matFooterCellDef>
-                      <strong>{{getTotalWip('totalWIP')}} % </strong>
-                    </td>
-                  </ng-container>
+                  
                   <ng-template #totalRow>
                     <td mat-footer-cell *matFooterCellDef></td>
                   </ng-template>
@@ -125,11 +116,6 @@
                   <ng-container *ngIf="column.value === 'estimatedCost';else totalRow">
                     <td mat-footer-cell *matFooterCellDef>
                       <strong>{{getTotalIpo('estimatedCost') | currency:'AED '}} </strong>
-                    </td>
-                  </ng-container>
-                  <ng-container *ngIf="column.value === 'adminCost';else totalRow">
-                    <td mat-footer-cell *matFooterCellDef>
-                      <strong>{{getTotalIpo('adminCost')}} % </strong>
                     </td>
                   </ng-container>
                   <ng-container *ngIf="column.value === 'actualCost';else totalRow">

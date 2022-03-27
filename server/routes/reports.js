@@ -164,7 +164,7 @@ router.get("/wip-report", auth, (req, res) => {
     AND strftime('%m/%d/%Y', pu.endDate) <= '${param.endDate}' AND`;
   }
 
-  query += ` p.accountId = ${req.payload.accountId}
+  query += ` p.accountId = ${req.payload.accountId} and u.accountId=${req.payload.accountId} and puw.status=1
   group by puw.projectUnitId,p.contractor,p.name,p.poNumber,pu.unitId,pu.unitValue,pu.status,pu.startDate,pu.endDate,u.name`;
   console.log("WIP", query);
   db.all(query, (error, result) => {

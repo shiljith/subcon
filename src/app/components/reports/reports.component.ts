@@ -195,13 +195,13 @@ export class ReportsComponent implements OnInit {
         data: this.wipReport,
         total: [
           { name: 'Total Unit Value', key: 'unitValue', isCurrency: true },
-          { name: 'Total WIP', key: 'totalWIP', isCurrency: false },
+          //{ name: 'Total WIP', key: 'totalWIP', isCurrency: false },
           {
             name: 'Total Billed Value',
             key: 'totalBilledValue',
             isCurrency: true,
           },
-          { name: 'Balance', key: 'balance', isCurrency: false },
+          //{ name: 'Balance', key: 'balance', isCurrency: false },
           {
             name: 'Balance Unit Value',
             key: 'balanceUnitValue',
