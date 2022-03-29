@@ -320,4 +320,11 @@ export class ReportsComponent implements OnInit {
   getStatus(value: number) {
     return this.projectService.getStatus(value);
   }
+
+  clearAllFilters(event: boolean) {
+    if (event) {
+      this.getWorkInProgressReport();
+      this.getInstallationProgressOverviewReport();
+    }
+  }
 }

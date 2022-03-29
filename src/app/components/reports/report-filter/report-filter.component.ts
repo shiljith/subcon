@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { take, takeUntil } from 'rxjs/operators';
 import { MatSelect } from '@angular/material/select';
 import { ReplaySubject, Subject } from 'rxjs';
@@ -31,6 +37,9 @@ export class ReportFilterComponent implements OnInit {
   projectMultiSelect!: MatSelect;
   @ViewChild('unitNumberMultiSelect', { static: true })
   unitNumberMultiSelect!: MatSelect;
+
+  @Output('clearAllFilter') clearAllFilter: EventEmitter<boolean> =
+    new EventEmitter<boolean>();
 
   protected mainContractor: MainContractor[] = [];
   protected project: Project[] = [];
@@ -283,6 +292,7 @@ export class ReportFilterComponent implements OnInit {
     this.unitNumberMultiFilterCtrl.reset();
     this.startDate.reset();
     this.endDate.reset();
+    this.clearAllFilter.emit(true);
 
     // this.filteredMainContractorsMulti: ReplaySubject<MainContractor[]> =
     //   new ReplaySubject<MainContractor[]>(1);

@@ -171,4 +171,27 @@ export class DashboardComponent implements OnInit {
   goToProject(id: number) {
     this.router.navigate(['/project', id]);
   }
+
+  formatCurrency(actualAmount: number): number {
+    let amount = 0;
+    console.log(actualAmount);
+    if (actualAmount >= 1000 && actualAmount < 1000000) {
+      amount = actualAmount / 1000;
+    } else if (actualAmount >= 1000000) {
+      amount = actualAmount / 1000000;
+    } else {
+      amount = actualAmount;
+    }
+    console.log(amount);
+    return amount;
+  }
+  getCurrencySymbol(actualAmount: number): string {
+    let symbol = '';
+    if (actualAmount >= 1000 && actualAmount < 1000000) {
+      symbol = 'K';
+    } else if (actualAmount >= 1000000) {
+      symbol = 'M';
+    }
+    return symbol;
+  }
 }

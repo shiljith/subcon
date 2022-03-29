@@ -43,7 +43,7 @@ router.get("/total-billed", auth, (req, res) => {
     SELECT SUM(puw.amount) as totalBilled FROM project_unit_wip as puw
     JOIN project_units as pu ON pu.id = puw.projectUnitId
     JOIN projects as p ON p.id = pu.projectId
-    WHERE p.accountId =  ${req.payload.accountId} 
+    WHERE puw.status = 1 AND p.accountId =  ${req.payload.accountId} 
   `;
   db.get(query, (error, result, fields) => {
     if (error) {
@@ -62,7 +62,7 @@ router.get("/balance-work-value", auth, (req, res) => {
     SELECT (pu.unitValue - SUM(puw.amount)) as balanceWorkValue FROM project_unit_wip as puw
     JOIN project_units as pu ON pu.id = puw.projectUnitId
     JOIN projects as p ON p.id = pu.projectId 
-    WHERE p.accountId = ${req.payload.accountId} GROUP BY pu.id   
+    WHERE puw.status = 1 AND p.accountId = ${req.payload.accountId} GROUP BY pu.id   
   `;
   db.all(query, (error, result, fields) => {
     if (error) {
@@ -123,10 +123,11 @@ router.get("/month-wise-work-value", auth, (req, res) => {
   (
   select 
   strftime('%m',startDate) as month,
-  sum(unitValue) as total_est
+  sum(puw.amount) as total_est
   from project_units a
-inner join projects b on a.projectId=b.id and b.accountId=${req.payload.accountId}
-  where strftime('%Y',startDate) = '2022'
+  inner join projects b on a.projectId=b.id and b.accountId=${req.payload.accountId}
+  inner join project_unit_wip puw on puw.projectUnitId = a.id
+  where strftime('%Y',startDate) = '2022' and puw.status=1
   group by strftime('%m',startDate)
   )A
   )B

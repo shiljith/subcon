@@ -201,7 +201,7 @@ router.get("/ipo-report", auth, (req, res) => {
   }
 
   if (params.projectUnit && params.projectUnit !== "") {
-    query += ` u.id IN ${params.projectUnit} AND`;
+    query += ` u.name IN ${params.projectUnit} AND`;
   }
 
   if (params.unitNumber && params.unitNumber !== "") {
@@ -219,6 +219,7 @@ router.get("/ipo-report", auth, (req, res) => {
   }
 
   query += ` p.accountId = ${req.payload.accountId}`;
+  console.log("IPO", query);
   db.all(query, (error, result) => {
     if (error) {
       return res.status(404).json({ success: false, data: null, error: error });

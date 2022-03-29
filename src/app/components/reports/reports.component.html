@@ -10,7 +10,7 @@
             <form>
               <div class="form-fields">
 
-                <app-report-filter #wipFilter></app-report-filter>
+                <app-report-filter #wipFilter (clearAllFilter)="clearAllFilters($event)"></app-report-filter>
 
                 <button mat-raised-button color="accent" matTooltip="Get filtered record" matTooltipPosition="above"
                   (click)="filterWIPReport()">
@@ -81,10 +81,10 @@
             <form>
               <div class="form-fields">
 
-                <app-report-filter #ipoFilter></app-report-filter>
+                <app-report-filter #ipoFilter (clearAllFilter)="clearAllFilters($event)"></app-report-filter>
 
                 <button mat-raised-button color="accent" matTooltip="Get filtered record" matTooltipPosition="above"
-                  (click)="filterIPOReport()" [disabled]="ipoReport.length === 0">
+                  (click)="filterIPOReport()">
                   <mat-icon>search</mat-icon>
                 </button>
 
