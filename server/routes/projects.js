@@ -10,8 +10,8 @@ router.post("/", auth, (req, res, next) => {
   db.run(
     `
       INSERT INTO projects 
-      (poNumber, name, status, description, contractor, updatedBy, createdBy, accountId)
-      VALUES (?,?,?,?,?,?,?,?)
+      (poNumber, name, status, description, contractor, createdAt, updatedAt, updatedBy, createdBy, accountId)
+      VALUES (?,?,?,?,?,?,?,?,?,?)
     `,
     Object.values(project),
     (error) => {
@@ -106,7 +106,7 @@ router.patch("/pin/:id", (req, res) => {
 
 router.patch("/:id", (req, res) => {
   db.run(
-    `UPDATE projects SET poNumber = ?, name = ?, status = ?, description = ?, contractor = ?, updatedBy= ? WHERE id=${req.params.id}`,
+    `UPDATE projects SET poNumber = ?, name = ?, status = ?, description = ?, contractor = ?, createdAt=?, updatedAt=?, updatedBy= ? WHERE id=${req.params.id}`,
     Object.values(req.body),
     (error, result) => {
       if (error) {

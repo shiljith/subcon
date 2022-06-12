@@ -52,6 +52,7 @@ import { ReportFilterComponent } from './components/reports/report-filter/report
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { ReportTotalComponent } from './components/reports/report-total/report-total.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ShortCurrencyPipe } from './pipes/short-currency.pipe';
 
 const MY_FORMATS = {
   parse: {
@@ -84,6 +85,7 @@ const MY_FORMATS = {
     WipTimelineComponent,
     ReportFilterComponent,
     ReportTotalComponent,
+    ShortCurrencyPipe,
   ],
   imports: [
     BrowserModule,

@@ -16,6 +16,7 @@ import { ProjectUnitService } from 'src/app/services/project-unit.service';
 import { AddProjectUnitComponent } from '../add-project-unit/add-project-unit.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { WipTimelineComponent } from './wip-timeline/wip-timeline.component';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-view-project-unit',
@@ -68,6 +69,7 @@ export class ViewProjectUnitComponent implements OnInit {
       amount: ['', Validators.required],
       comments: ['', Validators.required],
       invoiceNumber: [''],
+      updatedAt: [new Date().toISOString(), Validators.required],
     });
     this.getProjectUnit();
   }
@@ -86,11 +88,17 @@ export class ViewProjectUnitComponent implements OnInit {
 
   onsubmitProgress() {
     if (this.wipForm.invalid) return;
+
+    const updatedAt = moment(this.wipForm.controls['updatedAt'].value).format(
+      'YYYY-MM-DD HH:mm:ss'
+    );
+
     const data = {
       ...this.wipForm.value,
       projectUnitId: this.projectUnit.id,
       createdBy: this.authService.getUser()?.id,
       updatedBy: this.authService.getUser()?.id,
+      updatedAt: updatedAt,
     };
     this.wipService.add(data).subscribe((res) => {
       console.log('ADDED', res);
@@ -131,14 +139,19 @@ export class ViewProjectUnitComponent implements OnInit {
       amount: wip.amount,
       comments: wip.comments,
       invoiceNumber: wip.invoiceNumber,
+      updatedAt: wip.updatedAt,
     });
     this.selectedWipId = wip.id;
   }
 
   onEditProgress() {
+    const updatedAt = moment(this.wipForm.controls['updatedAt'].value).format(
+      'YYYY-MM-DD HH:mm:ss'
+    );
     const data = {
       ...this.wipForm.value,
       updatedBy: this.authService.getUser()?.id,
+      updatedAt: updatedAt,
       status: 0,
     };
     const wipId = Number(this.selectedWipId);

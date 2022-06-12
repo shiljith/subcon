@@ -1,0 +1,48 @@
+###
+DELETE http://ec2-15-206-173-114.ap-south-1.compute.amazonaws.com:8080/api/database/drop
+
+### Create all tables
+POST http://ec2-15-206-173-114.ap-south-1.compute.amazonaws.com:8080/api/database/create
+Content-Type: application/json
+
+{}
+### insert Account
+POST http://ec2-15-206-173-114.ap-south-1.compute.amazonaws.com:8080/api/database/insert
+Content-Type: application/json
+
+{
+  "tableName": "accounts",
+  "columns": "(name, logo, address, technicianSalary, helperSalary, paymentStatus, paymentDate, paymentValidDate)",
+  "values": "('Cognizant', 'assets/images/accounts/cognizant.jpg', 'Cognizant is a multi national company', '10', '15', 1, '12-02-2022', '12-03-2022')"
+}
+
+### insert Role
+POST http://ec2-15-206-173-114.ap-south-1.compute.amazonaws.com:8080/api/database/insert
+Content-Type: application/json
+
+{
+  "tableName": "roles",
+  "columns": "(name, accountId)",
+  "values": "('Admin', 1), ('Project Engineer', 1)"
+}
+
+### insert user
+POST http://ec2-15-206-173-114.ap-south-1.compute.amazonaws.com:8080/api/database/insert
+Content-Type: application/json
+
+{
+  "tableName": "users",
+  "columns": "(accountId, firstName, lastName, username, password, role)",
+  "values": "(1, 'Shiljith', 'Mp', 'shiljith07@gmail.com', '123', 1)"
+}
+
+### insert Unit
+POST http://ec2-15-206-173-114.ap-south-1.compute.amazonaws.com:8080/api/database/insert
+Content-Type: application/json
+
+{
+  "tableName": "units",
+  "columns": "(accountId, name)",
+  "values": "(1, 'Escalator'), (1, 'Elevator'), (1, 'Travelator')"
+}
+

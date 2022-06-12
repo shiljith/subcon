@@ -1,5 +1,6 @@
 const express = require("express");
 const db = require("../config/db.config");
+const auth = require("../middleware/auth");
 
 const router = express.Router();
 
@@ -25,9 +26,9 @@ router.post("/", (req, res, next) => {
   );
 });
 
-router.get("/units", (req, res) => {
+router.get("/units", auth, (req, res) => {
   console.log(req.params.projectId);
-  const query = `SELECT * FROM units`;
+  const query = `SELECT * FROM units WHERE accountId = ${req.payload.accountId}`;
   db.all(query, (error, result) => {
     if (error) {
       return res.status(404).json({ success: false, data: null, error: error });

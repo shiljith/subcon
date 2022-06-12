@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Project } from 'src/app/models/project';
 import { AuthService } from 'src/app/services/auth.service';
 import { ProjectService } from 'src/app/services/project.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-add-project',
@@ -24,12 +25,15 @@ export class AddProjectComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    const today = moment().toDate();
+    console.log(today);
     this.projectForm = this.formBuilder.group({
       poNumber: ['', Validators.required],
       name: ['', Validators.required],
       status: ['1', Validators.required],
       description: [''],
       contractor: [''],
+      createdAt: [today, Validators.required],
     });
     if (this.project) {
       const data = {
@@ -38,6 +42,7 @@ export class AddProjectComponent implements OnInit {
         status: this.project.status.toString(),
         contractor: this.project.contractor,
         description: this.project.description,
+        createdAt: this.project.createdAt,
       };
       this.projectForm.patchValue(data);
     }
@@ -46,10 +51,20 @@ export class AddProjectComponent implements OnInit {
   onSubmit() {
     if (this.projectForm.invalid) return;
 
+    const createdAt = moment(
+      this.projectForm.controls['createdAt'].value
+    ).format('YYYY-MM-DD HH:mm:ss');
+
+    const updatedAt = moment().format('YYYY-MM-DD HH:mm:ss');
+
     const project: Project = {
       ...this.projectForm.value,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
       updatedBy: this.authService.getUser().id,
     };
+
+    console.log(project);
 
     if (this.project) {
       this.projectService.update(project, this.project.id).subscribe((res) => {

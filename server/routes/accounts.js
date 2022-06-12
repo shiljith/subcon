@@ -46,4 +46,21 @@ router.patch("/", auth, (req, res) => {
   );
 });
 
+router.get("/backup", auth, (req, res) => {
+  db.all(
+    `
+    SELECT * from projects WHERE accountId = ${req.payload.accountId}
+    `,
+    (error, result, fields) => {
+      if (error) {
+        console.log(error);
+        return res
+          .status(404)
+          .json({ success: false, data: null, error: error });
+      }
+      return res.json({ success: true, data: result });
+    }
+  );
+});
+
 module.exports = router;

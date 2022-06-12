@@ -6,14 +6,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Project, ProjectUnit } from 'src/app/models/project';
 import { ProjectService } from 'src/app/services/project.service';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
-import * as pdfMake from 'pdfmake/build/pdfmake';
-import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { AuthService } from 'src/app/services/auth.service';
 import { AddProjectUnitComponent } from '../add-project-unit/add-project-unit.component';
 import { ProjectUnitService } from 'src/app/services/project-unit.service';
 import { AddProjectComponent } from '../add-project/add-project.component';
 import { ViewProjectUnitComponent } from '../view-project-unit/view-project-unit.component';
-(pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-view-project',
@@ -193,36 +190,6 @@ export class ViewProjectComponent implements OnInit {
         this.dataSource = res;
         this.filteredData = res;
       });
-  }
-
-  generatePDF() {
-    let docDefinition = {
-      content: [
-        // Previous configuration
-        {
-          text: 'Project Report',
-          style: 'sectionHeader',
-        },
-        {
-          table: {
-            headerRows: 1,
-            widths: ['*', 'auto', 'auto', 'auto'],
-            body: [
-              ['Name', 'Amount', 'Expense', 'Profit'],
-              ...this.filteredData.map((p) => [
-                p.name,
-                //p.estimatedAmount,
-                // p.estimatedExpense,
-                //p.estimatedProfit,
-              ]),
-            ],
-          },
-        },
-      ],
-      // Common Styles
-    };
-
-    pdfMake.createPdf(docDefinition).open();
   }
 
   setStatus(status: number) {

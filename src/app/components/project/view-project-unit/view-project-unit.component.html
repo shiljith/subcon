@@ -15,7 +15,7 @@
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item (click)="onEditProjectUnit(projectUnit)" *ngIf="isAdminAccess">
+              <button mat-menu-item (click)="onEditProjectUnit(projectUnit)">
                 <mat-icon>edit</mat-icon>
                 <span>Edit Project</span>
               </button>
@@ -173,25 +173,31 @@
             <form [formGroup]="wipForm" *ngIf="isVisibleWipControls">
               <div class="wip-control">
                 <div class="form-group">
-                  <mat-form-field appearance="outline" class="col-3">
+                  <mat-form-field appearance="outline" class="col-2">
                     <mat-label>Percentage</mat-label>
                     <input type="number" min="0" max="100" matInput formControlName="percentage"
                       placeholder="Enter percentage" (change)="onChangePercentage($event)"
                       (keyup)="onChangePercentage($event)" autocomplete="off">
                   </mat-form-field>
-                  <mat-form-field appearance="outline" class="col-3">
+                  <mat-form-field appearance="outline" class="col-2">
                     <mat-label>Amount</mat-label>
                     <input type="number" matInput formControlName="amount" placeholder="Enter amount" readonly>
                   </mat-form-field>
-                  <mat-form-field appearance="outline" class="col-3">
+                  <mat-form-field appearance="outline" class="col-2">
                     <mat-label>Comments</mat-label>
                     <textarea type="text" matInput formControlName="comments" placeholder="Enter Comments"
                       autocomplete="off" rows="1"></textarea>
                   </mat-form-field>
-                  <mat-form-field appearance="outline" class="col-3">
+                  <mat-form-field appearance="outline" class="col-2">
                     <mat-label>invoice Number</mat-label>
                     <input type="text" matInput formControlName="invoiceNumber" placeholder="Enter invoice number"
                       autocomplete="off">
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="col-2">
+                    <mat-label>Billed Date</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="updatedAt">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
                   </mat-form-field>
                   <mat-error
                     *ngIf="wipForm.controls['amount'].errors && wipForm.controls['amount'].errors['balance_validator']">

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AccountService } from 'src/app/services/account.service';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-settings',
@@ -47,5 +48,27 @@ export class SettingsComponent implements OnInit {
         });
       }
     });
+  }
+
+  backup() {
+    this.accountService.downloadBackup().subscribe((res) => {
+      this.downloadFile(res);
+    });
+  }
+
+  downloadFile(data: any) {
+    console.log('Backup', data);
+    const replacer = (key: any, value: any) => (value === null ? '' : value);
+    const header = Object.keys(data[0]);
+    let csv = data.map((row: any) =>
+      header
+        .map((fieldName) => JSON.stringify(row[fieldName], replacer))
+        .join(',')
+    );
+    csv.unshift(header.join(','));
+    let csvArray = csv.join('\r\n');
+
+    var blob = new Blob([csvArray], { type: 'text/csv' });
+    saveAs(blob, 'myFile.csv');
   }
 }

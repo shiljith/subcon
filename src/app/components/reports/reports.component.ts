@@ -1,15 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import * as pdfMake from 'pdfmake/build/pdfmake';
-import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { Account } from 'src/app/models/account';
 import { AccountService } from 'src/app/services/account.service';
 import { ProjectUnitService } from 'src/app/services/project-unit.service';
 import { ProjectService } from 'src/app/services/project.service';
 import { ReportService } from 'src/app/services/report.service';
 import { ReportFilterComponent } from './report-filter/report-filter.component';
-(pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
 import * as moment from 'moment';
 
@@ -254,67 +251,6 @@ export class ReportsComponent implements OnInit {
   }
   filterIPOReport() {
     this.getInstallationProgressOverviewReport();
-  }
-
-  generateWIPReportPDF() {
-    let docDefinition = {
-      content: [
-        // Previous configuration
-        {
-          text: 'Project Report',
-          style: 'sectionHeader',
-        },
-        {
-          table: {
-            headerRows: 1,
-            widths: [
-              '*',
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-              'auto',
-            ],
-            body: [
-              [
-                'slno',
-                'contractor',
-                'name',
-                'pNumber',
-                'unitId',
-                'unitValue',
-                'totalWip',
-                'totalBilledValue',
-                'balance',
-                'balanceUnitValue',
-                'status',
-              ],
-              ...this.wipReport.map((p) => [
-                p.name,
-                p.contractor,
-                p.name,
-                p.pNumber,
-                p.unitId,
-                p.unitValue,
-                p.totalWip,
-                p.totalBilledValue,
-                p.balance,
-                p.balanceUnitValue,
-                p.status,
-              ]),
-            ],
-          },
-        },
-      ],
-      // Common Styles
-    };
-
-    pdfMake.createPdf(docDefinition).open();
   }
 
   getStatus(value: number) {

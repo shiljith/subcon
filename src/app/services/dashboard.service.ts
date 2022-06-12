@@ -60,8 +60,8 @@ export class DashboardService {
       })
     );
   }
-  getWorkValueData() {
-    return this.http.get(`${this.baseUrl}/month-wise-work-value`).pipe(
+  getWorkValueData(year: number) {
+    return this.http.get(`${this.baseUrl}/month-wise-work-value/${year}`).pipe(
       map((res: any) => {
         if (res && res.success) {
           return res.data;

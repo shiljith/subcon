@@ -24,7 +24,11 @@
             </div>
             <div class="tile-body">
               <div class="title">Total Project Value</div>
-              <div class="count">{{formatCurrency(totalWorkValue) | currency:'AED ':'symbol-narrow':'1.0-0'}}{{getCurrencySymbol(totalWorkValue)}}</div>
+              <div class="count">
+                <div class="c" matTooltipPosition="above" matTooltip="{{totalWorkValue | currency:'AED '}}">
+                  {{totalWorkValue | currency:'AED '}}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -36,7 +40,11 @@
             </div>
             <div class="tile-body">
               <div class="title">Total Billed</div>
-              <div class="count">{{formatCurrency(totalBilled) | currency:'AED ':'symbol-narrow':'1.0-0'}}{{getCurrencySymbol(totalBilled)}}</div>
+              <div class="count">
+                <div class="c" matTooltipPosition="above" matTooltip="{{totalBilled | currency:'AED '}}">
+                  {{totalBilled | currency:'AED '}}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -48,7 +56,12 @@
             </div>
             <div class="tile-body">
               <div class="title">Balance Project Value</div>
-              <div class="count">{{formatCurrency(balanceWorkValue) | currency:'AED ':'symbol-narrow':'1.0-0'}}{{getCurrencySymbol(balanceWorkValue)}}</div>
+              <div class="count">
+                <!-- <div class="cs">AED</div> -->
+                <div class="c" matTooltipPosition="above" matTooltip="{{(totalWorkValue - totalBilled) | currency:'AED '}}">
+                  {{(totalWorkValue - totalBilled) | currency:'AED '}}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -85,7 +98,15 @@
           </div>
         </div>
         <div class="line-graph">
-          <div class="title">Installation Progress</div>
+          <div class="line-graph-header">
+            <div class="title">Installation Progress</div>
+            <div class="year-field">
+              <mat-form-field >
+                <mat-label for="year">Year</mat-label>
+                <input id="year" type="number" [(ngModel)]="lineGraphYear" matInput (keyup)="onLineGraphYearChange($event)" (change)="onLineGraphYearChange($event)" placeholder="Enter Year">
+              </mat-form-field>
+            </div>
+          </div>
           <div class="" *ngIf="lineChartData">
             <canvas baseChart type="line" [data]="lineChartData" [options]="lineChartOptions">
             </canvas>
@@ -147,7 +168,7 @@
                   </div>
                   <div class="man-hour-body">
                     <div class="man-hour-header">Technician</div>
-                    <div class="man-hour-count">
+                    <div class="man-hour-count" matTooltipPosition="above" matTooltip="{{(manHour?.estimatedTechnician * manHour?.technicianSalary) | currency:'AED '}}">
                       {{(manHour?.estimatedTechnician * manHour?.technicianSalary) | currency:'AED '}}
                     </div>
                     <div class="man-hour-salary">{{manHour?.estimatedTechnician}} Hours</div>
@@ -159,7 +180,8 @@
                   </div>
                   <div class="man-hour-body">
                     <div class="man-hour-header">Helper</div>
-                    <div class="man-hour-count">{{(manHour?.estimatedHelper * manHour?.helperSalary) | currency:'AED '}}
+                    <div class="man-hour-count" matTooltipPosition="above" matTooltip="{{(manHour?.estimatedHelper * manHour?.helperSalary) | currency:'AED '}}">
+                      {{(manHour?.estimatedHelper * manHour?.helperSalary) | currency:'AED '}}
                     </div>
                     <div class="man-hour-salary">{{manHour?.estimatedHelper}} Hours</div>
                   </div>
@@ -170,7 +192,7 @@
                   </div>
                   <div class="man-hour-body">
                     <div class="man-hour-header">Total</div>
-                    <div class="man-hour-count">
+                    <div class="man-hour-count" matTooltipPosition="above" matTooltip="{{ (manHour?.estimatedTechnician * manHour?.technicianSalary) + (manHour?.estimatedHelper * manHour?.helperSalary) | currency:'AED '}}">
                       {{ (manHour?.estimatedTechnician * manHour?.technicianSalary) + (manHour?.estimatedHelper * manHour?.helperSalary) | currency:'AED '}}
                     </div>
                     <div class="man-hour-salary">
@@ -191,7 +213,8 @@
                   </div>
                   <div class="man-hour-body">
                     <div class="man-hour-header">Technician</div>
-                    <div class="man-hour-count">{{(manHour?.actualTechnician * technicianSalary) | currency:'AED '}}
+                    <div class="man-hour-count" matTooltipPosition="above" matTooltip="{{(manHour?.actualTechnician * manHour?.technicianSalary) | currency:'AED '}}">
+                      {{(manHour?.actualTechnician * manHour?.technicianSalary) | currency:'AED '}}
                     </div>
                     <div class="man-hour-salary">{{manHour?.actualTechnician}} Hours</div>
                   </div>
@@ -202,7 +225,9 @@
                   </div>
                   <div class="man-hour-body">
                     <div class="man-hour-header">Helper</div>
-                    <div class="man-hour-count">{{(manHour?.actualHelper * helperSalary) | currency:'AED '}}</div>
+                    <div class="man-hour-count" matTooltipPosition="above" matTooltip="{{(manHour?.actualHelper * manHour?.helperSalary) | currency:'AED '}}">
+                      {{(manHour?.actualHelper * manHour?.helperSalary) | currency:'AED '}}
+                    </div>
                     <div class="man-hour-salary">{{manHour?.actualHelper}} Hours</div>
                   </div>
                 </div>
@@ -212,8 +237,8 @@
                   </div>
                   <div class="man-hour-body">
                     <div class="man-hour-header">Total</div>
-                    <div class="man-hour-count">
-                      {{(manHour?.actualTechnician * technicianSalary) + (manHour?.actualHelper * helperSalary) | currency:'AED '}}
+                    <div class="man-hour-count" matTooltipPosition="above" matTooltip="{{(manHour?.actualTechnician * manHour?.technicianSalary) + (manHour?.actualHelper * manHour?.helperSalary) | currency:'AED '}}">
+                      {{(manHour?.actualTechnician * manHour?.technicianSalary) + (manHour?.actualHelper * manHour?.helperSalary) | currency:'AED '}}
                     </div>
                     <div class="man-hour-salary">
                       {{manHour?.actualTechnician + manHour?.actualHelper}} Hours

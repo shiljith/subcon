@@ -33,6 +33,7 @@ body {
 
 ::-webkit-scrollbar {
   width: 7px;
+  height: 7px;
   background-color: #f5f5f5;
 }
 
@@ -64,6 +65,9 @@ $formFieldGap: 0.5rem;
 
 .col-2 {
   width: calc(20% - $formFieldGap);
+}
+.col-1 {
+  width: calc(10% - $formFieldGap);
 }
 .col-3 {
   width: calc(25% - $formFieldGap);

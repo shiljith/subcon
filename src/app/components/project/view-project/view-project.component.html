@@ -103,7 +103,7 @@
                 <button mat-icon-button color="warn" (click)="onDelete(element)" *ngIf="isAdminAccess">
                   <mat-icon>delete</mat-icon>
                 </button>
-                <button mat-icon-button color="primary" (click)="onEdit(element)" *ngIf="isAdminAccess">
+                <button mat-icon-button color="primary" (click)="onEdit(element)">
                   <mat-icon>edit</mat-icon>
                 </button>
                 <button mat-icon-button color="primary" (click)="onView(element)">
@@ -159,7 +159,7 @@
         </div>
       </form>
       <div>
-        <button mat-icon-button (click)="generatePDF()">
+        <button mat-icon-button>
           <mat-icon>file_download</mat-icon>
         </button>
         <button mat-icon-button (click)="projectFilterForm.reset(); onFilterChange()">

@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  baseUrl: 'https://sj-subcon.herokuapp.com/api',
+  baseUrl: 'http://43.204.84.113:8080/api',
 };

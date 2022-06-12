@@ -62,14 +62,13 @@ router.get("/balance-work-value", auth, (req, res) => {
     SELECT (pu.unitValue - SUM(puw.amount)) as balanceWorkValue FROM project_unit_wip as puw
     JOIN project_units as pu ON pu.id = puw.projectUnitId
     JOIN projects as p ON p.id = pu.projectId 
-    WHERE puw.status = 1 AND p.accountId = ${req.payload.accountId} GROUP BY pu.id   
+    WHERE p.accountId = ${req.payload.accountId} GROUP BY pu.id   
   `;
   db.all(query, (error, result, fields) => {
     if (error) {
       return res.status(404).json({ success: false, data: null, error: error });
     }
     if (result) {
-      console.log("BALACE", result);
       return res.json({ success: true, data: result });
     } else {
       return res.status(404).send({ message: "Not found" });
@@ -77,7 +76,8 @@ router.get("/balance-work-value", auth, (req, res) => {
   });
 });
 
-router.get("/month-wise-work-value", auth, (req, res) => {
+router.get("/month-wise-work-value/:year", auth, (req, res) => {
+  const year = req.params.year;
   const monthWiseWorkValue = {
     labels: [
       "Jan",
@@ -122,23 +122,22 @@ router.get("/month-wise-work-value", auth, (req, res) => {
   from
   (
   select 
-  strftime('%m',startDate) as month,
+  strftime('%m',puw.updatedAt) as month,
   sum(puw.amount) as total_est
   from project_units a
   inner join projects b on a.projectId=b.id and b.accountId=${req.payload.accountId}
   inner join project_unit_wip puw on puw.projectUnitId = a.id
-  where strftime('%Y',startDate) = '2022' and puw.status=1
-  group by strftime('%m',startDate)
+  where strftime('%Y',puw.updatedAt) = '${year}' and puw.status=1
+  group by strftime('%m',puw.updatedAt)
   )A
   )B
   `;
-  console.log("QUERY", query);
+  console.log("Line GRAPH", query);
   db.get(query, (error, result, fields) => {
     if (error) {
       return res.status(404).json({ success: false, data: null, error: error });
     }
     if (result) {
-      console.log("PSTATUS", result);
       monthWiseWorkValue.datasets[0].data = Object.values(result);
       return res.json({ success: true, data: monthWiseWorkValue });
     } else {
@@ -162,6 +161,7 @@ router.get("/get-project-unit-count", auth, (req, res) => {
     )A
     )B
   `;
+  console.log("QA", query);
   db.get(query, (error, result) => {
     if (error) {
       return res.status(404).json({ success: false, data: null, error: error });
@@ -202,7 +202,6 @@ router.get("/project-status", auth, (req, res) => {
       return res.status(404).json({ success: false, data: null, error: error });
     }
     if (result) {
-      console.log("PSTATUS", result);
       projectStatus.datasets[0].data = Object.values(result);
       return res.json({ success: true, data: projectStatus });
     } else {
@@ -219,13 +218,11 @@ router.get("/man-hour", auth, (req, res) => {
     from project_units a
     join projects b on a.projectId=b.id and accountId=${req.payload.accountId}
   `;
-  console.log("MAN", query);
   db.get(query, (error, result, fields) => {
     if (error) {
       return res.status(404).json({ success: false, data: null, error: error });
     }
     if (result) {
-      console.log("PSTATUS", result);
       return res.json({ success: true, data: result });
     } else {
       return res.status(404).send({ message: "Not found" });

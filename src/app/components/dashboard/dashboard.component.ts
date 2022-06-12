@@ -13,6 +13,7 @@ import { Project } from 'src/app/models/project';
 import { AccountService } from 'src/app/services/account.service';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { ProjectService } from 'src/app/services/project.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-dashboard',
@@ -71,6 +72,7 @@ export class DashboardComponent implements OnInit {
   };
   technicianSalary: number = 0;
   helperSalary: number = 0;
+  lineGraphYear: number = moment().year();
 
   constructor(
     private dasboardService: DashboardService,
@@ -153,9 +155,11 @@ export class DashboardComponent implements OnInit {
   }
 
   getWorkValueData() {
-    this.dasboardService.getWorkValueData().subscribe((data: any) => {
-      this.lineChartData = data;
-    });
+    this.dasboardService
+      .getWorkValueData(this.lineGraphYear)
+      .subscribe((data: any) => {
+        this.lineChartData = data;
+      });
   }
 
   getManHour() {
@@ -175,9 +179,9 @@ export class DashboardComponent implements OnInit {
   formatCurrency(actualAmount: number): number {
     let amount = 0;
     console.log(actualAmount);
-    if (actualAmount >= 1000 && actualAmount < 1000000) {
+    if (actualAmount >= 10000 && actualAmount < 10000000) {
       amount = actualAmount / 1000;
-    } else if (actualAmount >= 1000000) {
+    } else if (actualAmount >= 10000000) {
       amount = actualAmount / 1000000;
     } else {
       amount = actualAmount;
@@ -187,11 +191,17 @@ export class DashboardComponent implements OnInit {
   }
   getCurrencySymbol(actualAmount: number): string {
     let symbol = '';
-    if (actualAmount >= 1000 && actualAmount < 1000000) {
+    if (actualAmount >= 10000 && actualAmount < 10000000) {
       symbol = 'K';
-    } else if (actualAmount >= 1000000) {
+    } else if (actualAmount >= 10000000) {
       symbol = 'M';
     }
     return symbol;
+  }
+
+  onLineGraphYearChange(event: any) {
+    console.log(event.target.value);
+    this.lineGraphYear = event.target.value;
+    this.getWorkValueData();
   }
 }

@@ -32,4 +32,14 @@ export class AccountService {
       })
     );
   }
+
+  downloadBackup() {
+    return this.httpClient.get(`${this.apiEndPoint}/backup`).pipe(
+      map((res: any) => {
+        if (res && res.success) {
+          return res.data;
+        }
+      })
+    );
+  }
 }
