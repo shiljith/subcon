@@ -42,4 +42,15 @@ export class AccountService {
       })
     );
   }
+
+  downloadBackupManHour() {
+    return this.httpClient.get(`${this.apiEndPoint}/backup-manhour`).pipe(
+      map((res: any) => {
+        if (res && res.success) {
+          return res.data;
+        }
+      })
+    );
+  }
+
 }

@@ -52,11 +52,18 @@ export class SettingsComponent implements OnInit {
 
   backup() {
     this.accountService.downloadBackup().subscribe((res) => {
-      this.downloadFile(res);
+      this.downloadFile(res,'WIP_Backup.csv');
     });
   }
 
-  downloadFile(data: any) {
+  backupManHour() {
+    this.accountService.downloadBackupManHour().subscribe((res) => {
+      this.downloadFile(res,'Hour_Backup.csv');
+    });
+  }
+  
+
+  downloadFile(data: any,fileName: string) {
     console.log('Backup', data);
     const replacer = (key: any, value: any) => (value === null ? '' : value);
     const header = Object.keys(data[0]);
@@ -69,6 +76,6 @@ export class SettingsComponent implements OnInit {
     let csvArray = csv.join('\r\n');
 
     var blob = new Blob([csvArray], { type: 'text/csv' });
-    saveAs(blob, 'myFile.csv');
+    saveAs(blob, fileName);
   }
 }
